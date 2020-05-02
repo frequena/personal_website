@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Shiny | Francisco Requena</title>
+    <link>/categories/shiny/</link>
+      <atom:link href="/categories/shiny/index.xml" rel="self" type="application/rss+xml" />
+    <description>Shiny</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 09 Mar 2017 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>Shiny</title>
+      <link>/categories/shiny/</link>
+    </image>
+    
+    <item>
+      <title>Analyzing the consume of drugs in Europe</title>
+      <link>/post/data/airport_post/analyzing-the-consume-of-drugs-in-europe/</link>
+      <pubDate>Thu, 09 Mar 2017 00:00:00 +0000</pubDate>
+      <guid>/post/data/airport_post/analyzing-the-consume-of-drugs-in-europe/</guid>
+      <description>
+
+
+&lt;p&gt;The European Monitoring Center for Drugs and Drug Addiction (EMCDDA) is a public organization which provides an overview of the european drugs problems with relevant data, such as the consume of a determined type of drugs (cannabis, ecstasy, cocaine…), price, purity…In addition, this information is sorted by relevant variables such as genre, age or country.&lt;/p&gt;
+&lt;p&gt;Through the &lt;a href=&#34;casa&#34;&gt;website&lt;/a&gt;, we can access to that knowledge, but there is an inconvenient, the whole information is provided by numerous tables that can be downloaded in .xlsx format, so the process of merging multiples tables with data of interest is slow and tedious. Thereby, there is not any exploratory or visualization tool which helps the scientific community to understand this valuable information, but hidden in hundreds of separate tables.&lt;/p&gt;
+&lt;p&gt;So, I decided to develop an application which solves these problems that makes the information more accessible to the scientific community, combining two tools: R and Shiny.&lt;/p&gt;
+&lt;p&gt;The first step is to gather all the information provided in .xslx format. I downloaded every table from the section “Prevalence of drug use” and I put them together in an unique dataframe. In total we have 504 columns (yes, a lot) where every column represents the consume of a certain type of drug under a concrete condition. Every column had to be identified by a descriptive name, thereby I elaborated a code of strings with legends:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;  if (name_drug == &amp;quot;can&amp;quot;) {name_drug &amp;lt;- &amp;quot;cannabis&amp;quot;}
+  if (name_drug == &amp;quot;coc&amp;quot;) {name_drug &amp;lt;- &amp;quot;cocaine&amp;quot;}
+  if (name_drug == &amp;quot;amp&amp;quot;) {name_drug &amp;lt;- &amp;quot;amphetamines&amp;quot;}
+  if (name_drug == &amp;quot;ecs&amp;quot;) {name_drug &amp;lt;- &amp;quot;ecstasy&amp;quot;}
+  if (name_drug == &amp;quot;lsd&amp;quot;) {name_drug &amp;lt;- &amp;quot;lsd&amp;quot;}
+  if (name_drug == &amp;quot;any&amp;quot;) {name_drug &amp;lt;- &amp;quot;any illegal drugs&amp;quot;}
+  if (name_drug == &amp;quot;alc&amp;quot;) {name_drug &amp;lt;- &amp;quot;alcohol&amp;quot;}
+  if (name_drug == &amp;quot;tob&amp;quot;) {name_drug &amp;lt;- &amp;quot;tobacco&amp;quot;}
+
+  if (name_cycle == &amp;quot;life&amp;quot;) {name_cycle &amp;lt;- &amp;quot;lifetime&amp;quot;}
+  if (name_cycle == &amp;quot;year&amp;quot;) {name_cycle &amp;lt;- &amp;quot;last year&amp;quot;}
+  if (name_cycle == &amp;quot;month&amp;quot;) {name_cycle &amp;lt;- &amp;quot;last month&amp;quot;}
+
+  if (name_interval == &amp;quot;all&amp;quot;) {name_interval &amp;lt;- &amp;quot;(15-64 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;young&amp;quot;) {name_interval &amp;lt;- &amp;quot;(15-34 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;15&amp;quot;) {name_interval &amp;lt;- &amp;quot;(15-24 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;25&amp;quot;) {name_interval &amp;lt;- &amp;quot;(25-34 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;35&amp;quot;) {name_interval &amp;lt;- &amp;quot;(35-54 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;45&amp;quot;) {name_interval &amp;lt;- &amp;quot;(45-54 yr.)&amp;quot;}
+  if (name_interval == &amp;quot;55&amp;quot;) {name_interval &amp;lt;- &amp;quot;(55-64 yr.)&amp;quot;}
+  
+  if (name_genre == &amp;quot;fe&amp;quot;) {name_genre &amp;lt;- &amp;quot;female&amp;quot;}
+  if (name_genre == &amp;quot;ma&amp;quot;) {name_genre &amp;lt;- &amp;quot;male&amp;quot;}
+  if (name_genre == &amp;quot;to&amp;quot;) {name_genre &amp;lt;- &amp;quot;total&amp;quot;}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For example, the column with the following information:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(1).Consume of cocaine + (2).Last year + (3).35-54 yr. + (4).Male&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;(Column name) “coc_year_35_ma”&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Below, I show you how the application get that information:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/img_drug1.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;Once created the dataframe with the total columns with their respective code of names, it is time to play with data. I decided to use different visualization tools which reflect the same type of data, so the user could tackle same information with different perspectives:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;img/img_drug2.png&#34; /&gt; In my opinion, the graphics should be as simple as possible, because it helps the user to understand easier the information displayed. Due to this, I would like to emphasize two details:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. &lt;/strong&gt;As you can see, the scale color used in the map and the bar plot of consume is exactly the same. Keeping the same scale (1) between different graphics help the user to think less about what the scale represents.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; At the first moment, I did not want to create an interactive graphic because many times add an extra of complexity unneeded, but in this case, it was needed.The function of an interactive box plot was double: first, the user can see a legend along every point with the country and the percentage of consume label. Second, the majority of points are located in a reduced interval of values, then, the user can zoom in every interval of interest and appreciates the differences.&lt;/p&gt;
+&lt;p&gt;Finally, two features were added that helps the user saves the data produced by the application:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; The user can download the data chosen in format .csv. Thereby, it can be imported in Excel and create custom graphics.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; A Rmarkdown report in format .html with all the graphics generated by the app.&lt;/p&gt;
+&lt;p&gt;We can get some &lt;strong&gt;interpretations&lt;/strong&gt; through the visualization of data:&lt;/p&gt;
+&lt;p&gt;– &lt;strong&gt;Consume of cocaine between countries.&lt;/strong&gt; If we compare the routes where the drug traffickers introduce the narcotics in the european territory (as you can see in the picture below)(2) and the consumption by country; we can see a negative linear relation between the consume and the distance that the drug has to travel from the countries of arrival (Spain, Nertherlands, Belgium, Italy and France) (2).&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/img_drug3.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;In addition, we could analyze quantitatively the values of consume of cocaine respect to the distance of travel needed. We can calculate the sum of distances between the three largest cities of every country and the five main countries of arrival, represented by their capitals.&lt;/p&gt;
+&lt;p&gt;Yes, but how could we do this? Of course, with R:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load of libraries
+library(geosphere)
+library(dplyr)
+library(ggplot2)
+library(maps)
+
+# Data source http://simplemaps.com/resources/world-cities-data
+
+# Load of world cities by longitude and latitude
+
+list_cities &amp;lt;- read.csv(&amp;#39;./data/world_cities.csv&amp;#39;)
+
+# Load of cocaine consume by country (obtained with DrugsPlot)
+
+data_consume &amp;lt;- read.csv(&amp;#39;./data/data_drugsplot.csv&amp;#39;)
+data_consume[,1] &amp;lt;- NULL
+data_consume &amp;lt;- na.omit(data_consume)
+colnames(data_consume) &amp;lt;- c(&amp;quot;country&amp;quot;,&amp;quot;consume&amp;quot;)
+
+# Obtaining capitals of the main countries of arrival of cocaine (Spain, France, Italy, Nertherland, Belgium)
+
+arrivals_cities &amp;lt;- filter(list_cities, city %in% c(&amp;quot;Madrid&amp;quot;, &amp;quot;Rome&amp;quot;, &amp;quot;Brussels&amp;quot;, &amp;quot;Paris&amp;quot;, &amp;quot;Amsterdam&amp;quot; ))
+
+# Getting the three cities with highest population of every country
+
+list_cities &amp;lt;- select(list_cities, city, lat, lng, pop, country) %&amp;gt;%
+  filter(country %in% data_consume$country) %&amp;gt;%
+  group_by(country) %&amp;gt;% 
+  top_n(3, pop) # Here, we can change the number of cities selected
+
+# Getting the sum of distances of every city respect to every capital mentioned above. 
+
+list_cities &amp;lt;-list_cities %&amp;gt;%
+  rowwise() %&amp;gt;%
+  mutate(distance_m = distHaversine(c(lat, lng), c(arrivals_cities$lat[1], arrivals_cities$lng[1])) + 
+                    distHaversine(c(lat, lng), c(arrivals_cities$lat[2], arrivals_cities$lng[2])) +
+                    distHaversine(c(lat, lng), c(arrivals_cities$lat[3], arrivals_cities$lng[3])) +
+                    distHaversine(c(lat, lng), c(arrivals_cities$lat[4], arrivals_cities$lng[4])) +
+                    distHaversine(c(lat, lng), c(arrivals_cities$lat[5], arrivals_cities$lng[5]))) %&amp;gt;%
+  mutate(distance_km = distance_m/1000) %&amp;gt;%
+  left_join(data_consume, by = &amp;quot;country&amp;quot; )
+
+
+ggplot(list_cities, aes(distance_km, consume)) +
+  geom_point() +
+  stat_smooth(method = &amp;#39;lm&amp;#39;) +
+  theme_bw() + 
+  ggtitle(&amp;#39;Consume of cocain vs Distance of arrivals&amp;#39;) +
+  ylab(&amp;#39;Consume of cocain (%)&amp;#39;) +
+  xlab(&amp;#39;Distance respect to main countries or arrival (km)&amp;#39;) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+# Drawing network cities
+
+
+map(&amp;quot;world&amp;quot;, fill=T, col=&amp;quot;grey25&amp;quot;, bg=&amp;quot;white&amp;quot;, ylim=c(35,70.0), xlim=c(-10,45.0))
+points(list_cities$lng,list_cities$lat, pch=3, cex=0.3, col=&amp;quot;chocolate1&amp;quot;)
+for (i in 1:nrow(arrivals_cities)) {
+for (j in 1:nrow(list_cities)) {
+connection &amp;lt;- gcIntermediate(c(arrivals_cities$lng[i], arrivals_cities$lat[i]), c(list_cities$lng[j], list_cities$lat[j]))
+lines(connection, lwd=0.3, col=&amp;quot;turquoise1&amp;quot;) 
+title( main = &amp;quot;Distances between the largest cities of every country \n and the five main countries of arrival of cocaine&amp;quot;)
+}}&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/img_drug4.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Residuals:
+# Min 1Q Median 3Q Max 
+# -0.77725 -0.36353 -0.09222 0.25582 1.42392
+# 
+# Coefficients:
+# Estimate Std. Error t value Pr(&amp;gt;|t|) 
+# (Intercept) 1.625e+00 1.787e-01 9.091 1.8e-13 ***
+# distance -1.054e-07 1.966e-08 -5.363 1.0e-06 ***
+# —
+# Signif. codes: 0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+# 
+# Residual standard error: 0.5408 on 70 degrees of freedom
+# Multiple R-squared: 0.2912, Adjusted R-squared: 0.2811 
+# F-statistic: 28.76 on 1 and 70 DF, p-value: 9.997e-07&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can create a map of connections which represent the three largest cities of every country with the 5 arrival countries (mentioned above) represented by their capitals:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/img_drug5.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;– &lt;strong&gt;Consume of drugs in female population&lt;/strong&gt;. It is always lower than in male population. Looking for information about this fact, I founded an interesting &lt;a href=&#34;http://www.telegraph.co.uk/men/thinking-man/11000117/Why-do-men-take-more-drugs-than-women.html&#34;&gt;article&lt;/a&gt; in the British newspaper “Telegraph” where talked about the culture factor:&lt;/p&gt;
+&lt;p&gt;– &lt;strong&gt;Low values of Turkey&lt;/strong&gt;. Every condition analyzed represents that Turkey has the lowest value of consume. Clearly, the cultural differences are a crucial element in the consume of drugs:&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;img/img_drug6.png&#34; /&gt;
+
+&lt;/div&gt;
+&lt;p&gt;These &lt;strong&gt;analyzes&lt;/strong&gt; are just a small amount of examples that we can develop with this data. I invite you to use the app (&lt;a href=&#34;https://databiomics.shinyapps.io/drugsplot/&#34;&gt;Drugsplot&lt;/a&gt;)and share your ideas in the comments section!&lt;/p&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Notes&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;(1). Maybe, you surprise why I did not use sequential color. In fact, my first option was sequential color but the problem is “Turkey”. I mean, every country have a similar value (more or less) but Turkey in every drug, age, genre…it doesn’t matter…Turkey has always an amazing low value (very healthy people, i guess…). So, when I decided to use sequential color…the contrast between Turkey and the rest of countries was good….instead the contrast between the rest of countries was very low…so I decided to use a scale which has more than a color, such as “Spectral” a diverging scale…where the contrast, with this data, is higher than using sequential.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;(2). Source: &lt;a href=&#34;http://www.emcdda.europa.eu/topics/pods/cocaine-trafficking-to-europe&#34; class=&#34;uri&#34;&gt;http://www.emcdda.europa.eu/topics/pods/cocaine-trafficking-to-europe&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

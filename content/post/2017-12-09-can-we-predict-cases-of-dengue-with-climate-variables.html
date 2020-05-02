@@ -1,0 +1,250 @@
+---
+title: "Can we predict cases of dengue with climate variables?"
+author: "Francisco Requena"
+date: '2017-12-09'
+slug: can-we-predict-cases-of-dengue-with-climate-variables
+tags: []
+categories:
+- R
+- machine learning
+---
+
+
+
+<p>Recently, I discovered a new website about competitions that it is not called Kaggle! Its name is Drivendata.</p>
+<p><strong>DrivenData</strong> offers different competitions related with multiple types of field, such as health (oh yes!), ecology, society… with a common element: to face the world’s biggest social challenges.</p>
+<p>I decided to join my first competition called <em>‘DengAI: Predicting Disease Spread‘</em>. In this case, the user receives a set of weather information (temperatures, precipitations, vegetations) from two cities: <strong>San Juan</strong> (Puerto Rico) and <strong>Iquitos</strong> (Peru) with total cases of dengue by year and week of every year.</p>
+<p>The goal of the competition is to develop a prediction model that would be able to anticipate the cases of dengue in every city depending on a set of climate variables.</p>
+<p>The DrivenData’s blog wrote some days ago, a post about a fast approach with this dataset. It was written in Python. So, I decided to “translate” to R language.</p>
+<p>The next code is divided into three main points:</p>
+<p><strong>1.</strong> Code with clean tasks (transform NA values, remove of columns…) and exploratory analyses.</p>
+<p><strong>2.</strong> Function with every step during cleaning of data.</p>
+<p><strong>3.</strong> Development of model, prediction and comparison of predicted vs real total cases detected.</p>
+<pre class="r"><code># Load of libraries
+
+library(tidyverse)
+library(zoo)
+library(corrplot)
+library(MASS)
+library(reshape2)</code></pre>
+<pre class="r"><code># Load data
+train_features &lt;- read.csv(&#39;data/dengue_post/dengue_features_train.csv&#39;)
+  
+train_labels &lt;- read.csv(&#39;data/dengue_post/dengue_labels_train.csv&#39;)
+
+test_features &lt;- read.csv(&#39;data/dengue_post/dengue_features_test.csv&#39;)
+
+submission_format &lt;- read.csv(&#39;data/dengue_post/submission_format.csv&#39;)
+  
+# Filter of data by city  
+
+sj_train_labels &lt;- filter(train_labels, city == &#39;sj&#39;)
+sj_train_features &lt;- filter(train_features, city == &#39;sj&#39;)
+
+iq_train_labels &lt;- filter(train_labels, city == &#39;iq&#39;)
+iq_train_features &lt;- filter(train_features, city == &#39;iq&#39;)</code></pre>
+<pre class="r"><code># Is there NA values?
+
+df_na_sj &lt;- as.data.frame(apply(sj_train_features,2, function(x) any(is.na(x))))
+colnames(df_na_sj) &lt;- &#39;is_there_NA&#39;
+df_na_sj$number_NA &lt;- apply(sj_train_features,2, function(x) sum(is.na(x)))
+df_na_sj$mean_NA &lt;- apply(sj_train_features, 2, function(x) mean(is.na(x)))
+
+df_na_iq &lt;- as.data.frame(apply(iq_train_features, 2, function(x) any(is.na(x))))
+colnames(df_na_iq) &lt;- &#39;is_there_NA&#39;
+df_na_iq$number_NA &lt;- apply(iq_train_features, 2, function(x) sum(is.na(x)))
+df_na_iq$mean_NA &lt;- apply(iq_train_features, 2, function(x) mean(is.na(x)))</code></pre>
+<pre class="r"><code># Vegetation Index over Time Plot with NAs
+
+ggplot(sj_train_features, aes(x = as.Date(week_start_date), y = ndvi_ne )) +
+  ggtitle(&#39;Vegetation Index over Time&#39;) +
+  theme_bw() +
+  xlab(&#39;Title&#39;) +
+  geom_line(na.rm = FALSE, color = &#39;blue&#39;) +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code># Remove &#39;weekofyear&#39; column
+
+sj_train_features &lt;- dplyr::select(sj_train_features, -week_start_date)
+
+iq_train_features &lt;- dplyr::select(iq_train_features, -week_start_date)
+
+# Fill the NA values with the previous value
+
+sj_train_features &lt;- sj_train_features %&gt;%
+            do(na.locf(.))
+
+iq_train_features &lt;- iq_train_features %&gt;%
+            do(na.locf(.))
+
+# Distribution of labels
+
+# print(mean(sj_train_labels$total_cases))
+# print(var(sj_train_labels$total_cases))
+# 
+# print(mean(iq_train_labels$total_cases))
+# print(var(iq_train_labels$total_cases))
+
+
+ggplot(sj_train_labels, aes(x = total_cases)) +
+  theme_bw() +
+  ggtitle(&#39;Cases of dengue in San Juan&#39;) +
+  geom_histogram() +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(iq_train_labels, aes(x = total_cases)) +
+  theme_bw() +
+  ggtitle(&#39;Cases of dengue in Iquitos&#39;) +
+  geom_histogram() +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code># Add total_cases column to *_train_features dataframes
+
+
+# sj_train_features &lt;- left_join(sj_train_features, sj_train_labels, by = c(&#39;city&#39;, &#39;year&#39;, &#39;weekofyear&#39;))
+ sj_train_features$total_cases &lt;- sj_train_labels$total_cases
+
+# iq_train_features &lt;- left_join(iq_train_features, iq_train_labels, by = c(&#39;city&#39;, &#39;year&#39;, &#39;weekofyear&#39;))
+iq_train_features$total_cases &lt;- iq_train_labels$total_cases
+
+# Correlation matrix
+
+m_sj_train_features &lt;- data.matrix(sj_train_features)
+m_sj_train_features &lt;- cor(x = m_sj_train_features[,3:24], use = &#39;complete.obs&#39;, method = &#39;pearson&#39;)
+
+m_iq_train_features &lt;- data.matrix(iq_train_features)
+m_iq_train_features &lt;- cor(x = m_iq_train_features[,3:24], use = &#39;everything&#39;, method = &#39;pearson&#39;)
+
+# Correlation Heatmap
+
+corrplot(m_sj_train_features, type = &#39;full&#39;, tl.col = &#39;black&#39;, method=&quot;shade&quot;)</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<pre class="r"><code>corrplot(m_iq_train_features, type = &#39;full&#39;, tl.col = &#39;black&#39;, method = &#39;shade&#39;)</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
+<pre class="r"><code># Correlation Bar plot
+
+df_sj_train_features &lt;- data.frame(m_sj_train_features)[2:21,] 
+df_sj_train_features &lt;- dplyr::select(df_sj_train_features, total_cases) 
+                                    
+df_iq_train_features &lt;- data.frame(m_iq_train_features)[2:21,]
+df_iq_train_features &lt;- dplyr::select(df_iq_train_features, total_cases) 
+
+ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
+  geom_bar(stat = &#39;identity&#39;) +
+  theme_bw() +
+  ggtitle(&#39;Correlation of variables in San Juan&#39;) +
+  ylab(&#39;Correlation&#39;) +
+  xlab(&#39;Variables&#39;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png" width="672" /></p>
+<pre class="r"><code>ggplot(df_iq_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
+  geom_bar(stat = &#39;identity&#39;) +
+  theme_bw() +
+  ggtitle(&#39;Correlation of variables in Iquitos&#39;) +
+  ylab(&#39;Correlation&#39;) +
+  xlab(&#39;Variables&#39;) +
+  coord_flip()</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png" width="672" /></p>
+<pre class="r"><code># Function data cleaning
+
+data_clean &lt;- function(df_dengue_features, df_dengue_labels = NULL, add_cases = TRUE) {
+  
+  # Filter by city
+  sj_df_dengue_features &lt;- filter(df_dengue_features, city == &#39;sj&#39;)
+  iq_df_dengue_features &lt;- filter(df_dengue_features, city == &#39;iq&#39;)
+  
+  if (add_cases == TRUE) {
+  sj_df_dengue_labels &lt;- filter(df_dengue_labels, city == &#39;sj&#39;)
+  iq_df_dengue_labels &lt;- filter(df_dengue_labels, city == &#39;iq&#39;)
+  }
+  # Removing week_start_date column
+  sj_df_dengue_features &lt;- dplyr::select(sj_df_dengue_features, -week_start_date)
+  iq_df_dengue_features &lt;- dplyr::select(iq_df_dengue_features, -week_start_date)
+
+  # Fill of NA values with the previous value
+  sj_df_dengue_features &lt;- sj_df_dengue_features %&gt;%
+    do(na.locf(.))
+  
+  iq_df_dengue_features &lt;- iq_df_dengue_features %&gt;%
+    do(na.locf(.))
+  
+  # Add total_cases to dataframe with features
+  if (add_cases == TRUE) {
+  sj_df_dengue_features$total_cases &lt;- sj_df_dengue_labels$total_cases
+  iq_df_dengue_features$total_cases &lt;- iq_df_dengue_labels$total_cases
+  }
+  
+  # Converting character columns into numbers
+  sj_df_dengue_features &lt;- as.data.frame(apply(sj_df_dengue_features,2,as.numeric))
+  sj_df_dengue_features$city &lt;- rep(&#39;sj&#39;, nrow(sj_df_dengue_features))
+  iq_df_dengue_features &lt;- as.data.frame(apply(iq_df_dengue_features,2,as.numeric))
+  iq_df_dengue_features$city &lt;- rep(&#39;iq&#39;, nrow(iq_df_dengue_features))
+  
+  result &lt;- list(sj_df_dengue_features, iq_df_dengue_features )
+  
+  return(result)
+}</code></pre>
+<pre class="r"><code># Getting data_training clean
+
+data_train &lt;- data_clean(train_features, train_labels, TRUE)
+
+# Getting negative binomials models by city
+
+training_sj &lt;- glm.nb(formula = total_cases ~ reanalysis_specific_humidity_g_per_kg +
+                     reanalysis_dew_point_temp_k +
+                     station_min_temp_c +
+                     station_avg_temp_c, data = data_train[[1]])
+
+training_iq &lt;- glm.nb(formula = total_cases ~ reanalysis_specific_humidity_g_per_kg +
+                        reanalysis_dew_point_temp_k +
+                        station_min_temp_c +
+                        station_avg_temp_c, data = data_train[[2]])
+
+# Getting data_test clean
+
+data_test &lt;- data_clean(test_features, add_cases = FALSE)
+
+
+# Testing model with training data
+
+prediction_train_sj &lt;-  predict(training_sj, data_train[[1]], type = &#39;response&#39;)
+prediction_train_iq &lt;-  predict(training_iq, data_train[[2]], type = &#39;response&#39;)
+
+df_prediction_train_sj &lt;- data.frame(&#39;prediction&#39; = prediction_train_sj, &#39;actual&#39; = data_train[[1]]$total_cases,
+                                     &#39;time&#39; = as.Date(train_features$week_start_date[1:936]))
+df_prediction_train_sj &lt;- melt(df_prediction_train_sj, id.vars = &#39;time&#39;)
+ggplot(df_prediction_train_sj, aes(x = time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle(&#39;Dengue predicted Cases vs. Actual Cases (City-San Juan) &#39;)</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>df_prediction_train_iq &lt;- data.frame(&#39;prediction&#39; = prediction_train_iq, &#39;actual&#39; = data_train[[2]]$total_cases,
+                                     &#39;time&#39; = as.Date(train_features$week_start_date[937:1456]))
+df_prediction_train_iq &lt;- melt(df_prediction_train_iq, id.vars = &#39;time&#39;)
+ggplot(df_prediction_train_iq, aes(x = time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle(&#39;Dengue predicted Cases vs. Actual Cases (City-Iquitos) &#39;)</code></pre>
+<p><img src="/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code># Prediction of total_cases in the data set
+
+prediction_sj &lt;-  predict(training_sj, data_test[[1]], type = &#39;response&#39;)
+prediction_iq &lt;-  predict(training_iq, data_test[[2]], type = &#39;response&#39;)
+ 
+data_prediction_sj &lt;- data.frame(&#39;city&#39; = rep(&#39;sj&#39;, length(prediction_sj) ), 
+                                 &#39;total_cases&#39; = prediction_sj, 
+                                 &#39;weekofyear&#39; = data_test[[1]]$weekofyear,
+                                 &#39;year&#39; = data_test[[1]]$year )
+
+data_prediction_iq &lt;- data.frame(&#39;city&#39; = rep(&#39;iq&#39;, length(prediction_iq) ), 
+                                 &#39;total_cases&#39; = prediction_iq,
+                                 &#39;weekofyear&#39; = data_test[[2]]$weekofyear,
+                                 &#39;year&#39; = data_test[[2]]$year)
+
+
+  
+submission_format$total_cases &lt;- as.numeric(c(data_prediction_sj$total_cases, 
+                                                   data_prediction_iq$total_cases))
+
+submission_format$total_cases &lt;- round(submission_format$total_cases, 0)
+  
+write.csv(submission_format,
+          file = &#39;submission_format_submit.csv&#39;, row.names = F)</code></pre>

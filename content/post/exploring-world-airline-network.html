@@ -1,0 +1,427 @@
+---
+title: "Exploring world flights using a network approach"
+author: "Francisco Requena"
+date: '2020-05-01'
+output: html_document
+categories:
+- R
+- open data
+- networks
+---
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Recently, I started to read <a href="http://networksciencebook.com">this free accessible book</a> written by Albert-László Barabási. In the Chapter 4 of his book, it depicts the USA airport networks to <strong>represent scale-free networks</strong>. I was wondering if we can get a <em>world picture</em>, creating the same network but including the global routes using open data from internet.</p>
+</div>
+<div id="what-is-a-scale-free-network" class="section level2">
+<h2>1. What is a scale-free network?</h2>
+<p>Scale-free networks are characterized by a large number of nodes with low degree (number of links) and very few hubs with a high degree. If we represent the distribution of degrees of these nodes, it follows a power-law distribution. To illustrate this idea, let’s create a quick example:</p>
+<pre class="r"><code># Load libraries
+library(tidygraph) 
+library(ggraph)
+library(igraph)
+library(stringr)
+library(tidyverse)
+library(patchwork)
+library(ggthemes)
+
+# 1. Example showing a scale-free network
+
+scale_free_net &lt;- play_barabasi_albert(n = 1000, power = 1)
+
+# 1.1 Scale-free network
+p1 &lt;- ggraph(scale_free_net, layout = &#39;kk&#39;) + 
+  geom_edge_link(alpha = 0.3) + 
+  geom_node_point(fill = &#39;steelblue&#39;, color = &#39;black&#39;, shape = 21) +
+  ggtitle(&#39;Scale-free network&#39;) + 
+  theme_graph()
+
+vector_values &lt;- degree_distribution(scale_free_net)[-1] # Eliminate first element, it represents zero degree vertices
+  
+df &lt;- data.frame(frequency = vector_values,
+                 degrees = seq(1, length(vector_values),1))
+
+# 1.2 Degree distribution
+p2 &lt;- ggplot(df, aes(degrees, frequency)) +
+  geom_col(fill = &#39;steelblue&#39;, color = &#39;black&#39;) +
+  ggtitle(&#39;Degree Distribution of a scale-free network&#39;) +
+  ylab(&#39;Relative frequency&#39;) +
+  xlab(&#39;Number of links&#39;) +
+  theme_bw()
+
+p1 + p2</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png" width="1152" /></p>
+<p>Many real networks share this feature. For instance, if we take a look how internet is organized and calculate the number of links that every site has, we find that the most of websites (nodes) have a low number of links (edges) and very few will have a large number of links (e.g. Google, Facebook…). Other examples are social, co-authorship or protein-protein network.</p>
+<p>We hope to see the same pattern through our airport’s network: <em>very few airports have a large number of routes while the most will have few routes</em>.</p>
+</div>
+<div id="data-airports-and-routes" class="section level2">
+<h2>2. Data (airports and routes)</h2>
+<p>At the beginning, we talked about creating our own network of airlines routes. To achieve this, we download our data from <a href="https://openflights.org">Openflights</a> whose have a lot of information about flights. We will just download data about <strong>airports</strong> (selecting: code, longitude and latitude) and <strong>routes</strong> (selecting: name, code source, code destination and continent location). Besides, we will clean those observations with NA’s values or wrong strings.</p>
+<p><strong>Important</strong>: Aiports will be the nodes of our network and the routes will conform the edges between the nodes.</p>
+<pre class="r"><code># Data with routes
+
+# https://openflights.org/data.html#route
+
+df &lt;- read.csv(&#39;https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat&#39;,header = FALSE,
+               stringsAsFactors = FALSE,
+               col.names = c(&#39;airline&#39;, &#39;airline_id&#39;, &#39;src&#39;, &#39;src_id&#39;, &#39;dest&#39;, &#39;dest_id&#39;, &#39;codeshare&#39;,&#39;stops&#39;,  &#39;equip&#39;))[,c(3,5)]
+
+# Data with airport information
+
+# https://openflights.org/data.html#airport
+df2 &lt;- read.csv(&#39;https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat&#39;,header = FALSE,
+                   stringsAsFactors = FALSE)[,c(2,5,7,8,12)]
+colnames(df2) &lt;- c(&#39;name&#39;,&#39;code&#39;, &#39;lat&#39;, &#39;long&#39;, &#39;location&#39;)
+
+
+# Clean data
+
+df_airport &lt;- df2 %&gt;% 
+  filter(!str_detect(code, fixed(&quot;\\N&quot;))) %&gt;%
+  filter(!str_detect(location, fixed(&quot;\\N&quot;))) %&gt;%
+  as_tibble()
+
+tmp_loc &lt;- str_split(df_airport$location, &#39;/&#39;)
+df_airport$location &lt;- map_chr(tmp_loc, function(x) x[[1]])
+df_airport &lt;- df_airport %&gt;% mutate(location = as.factor(location))
+
+df_routes &lt;- df %&gt;% 
+  filter(!str_detect(src, fixed(&quot;\\N&quot;)) &amp; !str_detect(dest, fixed(&quot;\\N&quot;))) %&gt;%
+  filter(!src == dest) %&gt;%
+  group_by(src, dest) %&gt;%
+  count() %&gt;%
+  arrange(desc(n)) %&gt;%
+  ungroup() %&gt;%
+  as_tibble()</code></pre>
+</div>
+<div id="airport-network-visualization" class="section level2">
+<h2>3. Airport Network visualization</h2>
+<p>To make possible the downstream analysis, we have to transform the observations of our dataframe into nodes and edges (tbl_graph object). We can do this thanks to the <strong>package ggraph</strong>. Once we do this, we will be able to visualise the network applying different algorithms layers and calculate topological parameters of the nodes that otherwise would not be possible.</p>
+<p>For instance, we can choose the ‘mds’ layout (you can find many other layouts described <a href="https://www.data-imaginist.com/2017/ggraph-introduction-layouts/">here</a>). This algorithm layout measures the shortest path between each node and display together those nodes which are closer in the network. Besides, we are going to calculate some scores per node and to make faster the algorithm, I will eliminate those airports whose number of routes are low.</p>
+<pre class="r"><code># Convert dataframe (df_routes) to tbl_graph object (df_graph)
+df_graph &lt;- as_tbl_graph(df_routes,directed = FALSE) %&gt;% activate(edges) %&gt;%
+  filter(!edge_is_multiple()) %&gt;% activate(nodes) %&gt;%
+  mutate(n_degree = centrality_degree(),
+         betweenness = centrality_betweenness(),
+         community = group_walktrap(),
+         n_triangles = local_triangles(),
+         clust = local_transitivity()) %&gt;%
+  left_join(df_airport, by = c(&#39;name&#39; = &#39;code&#39;)) %&gt;%
+  filter(!is.na(lat) &amp; !is.na(long))
+
+# ggraph(df_graph %&gt;% activate(nodes) %&gt;% filter(n_degree &gt;= 10), layout = &quot;mds&quot;) + 
+#   geom_edge_link(aes(edge_width = n), alpha = 0.1, edge_colour = &#39;gray&#39;) + 
+#   geom_node_point(aes(size = n_degree, fill = location), shape = 21) +
+#   scale_fill_brewer(palette = &#39;Set1&#39;) +
+#   scale_size(range = c(0, 14)) +
+#   theme_graph() +
+#   guides(size=FALSE, edge_width = FALSE, fill = guide_legend(override.aes = list(size = 7))) +
+#   ggtitle(&#39;Airports network&#39;)</code></pre>
+<p>Besides, we plot the degree distribution of our network using ggplot2. For that, we convert our tbl_graph to a dataframe (the reverse step we did before) applying the function <em>activation(nodes)</em> and then <em>as_tibble()</em>.</p>
+<pre class="r"><code># Degree distribution
+df_nodes &lt;- df_graph %&gt;% activate(nodes) %&gt;% as_tibble()
+ggplot(df_nodes, aes(n_degree)) +
+  geom_histogram(fill = &#39;steelblue&#39;, color = &#39;black&#39;, binwidth = 1) +
+  ggtitle(&#39;Degree Distribution of airports network&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Number of links&#39;) +
+  theme_bw()</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png" width="1152" /></p>
+<p>As we saw at the beginning, both networks follow a power-law distribution.</p>
+</div>
+<div id="where-is-my-airport" class="section level2">
+<h2>4. Where is my airport?</h2>
+<p>At first glance, let’s take a look at the distribution of the airports around the world based on their region:</p>
+<pre class="r"><code>worldmap &lt;- borders(&quot;world&quot;, colour=&quot;#efede1&quot;, fill=&quot;#efede1&quot;) 
+
+# Get airports by degree
+ggplot(df_airport, aes(long, lat)) + worldmap + 
+  geom_point(aes(fill = location), color = &#39;black&#39;, shape = 21) +
+  theme_void() +
+  guides(fill = guide_legend(override.aes = list(size = 7))) +
+  ggtitle(&#39; Aiports across the world by region&#39;)</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png" width="1152" /></p>
+<p>We can see the biggest hubs are influenced by the economical situation and the population density of the region.</p>
+</div>
+<div id="what-are-the-best-connected-airports" class="section level1">
+<h1>What are the best connected airports?</h1>
+<pre class="r"><code>p1 &lt;- ggplot(df_nodes %&gt;% filter(n_degree &gt;= 50), aes(long, lat)) + worldmap + 
+  geom_point(aes(size = n_degree, fill = n_degree), pch = 21) +
+  scale_fill_viridis_c() +
+  theme_void() +
+  scale_size_continuous(range = c(1,10))
+
+p2 &lt;- ggplot(df_nodes %&gt;% top_n(20, n_degree), aes(reorder(name, -n_degree), n_degree)) +
+  geom_col(aes(fill = n_degree), color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 20 airport by number of routes&#39;) +
+  ylab(&#39;Nº of routes&#39;) +
+  xlab(&#39;Code Airport&#39;) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+
+p3 &lt;- ggplot(df_nodes %&gt;% group_by(location) %&gt;% top_n(10, n_degree), aes(reorder(name, -n_degree), n_degree)) +
+  geom_col(aes(fill = n_degree), color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 10 airport by number of routes and region&#39;) +
+  ylab(&#39;Nº of routes&#39;) +
+  xlab(&#39;Code Airport&#39;) +
+  facet_wrap(~ location, scales = &#39;free_x&#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png" width="1152" /></p>
+<div id="what-is-the-longest-path-possible" class="section level2">
+<h2>What is the longest path possible?</h2>
+<p>Can you guess how many steps would be required to travel the longest path possible between two airports? This number is called diameter and can be calculated easily:</p>
+<pre class="r"><code>df_graph %&gt;% activate(nodes) %&gt;% 
+  mutate(diam = graph_diameter()) %&gt;% 
+  distinct(diam) %&gt;% 
+  as_tibble()</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##    diam
+##   &lt;dbl&gt;
+## 1    12</code></pre>
+<p>The longest path is 12 steps. Not so long if we take into account the remote distance of some of the airports (Siberia, Greenland, Pacific regions…).</p>
+</div>
+<div id="what-is-the-shortest-path-between-two-airports" class="section level2">
+<h2>What is the shortest path between two airports?</h2>
+<p>We can select an airport and calculate the shortest path needed to reach another one. For instance, the Charles de Gaulle Airport (Paris) is one step from Adolfo Suárez Madrid–Barajas (Madrid), but what is the number of steps needed to reach the Hawai’s airport from Paris? Let’s calculate it:</p>
+<pre class="r"><code>shortest_paths(df_graph, &#39;CDG&#39;, &#39;HNL&#39;)$vpath[[1]]</code></pre>
+<pre><code>## + 3/3209 vertices, named, from 802f930:
+## [1] CDG ORD HNL</code></pre>
+<p>The <strong>shortest path</strong> from Paris to Honolulu is: Paris -&gt; Chicago -&gt; Honolulu.</p>
+<p>Now, imagine that we calculate all the shortest paths between Paris and the rest of airports and we repeat it with every airport and calculate the average. This value is called: <strong>average shortest path</strong> and is average number of minimum connections required from any airport to any other airport.</p>
+<pre class="r"><code>df_graph %&gt;% activate(nodes) %&gt;% 
+  mutate(dist = graph_mean_dist()) %&gt;% 
+  distinct(dist) %&gt;% 
+  as_tibble()</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##    dist
+##   &lt;dbl&gt;
+## 1  3.97</code></pre>
+<p>The average shortesth path is 3.94, almost 4 steps on average to go from an airport to any other.</p>
+</div>
+<div id="what-is-the-longest-distance-possible-from-a-specific-airport" class="section level2">
+<h2>What is the longest distance possible from a specific airport?</h2>
+<p>We are in Paris again, and we want to go to the most distant airport possible (in steps). This value is called <strong>eccentricity</strong> and is specific for each airport. Let’s take a look at three of the most connected airports:</p>
+<pre class="r"><code>df_graph_eccen &lt;- df_graph %&gt;% activate(nodes) %&gt;% 
+  mutate(eccentricity = node_eccentricity()) %&gt;% as_tibble()
+  
+df_graph_eccen %&gt;% 
+  filter(name == &#39;ATL&#39; | name == &#39;CDG&#39; | name == &#39;AMS&#39;) %&gt;% 
+  select(name.y, eccentricity )</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   name.y                                           eccentricity
+##   &lt;chr&gt;                                                   &lt;dbl&gt;
+## 1 Hartsfield Jackson Atlanta International Airport            7
+## 2 Charles de Gaulle International Airport                     7
+## 3 Amsterdam Airport Schiphol                                  7</code></pre>
+<p>We would need 7 steps to go from Paris to the most distant airport, the same value obtained with Atlanta and Amsterdam airports. This make sense as we have selected nodes with the highest nº of routes. But the value 7 is the lowest that we can get?</p>
+<p>Let’s see the distribution:</p>
+<pre class="r"><code># The filter(eccentricity &gt; 2) eliminate those airports that are disconnected from the main network and have a eccentricity from 0 to 2
+ggplot(df_graph_eccen %&gt;% filter(eccentricity &gt; 2), aes(eccentricity)) +
+  geom_histogram(fill = &#39;steelblue&#39;, color = &#39;black&#39;) +
+  ylab(&#39;Nº of airports&#39;) +
+  theme(text = element_text(size=20))</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png" width="1152" /></p>
+<p>As we see above, most of the airports are located between 8 and 9. Those airports with the highest number of routes have a value of 7. But there is an airport whose value is 6.</p>
+<pre class="r"><code> df_graph_eccen %&gt;% filter(eccentricity == 6)</code></pre>
+<pre><code>## # A tibble: 1 x 11
+##   name  n_degree betweenness community n_triangles clust name.y   lat  long
+##   &lt;chr&gt;    &lt;dbl&gt;       &lt;dbl&gt;     &lt;int&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;
+## 1 YYZ        147     249941.         1        2061 0.192 Leste~  43.7 -79.6
+## # ... with 2 more variables: location &lt;fct&gt;, eccentricity &lt;dbl&gt;</code></pre>
+<p>Well, it is interesting that the airport with the lowest eccentricity is <strong>Lester B. Pearson International Airport</strong> located at Toronto. Its number of routes (n_degree) is not very high but has an important particularity. If we see the map, Canada is a country with a large number of airports sparse along the territory. While the majority of airports have to “spend” steps to reach those distant airport (mainly at the north of the territory), this airport is very close to them and at the same time is close to the rest of airports across the world (USA, Europe, China…)</p>
+</div>
+<div id="where-are-the-hubs" class="section level2">
+<h2>Where are the hubs?</h2>
+<p>We can detect also the most relevant hubs (densely connected subgraphs) and display those airports that belongs to one of the top 10 hubs:</p>
+<pre class="r"><code>ggplot(df_nodes %&gt;% filter(community &lt;= 10), aes(long, lat)) + worldmap + 
+  geom_point(aes(fill = as.factor(community)), color = &#39;black&#39;, shape = 21) +
+  theme_void() +
+  scale_fill_brewer(palette = &#39;Paired&#39;) +
+  guides(fill = guide_legend(override.aes = list(size = 12))) +
+  ggtitle(&#39; Aiports across the world by region&#39;) +
+  labs(fill=&quot;List of Hubs&quot;) +
+  theme_map()</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png" width="1152" /></p>
+<p>We have applied a walktrap community finding algorithm that uses random walks between the nodes and group those airports that are connected by short random walks.</p>
+<p>If you take a look at the map, these hubs represent not only a group of airports densely connected but also political and economical hubs. For instance, a hub includes Ex-soviets states, another Europe, Canary Islands and some cities from Magreb.</p>
+<p>In addition, we can classify the airports in 3 categories:</p>
+<ul>
+<li><strong>Core</strong>: Those aiports whose have the highest number of triangles (subgraph of 3 nodes and 3 edges). If an airport is located in many triangles, we consider it as a well connected airport.</li>
+<li><strong>Peryphery</strong>: Airports that are located in distant regions with few routes.</li>
+<li><strong>Bridge</strong>: Those airports that allow the communication between the airports that form the core and the periphery.</li>
+</ul>
+<pre class="r"><code>df_nodes &lt;- df_nodes %&gt;% mutate(category = &#39;Bridge&#39;)
+df_nodes$category &lt;- ifelse(df_nodes$n_triangles &gt; 400, &#39;Core&#39;, df_nodes$category)
+df_nodes$category &lt;- ifelse(df_nodes$clust == 0, &#39;Periphery&#39;, df_nodes$category)
+
+ggplot(df_nodes, aes(long, lat)) + worldmap +
+  geom_point(aes(fill = category), color = &#39;black&#39;, shape = 21) +
+  facet_grid(category ~.) +
+  theme_map() +
+  theme(strip.text = element_text(size=25)) +
+  guides(fill = guide_legend(override.aes = list(size = 20)))</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png" width="1152" /></p>
+</div>
+</div>
+<div id="which-are-the-best-connected-airports" class="section level1">
+<h1>5. Which are the best connected airports?</h1>
+<p>There are different ways to measure the connectivity of a node in a network. One of the most used is the betweenness centrality which is the sum of the shortest paths that pass through a node:</p>
+<pre class="r"><code>p1 &lt;- ggplot(df_nodes %&gt;% filter(n_degree &gt;= 20), aes(long, lat)) + worldmap + 
+  geom_point(aes(size = betweenness, fill = betweenness), pch = 21) +
+  scale_fill_viridis_c() +
+  theme_void() +
+  scale_size_continuous(range = c(1,10))
+
+p2 &lt;- ggplot(df_nodes %&gt;% top_n(20, betweenness), aes(reorder(name, -betweenness), betweenness)) +
+  geom_col(aes(fill = betweenness), color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 20 airport by number of betweenness&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Code Airport&#39;) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p3 &lt;- ggplot(df_nodes %&gt;% group_by(location) %&gt;% top_n(10, betweenness), aes(reorder(name, -betweenness), betweenness)) +
+  geom_col(aes(fill = betweenness), color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 10 airport by number of betweenness and region&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Code Airport&#39;) +
+  facet_wrap(~ location, scales = &#39;free_x&#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p1 + p2 + plot_layout(ncol = 1, heights = c(3, 1))</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png" width="1152" /></p>
+<pre class="r"><code>p3</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png" width="1152" /></p>
+<p>As we see above, airports with with a high number of routes usually have a high betweenness. But we find an exception: the <strong>Ted Stevens Anchorage International Airport (ANL)</strong>. Honestly, I did not expect this airport with the highest betweenness but if we take a look at the organization of the Alaska’s airports:</p>
+<pre class="r"><code>df_routes_def &lt;- df_routes %&gt;% 
+  left_join(df_airport, by = c(&#39;src&#39; = &#39;code&#39;)) %&gt;%
+  rename(long_src = long, lat_src = lat) %&gt;%
+  left_join(df_airport, by = c(&#39;dest&#39; = &#39;code&#39;)) %&gt;%
+  rename(long_dest = long, lat_dest = lat) %&gt;%
+  left_join(df_nodes, by = c(&#39;src&#39; = &#39;name&#39;)) %&gt;%
+  select(-lat, -long)
+
+df_routes_anc &lt;- df_routes_def %&gt;% 
+  filter( dest == &#39;ANC&#39;)
+        
+ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
+  coord_map(xlim=c(-180,180)) +
+            geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.7, color = &#39;steelblue&#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&#39;Ted Stevens Anchorage International Airport&#39;) </code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png" width="1152" /></p>
+<p>Crossing this airport is required to reach the rest of airports in Alaska. Therefore, this create a bottleneck where most of nodes have to cross this airport before reach the rest.</p>
+<div id="routes-by-number-of-airlines" class="section level2">
+<h2>7. Routes by number of airlines</h2>
+<p>We can take a look at those routes whose have the largest number of airlines:</p>
+<pre class="r"><code>ggplot(df_routes %&gt;% top_n(20, n), aes(reorder(paste(src, dest, sep =&#39; - &#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 20 routes by number of airlines&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Route&#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png" width="1152" /></p>
+</div>
+</div>
+<div id="connections-between-madrid-and-dubai" class="section level1">
+<h1>8. Connections between Madrid and Dubai</h1>
+<p>We can display all the connections between Madrid and Dubai.</p>
+<pre class="r"><code>df_routes_dubai &lt;- df_routes_def %&gt;% 
+  filter(  src == &#39;DXB&#39; | dest == &#39;DXB&#39;)
+        
+p1 &lt;- ggplot(df_routes_dubai, aes(long_src, lat_src)) + worldmap +
+  coord_map(&quot;gilbert&quot;, xlim=c(-180,180)) +
+  geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.3, color = &#39;steelblue&#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&#39;Dubai International Airport connections&#39;) 
+
+p2 &lt;- ggplot(df_routes_dubai %&gt;% filter(src == &#39;DXB&#39;) %&gt;% top_n(10, n) , aes(reorder(paste(src, dest, sep =&#39; - &#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 10 routes by number of airlines&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Route&#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+p1</code></pre>
+<pre><code>FALSE Warning: Removed 10 rows containing missing values (geom_segment).</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png" width="1152" /></p>
+<pre class="r"><code>p2</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png" width="1152" /></p>
+<p>…or the routes between Madrid and the rest of the world:</p>
+<pre class="r"><code>df_routes_madrid &lt;- df_routes_def %&gt;% 
+  filter(  src == &#39;MAD&#39; | dest == &#39;MAD&#39;)
+        
+p1 &lt;- ggplot(df_routes_madrid, aes(long_src, lat_src)) + worldmap +
+  coord_map(&quot;gilbert&quot;, xlim=c(-180,180)) +
+  geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.3, color = &#39;orange&#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&#39;Madrid Barajas International Airport connections&#39;)
+
+p2 &lt;- ggplot(df_routes_madrid %&gt;% filter(src == &#39;MAD&#39;) %&gt;% top_n(10, n) , aes(reorder(paste(src, dest, sep =&#39; - &#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &#39;black&#39;) +
+  scale_fill_viridis() +
+  ggtitle(&#39;Top 10 routes by number of airlines&#39;) +
+  ylab(&#39;Frequency&#39;) +
+  xlab(&#39;Route&#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+p1</code></pre>
+<pre><code>FALSE Warning: Removed 4 rows containing missing values (geom_segment).</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png" width="1152" /></p>
+<pre class="r"><code>p2</code></pre>
+<p><img src="/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png" width="1152" /></p>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>The <strong>relevance of an airport</strong> in the network can be assessed through different metrics: nº of routes, nº of triangles, clustering, betweenness, eccentricity or shortest path. At the same time, the <strong>identification of groups of airports</strong>, we have clustered airports by continent, random walks algorithm, or using a blend of centrality measures filtering the nodes in three groups (core, bridge, peripherial).</p>
+<p>In conclusion, network science allows us to improve our knowledge about data that can be converted into a network, through the use of multiple approaches.</p>
+</div>
+<div id="final-notes" class="section level2">
+<h2>Final notes</h2>
+<ul>
+<li><p>To simplify this post, I have not included the direction of the edges neither the real distance between airports.</p></li>
+<li><p>A very interesting point is the analysis of the resilence: what would happen if we delete a specific airport from the network? Would the impact be equal across the aiports?</p></li>
+</ul>
+</div>
+</div>

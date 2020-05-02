@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R | Francisco Requena</title>
+    <link>/categories/r/</link>
+      <atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <description>R</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 01 May 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <title>R</title>
+      <link>/categories/r/</link>
+    </image>
+    
+    <item>
+      <title>Exploring world flights using a network approach</title>
+      <link>/post/exploring-world-airline-network/</link>
+      <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/exploring-world-airline-network/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Recently, I started to read &lt;a href=&#34;http://networksciencebook.com&#34;&gt;this free accessible book&lt;/a&gt; written by Albert-László Barabási. In the Chapter 4 of his book, it depicts the USA airport networks to &lt;strong&gt;represent scale-free networks&lt;/strong&gt;. I was wondering if we can get a &lt;em&gt;world picture&lt;/em&gt;, creating the same network but including the global routes using open data from internet.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-a-scale-free-network&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1. What is a scale-free network?&lt;/h2&gt;
+&lt;p&gt;Scale-free networks are characterized by a large number of nodes with low degree (number of links) and very few hubs with a high degree. If we represent the distribution of degrees of these nodes, it follows a power-law distribution. To illustrate this idea, let’s create a quick example:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load libraries
+library(tidygraph) 
+library(ggraph)
+library(igraph)
+library(stringr)
+library(tidyverse)
+library(patchwork)
+library(ggthemes)
+
+# 1. Example showing a scale-free network
+
+scale_free_net &amp;lt;- play_barabasi_albert(n = 1000, power = 1)
+
+# 1.1 Scale-free network
+p1 &amp;lt;- ggraph(scale_free_net, layout = &amp;#39;kk&amp;#39;) + 
+  geom_edge_link(alpha = 0.3) + 
+  geom_node_point(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;, shape = 21) +
+  ggtitle(&amp;#39;Scale-free network&amp;#39;) + 
+  theme_graph()
+
+vector_values &amp;lt;- degree_distribution(scale_free_net)[-1] # Eliminate first element, it represents zero degree vertices
+  
+df &amp;lt;- data.frame(frequency = vector_values,
+                 degrees = seq(1, length(vector_values),1))
+
+# 1.2 Degree distribution
+p2 &amp;lt;- ggplot(df, aes(degrees, frequency)) +
+  geom_col(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) +
+  ggtitle(&amp;#39;Degree Distribution of a scale-free network&amp;#39;) +
+  ylab(&amp;#39;Relative frequency&amp;#39;) +
+  xlab(&amp;#39;Number of links&amp;#39;) +
+  theme_bw()
+
+p1 + p2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Many real networks share this feature. For instance, if we take a look how internet is organized and calculate the number of links that every site has, we find that the most of websites (nodes) have a low number of links (edges) and very few will have a large number of links (e.g. Google, Facebook…). Other examples are social, co-authorship or protein-protein network.&lt;/p&gt;
+&lt;p&gt;We hope to see the same pattern through our airport’s network: &lt;em&gt;very few airports have a large number of routes while the most will have few routes&lt;/em&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-airports-and-routes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2. Data (airports and routes)&lt;/h2&gt;
+&lt;p&gt;At the beginning, we talked about creating our own network of airlines routes. To achieve this, we download our data from &lt;a href=&#34;https://openflights.org&#34;&gt;Openflights&lt;/a&gt; whose have a lot of information about flights. We will just download data about &lt;strong&gt;airports&lt;/strong&gt; (selecting: code, longitude and latitude) and &lt;strong&gt;routes&lt;/strong&gt; (selecting: name, code source, code destination and continent location). Besides, we will clean those observations with NA’s values or wrong strings.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important&lt;/strong&gt;: Aiports will be the nodes of our network and the routes will conform the edges between the nodes.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data with routes
+
+# https://openflights.org/data.html#route
+
+df &amp;lt;- read.csv(&amp;#39;https://raw.githubusercontent.com/jpatokal/openflights/master/data/routes.dat&amp;#39;,header = FALSE,
+               stringsAsFactors = FALSE,
+               col.names = c(&amp;#39;airline&amp;#39;, &amp;#39;airline_id&amp;#39;, &amp;#39;src&amp;#39;, &amp;#39;src_id&amp;#39;, &amp;#39;dest&amp;#39;, &amp;#39;dest_id&amp;#39;, &amp;#39;codeshare&amp;#39;,&amp;#39;stops&amp;#39;,  &amp;#39;equip&amp;#39;))[,c(3,5)]
+
+# Data with airport information
+
+# https://openflights.org/data.html#airport
+df2 &amp;lt;- read.csv(&amp;#39;https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat&amp;#39;,header = FALSE,
+                   stringsAsFactors = FALSE)[,c(2,5,7,8,12)]
+colnames(df2) &amp;lt;- c(&amp;#39;name&amp;#39;,&amp;#39;code&amp;#39;, &amp;#39;lat&amp;#39;, &amp;#39;long&amp;#39;, &amp;#39;location&amp;#39;)
+
+
+# Clean data
+
+df_airport &amp;lt;- df2 %&amp;gt;% 
+  filter(!str_detect(code, fixed(&amp;quot;\\N&amp;quot;))) %&amp;gt;%
+  filter(!str_detect(location, fixed(&amp;quot;\\N&amp;quot;))) %&amp;gt;%
+  as_tibble()
+
+tmp_loc &amp;lt;- str_split(df_airport$location, &amp;#39;/&amp;#39;)
+df_airport$location &amp;lt;- map_chr(tmp_loc, function(x) x[[1]])
+df_airport &amp;lt;- df_airport %&amp;gt;% mutate(location = as.factor(location))
+
+df_routes &amp;lt;- df %&amp;gt;% 
+  filter(!str_detect(src, fixed(&amp;quot;\\N&amp;quot;)) &amp;amp; !str_detect(dest, fixed(&amp;quot;\\N&amp;quot;))) %&amp;gt;%
+  filter(!src == dest) %&amp;gt;%
+  group_by(src, dest) %&amp;gt;%
+  count() %&amp;gt;%
+  arrange(desc(n)) %&amp;gt;%
+  ungroup() %&amp;gt;%
+  as_tibble()&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;airport-network-visualization&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;3. Airport Network visualization&lt;/h2&gt;
+&lt;p&gt;To make possible the downstream analysis, we have to transform the observations of our dataframe into nodes and edges (tbl_graph object). We can do this thanks to the &lt;strong&gt;package ggraph&lt;/strong&gt;. Once we do this, we will be able to visualise the network applying different algorithms layers and calculate topological parameters of the nodes that otherwise would not be possible.&lt;/p&gt;
+&lt;p&gt;For instance, we can choose the ‘mds’ layout (you can find many other layouts described &lt;a href=&#34;https://www.data-imaginist.com/2017/ggraph-introduction-layouts/&#34;&gt;here&lt;/a&gt;). This algorithm layout measures the shortest path between each node and display together those nodes which are closer in the network. Besides, we are going to calculate some scores per node and to make faster the algorithm, I will eliminate those airports whose number of routes are low.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Convert dataframe (df_routes) to tbl_graph object (df_graph)
+df_graph &amp;lt;- as_tbl_graph(df_routes,directed = FALSE) %&amp;gt;% activate(edges) %&amp;gt;%
+  filter(!edge_is_multiple()) %&amp;gt;% activate(nodes) %&amp;gt;%
+  mutate(n_degree = centrality_degree(),
+         betweenness = centrality_betweenness(),
+         community = group_walktrap(),
+         n_triangles = local_triangles(),
+         clust = local_transitivity()) %&amp;gt;%
+  left_join(df_airport, by = c(&amp;#39;name&amp;#39; = &amp;#39;code&amp;#39;)) %&amp;gt;%
+  filter(!is.na(lat) &amp;amp; !is.na(long))
+
+# ggraph(df_graph %&amp;gt;% activate(nodes) %&amp;gt;% filter(n_degree &amp;gt;= 10), layout = &amp;quot;mds&amp;quot;) + 
+#   geom_edge_link(aes(edge_width = n), alpha = 0.1, edge_colour = &amp;#39;gray&amp;#39;) + 
+#   geom_node_point(aes(size = n_degree, fill = location), shape = 21) +
+#   scale_fill_brewer(palette = &amp;#39;Set1&amp;#39;) +
+#   scale_size(range = c(0, 14)) +
+#   theme_graph() +
+#   guides(size=FALSE, edge_width = FALSE, fill = guide_legend(override.aes = list(size = 7))) +
+#   ggtitle(&amp;#39;Airports network&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Besides, we plot the degree distribution of our network using ggplot2. For that, we convert our tbl_graph to a dataframe (the reverse step we did before) applying the function &lt;em&gt;activation(nodes)&lt;/em&gt; and then &lt;em&gt;as_tibble()&lt;/em&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Degree distribution
+df_nodes &amp;lt;- df_graph %&amp;gt;% activate(nodes) %&amp;gt;% as_tibble()
+ggplot(df_nodes, aes(n_degree)) +
+  geom_histogram(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;, binwidth = 1) +
+  ggtitle(&amp;#39;Degree Distribution of airports network&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Number of links&amp;#39;) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we saw at the beginning, both networks follow a power-law distribution.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;where-is-my-airport&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;4. Where is my airport?&lt;/h2&gt;
+&lt;p&gt;At first glance, let’s take a look at the distribution of the airports around the world based on their region:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;worldmap &amp;lt;- borders(&amp;quot;world&amp;quot;, colour=&amp;quot;#efede1&amp;quot;, fill=&amp;quot;#efede1&amp;quot;) 
+
+# Get airports by degree
+ggplot(df_airport, aes(long, lat)) + worldmap + 
+  geom_point(aes(fill = location), color = &amp;#39;black&amp;#39;, shape = 21) +
+  theme_void() +
+  guides(fill = guide_legend(override.aes = list(size = 7))) +
+  ggtitle(&amp;#39; Aiports across the world by region&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can see the biggest hubs are influenced by the economical situation and the population density of the region.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;What are the best connected airports?&lt;/h1&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- ggplot(df_nodes %&amp;gt;% filter(n_degree &amp;gt;= 50), aes(long, lat)) + worldmap + 
+  geom_point(aes(size = n_degree, fill = n_degree), pch = 21) +
+  scale_fill_viridis_c() +
+  theme_void() +
+  scale_size_continuous(range = c(1,10))
+
+p2 &amp;lt;- ggplot(df_nodes %&amp;gt;% top_n(20, n_degree), aes(reorder(name, -n_degree), n_degree)) +
+  geom_col(aes(fill = n_degree), color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 20 airport by number of routes&amp;#39;) +
+  ylab(&amp;#39;Nº of routes&amp;#39;) +
+  xlab(&amp;#39;Code Airport&amp;#39;) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+
+p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, n_degree), aes(reorder(name, -n_degree), n_degree)) +
+  geom_col(aes(fill = n_degree), color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 10 airport by number of routes and region&amp;#39;) +
+  ylab(&amp;#39;Nº of routes&amp;#39;) +
+  xlab(&amp;#39;Code Airport&amp;#39;) +
+  facet_wrap(~ location, scales = &amp;#39;free_x&amp;#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;what-is-the-longest-path-possible&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is the longest path possible?&lt;/h2&gt;
+&lt;p&gt;Can you guess how many steps would be required to travel the longest path possible between two airports? This number is called diameter and can be calculated easily:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_graph %&amp;gt;% activate(nodes) %&amp;gt;% 
+  mutate(diam = graph_diameter()) %&amp;gt;% 
+  distinct(diam) %&amp;gt;% 
+  as_tibble()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 1
+##    diam
+##   &amp;lt;dbl&amp;gt;
+## 1    12&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The longest path is 12 steps. Not so long if we take into account the remote distance of some of the airports (Siberia, Greenland, Pacific regions…).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-the-shortest-path-between-two-airports&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is the shortest path between two airports?&lt;/h2&gt;
+&lt;p&gt;We can select an airport and calculate the shortest path needed to reach another one. For instance, the Charles de Gaulle Airport (Paris) is one step from Adolfo Suárez Madrid–Barajas (Madrid), but what is the number of steps needed to reach the Hawai’s airport from Paris? Let’s calculate it:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shortest_paths(df_graph, &amp;#39;CDG&amp;#39;, &amp;#39;HNL&amp;#39;)$vpath[[1]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## + 3/3209 vertices, named, from 802f930:
+## [1] CDG ORD HNL&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;strong&gt;shortest path&lt;/strong&gt; from Paris to Honolulu is: Paris -&amp;gt; Chicago -&amp;gt; Honolulu.&lt;/p&gt;
+&lt;p&gt;Now, imagine that we calculate all the shortest paths between Paris and the rest of airports and we repeat it with every airport and calculate the average. This value is called: &lt;strong&gt;average shortest path&lt;/strong&gt; and is average number of minimum connections required from any airport to any other airport.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_graph %&amp;gt;% activate(nodes) %&amp;gt;% 
+  mutate(dist = graph_mean_dist()) %&amp;gt;% 
+  distinct(dist) %&amp;gt;% 
+  as_tibble()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 1
+##    dist
+##   &amp;lt;dbl&amp;gt;
+## 1  3.97&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The average shortesth path is 3.94, almost 4 steps on average to go from an airport to any other.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-the-longest-distance-possible-from-a-specific-airport&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is the longest distance possible from a specific airport?&lt;/h2&gt;
+&lt;p&gt;We are in Paris again, and we want to go to the most distant airport possible (in steps). This value is called &lt;strong&gt;eccentricity&lt;/strong&gt; and is specific for each airport. Let’s take a look at three of the most connected airports:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_graph_eccen &amp;lt;- df_graph %&amp;gt;% activate(nodes) %&amp;gt;% 
+  mutate(eccentricity = node_eccentricity()) %&amp;gt;% as_tibble()
+  
+df_graph_eccen %&amp;gt;% 
+  filter(name == &amp;#39;ATL&amp;#39; | name == &amp;#39;CDG&amp;#39; | name == &amp;#39;AMS&amp;#39;) %&amp;gt;% 
+  select(name.y, eccentricity )&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 3 x 2
+##   name.y                                           eccentricity
+##   &amp;lt;chr&amp;gt;                                                   &amp;lt;dbl&amp;gt;
+## 1 Hartsfield Jackson Atlanta International Airport            7
+## 2 Charles de Gaulle International Airport                     7
+## 3 Amsterdam Airport Schiphol                                  7&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We would need 7 steps to go from Paris to the most distant airport, the same value obtained with Atlanta and Amsterdam airports. This make sense as we have selected nodes with the highest nº of routes. But the value 7 is the lowest that we can get?&lt;/p&gt;
+&lt;p&gt;Let’s see the distribution:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# The filter(eccentricity &amp;gt; 2) eliminate those airports that are disconnected from the main network and have a eccentricity from 0 to 2
+ggplot(df_graph_eccen %&amp;gt;% filter(eccentricity &amp;gt; 2), aes(eccentricity)) +
+  geom_histogram(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) +
+  ylab(&amp;#39;Nº of airports&amp;#39;) +
+  theme(text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we see above, most of the airports are located between 8 and 9. Those airports with the highest number of routes have a value of 7. But there is an airport whose value is 6.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt; df_graph_eccen %&amp;gt;% filter(eccentricity == 6)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 11
+##   name  n_degree betweenness community n_triangles clust name.y   lat  long
+##   &amp;lt;chr&amp;gt;    &amp;lt;dbl&amp;gt;       &amp;lt;dbl&amp;gt;     &amp;lt;int&amp;gt;       &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;chr&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;
+## 1 YYZ        147     249941.         1        2061 0.192 Leste~  43.7 -79.6
+## # ... with 2 more variables: location &amp;lt;fct&amp;gt;, eccentricity &amp;lt;dbl&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Well, it is interesting that the airport with the lowest eccentricity is &lt;strong&gt;Lester B. Pearson International Airport&lt;/strong&gt; located at Toronto. Its number of routes (n_degree) is not very high but has an important particularity. If we see the map, Canada is a country with a large number of airports sparse along the territory. While the majority of airports have to “spend” steps to reach those distant airport (mainly at the north of the territory), this airport is very close to them and at the same time is close to the rest of airports across the world (USA, Europe, China…)&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;where-are-the-hubs&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Where are the hubs?&lt;/h2&gt;
+&lt;p&gt;We can detect also the most relevant hubs (densely connected subgraphs) and display those airports that belongs to one of the top 10 hubs:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df_nodes %&amp;gt;% filter(community &amp;lt;= 10), aes(long, lat)) + worldmap + 
+  geom_point(aes(fill = as.factor(community)), color = &amp;#39;black&amp;#39;, shape = 21) +
+  theme_void() +
+  scale_fill_brewer(palette = &amp;#39;Paired&amp;#39;) +
+  guides(fill = guide_legend(override.aes = list(size = 12))) +
+  ggtitle(&amp;#39; Aiports across the world by region&amp;#39;) +
+  labs(fill=&amp;quot;List of Hubs&amp;quot;) +
+  theme_map()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We have applied a walktrap community finding algorithm that uses random walks between the nodes and group those airports that are connected by short random walks.&lt;/p&gt;
+&lt;p&gt;If you take a look at the map, these hubs represent not only a group of airports densely connected but also political and economical hubs. For instance, a hub includes Ex-soviets states, another Europe, Canary Islands and some cities from Magreb.&lt;/p&gt;
+&lt;p&gt;In addition, we can classify the airports in 3 categories:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Core&lt;/strong&gt;: Those aiports whose have the highest number of triangles (subgraph of 3 nodes and 3 edges). If an airport is located in many triangles, we consider it as a well connected airport.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Peryphery&lt;/strong&gt;: Airports that are located in distant regions with few routes.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Bridge&lt;/strong&gt;: Those airports that allow the communication between the airports that form the core and the periphery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_nodes &amp;lt;- df_nodes %&amp;gt;% mutate(category = &amp;#39;Bridge&amp;#39;)
+df_nodes$category &amp;lt;- ifelse(df_nodes$n_triangles &amp;gt; 400, &amp;#39;Core&amp;#39;, df_nodes$category)
+df_nodes$category &amp;lt;- ifelse(df_nodes$clust == 0, &amp;#39;Periphery&amp;#39;, df_nodes$category)
+
+ggplot(df_nodes, aes(long, lat)) + worldmap +
+  geom_point(aes(fill = category), color = &amp;#39;black&amp;#39;, shape = 21) +
+  facet_grid(category ~.) +
+  theme_map() +
+  theme(strip.text = element_text(size=25)) +
+  guides(fill = guide_legend(override.aes = list(size = 20)))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;which-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;5. Which are the best connected airports?&lt;/h1&gt;
+&lt;p&gt;There are different ways to measure the connectivity of a node in a network. One of the most used is the betweenness centrality which is the sum of the shortest paths that pass through a node:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- ggplot(df_nodes %&amp;gt;% filter(n_degree &amp;gt;= 20), aes(long, lat)) + worldmap + 
+  geom_point(aes(size = betweenness, fill = betweenness), pch = 21) +
+  scale_fill_viridis_c() +
+  theme_void() +
+  scale_size_continuous(range = c(1,10))
+
+p2 &amp;lt;- ggplot(df_nodes %&amp;gt;% top_n(20, betweenness), aes(reorder(name, -betweenness), betweenness)) +
+  geom_col(aes(fill = betweenness), color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 20 airport by number of betweenness&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Code Airport&amp;#39;) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, betweenness), aes(reorder(name, -betweenness), betweenness)) +
+  geom_col(aes(fill = betweenness), color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 10 airport by number of betweenness and region&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Code Airport&amp;#39;) +
+  facet_wrap(~ location, scales = &amp;#39;free_x&amp;#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+p1 + p2 + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we see above, airports with with a high number of routes usually have a high betweenness. But we find an exception: the &lt;strong&gt;Ted Stevens Anchorage International Airport (ANL)&lt;/strong&gt;. Honestly, I did not expect this airport with the highest betweenness but if we take a look at the organization of the Alaska’s airports:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_def &amp;lt;- df_routes %&amp;gt;% 
+  left_join(df_airport, by = c(&amp;#39;src&amp;#39; = &amp;#39;code&amp;#39;)) %&amp;gt;%
+  rename(long_src = long, lat_src = lat) %&amp;gt;%
+  left_join(df_airport, by = c(&amp;#39;dest&amp;#39; = &amp;#39;code&amp;#39;)) %&amp;gt;%
+  rename(long_dest = long, lat_dest = lat) %&amp;gt;%
+  left_join(df_nodes, by = c(&amp;#39;src&amp;#39; = &amp;#39;name&amp;#39;)) %&amp;gt;%
+  select(-lat, -long)
+
+df_routes_anc &amp;lt;- df_routes_def %&amp;gt;% 
+  filter( dest == &amp;#39;ANC&amp;#39;)
+        
+ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
+  coord_map(xlim=c(-180,180)) +
+            geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.7, color = &amp;#39;steelblue&amp;#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&amp;#39;Ted Stevens Anchorage International Airport&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Crossing this airport is required to reach the rest of airports in Alaska. Therefore, this create a bottleneck where most of nodes have to cross this airport before reach the rest.&lt;/p&gt;
+&lt;div id=&#34;routes-by-number-of-airlines&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;7. Routes by number of airlines&lt;/h2&gt;
+&lt;p&gt;We can take a look at those routes whose have the largest number of airlines:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df_routes %&amp;gt;% top_n(20, n), aes(reorder(paste(src, dest, sep =&amp;#39; - &amp;#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 20 routes by number of airlines&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Route&amp;#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;connections-between-madrid-and-dubai&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;8. Connections between Madrid and Dubai&lt;/h1&gt;
+&lt;p&gt;We can display all the connections between Madrid and Dubai.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_dubai &amp;lt;- df_routes_def %&amp;gt;% 
+  filter(  src == &amp;#39;DXB&amp;#39; | dest == &amp;#39;DXB&amp;#39;)
+        
+p1 &amp;lt;- ggplot(df_routes_dubai, aes(long_src, lat_src)) + worldmap +
+  coord_map(&amp;quot;gilbert&amp;quot;, xlim=c(-180,180)) +
+  geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.3, color = &amp;#39;steelblue&amp;#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&amp;#39;Dubai International Airport connections&amp;#39;) 
+
+p2 &amp;lt;- ggplot(df_routes_dubai %&amp;gt;% filter(src == &amp;#39;DXB&amp;#39;) %&amp;gt;% top_n(10, n) , aes(reorder(paste(src, dest, sep =&amp;#39; - &amp;#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 10 routes by number of airlines&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Route&amp;#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+p1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 10 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;…or the routes between Madrid and the rest of the world:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_madrid &amp;lt;- df_routes_def %&amp;gt;% 
+  filter(  src == &amp;#39;MAD&amp;#39; | dest == &amp;#39;MAD&amp;#39;)
+        
+p1 &amp;lt;- ggplot(df_routes_madrid, aes(long_src, lat_src)) + worldmap +
+  coord_map(&amp;quot;gilbert&amp;quot;, xlim=c(-180,180)) +
+  geom_segment(aes(x = long_src, y = lat_src,
+                  xend = long_dest, yend = lat_dest),
+               alpha = 0.3, color = &amp;#39;orange&amp;#39;) +
+  scale_fill_viridis_c() +
+  theme_map() +
+  ggtitle(&amp;#39;Madrid Barajas International Airport connections&amp;#39;)
+
+p2 &amp;lt;- ggplot(df_routes_madrid %&amp;gt;% filter(src == &amp;#39;MAD&amp;#39;) %&amp;gt;% top_n(10, n) , aes(reorder(paste(src, dest, sep =&amp;#39; - &amp;#39;), -n), n)) +
+  geom_col(aes(fill = n),  color = &amp;#39;black&amp;#39;) +
+  scale_fill_viridis() +
+  ggtitle(&amp;#39;Top 10 routes by number of airlines&amp;#39;) +
+  ylab(&amp;#39;Frequency&amp;#39;) +
+  xlab(&amp;#39;Route&amp;#39;) +
+  theme_bw() +
+  guides(fill = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=20))
+
+
+p1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 4 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;The &lt;strong&gt;relevance of an airport&lt;/strong&gt; in the network can be assessed through different metrics: nº of routes, nº of triangles, clustering, betweenness, eccentricity or shortest path. At the same time, the &lt;strong&gt;identification of groups of airports&lt;/strong&gt;, we have clustered airports by continent, random walks algorithm, or using a blend of centrality measures filtering the nodes in three groups (core, bridge, peripherial).&lt;/p&gt;
+&lt;p&gt;In conclusion, network science allows us to improve our knowledge about data that can be converted into a network, through the use of multiple approaches.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;final-notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Final notes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;To simplify this post, I have not included the direction of the edges neither the real distance between airports.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A very interesting point is the analysis of the resilence: what would happen if we delete a specific airport from the network? Would the impact be equal across the aiports?&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Can we predict cases of dengue with climate variables?</title>
+      <link>/post/can-we-predict-cases-of-dengue-with-climate-variables/</link>
+      <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
+      <guid>/post/can-we-predict-cases-of-dengue-with-climate-variables/</guid>
+      <description>
+
+
+&lt;p&gt;Recently, I discovered a new website about competitions that it is not called Kaggle! Its name is Drivendata.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;DrivenData&lt;/strong&gt; offers different competitions related with multiple types of field, such as health (oh yes!), ecology, society… with a common element: to face the world’s biggest social challenges.&lt;/p&gt;
+&lt;p&gt;I decided to join my first competition called &lt;em&gt;‘DengAI: Predicting Disease Spread‘&lt;/em&gt;. In this case, the user receives a set of weather information (temperatures, precipitations, vegetations) from two cities: &lt;strong&gt;San Juan&lt;/strong&gt; (Puerto Rico) and &lt;strong&gt;Iquitos&lt;/strong&gt; (Peru) with total cases of dengue by year and week of every year.&lt;/p&gt;
+&lt;p&gt;The goal of the competition is to develop a prediction model that would be able to anticipate the cases of dengue in every city depending on a set of climate variables.&lt;/p&gt;
+&lt;p&gt;The DrivenData’s blog wrote some days ago, a post about a fast approach with this dataset. It was written in Python. So, I decided to “translate” to R language.&lt;/p&gt;
+&lt;p&gt;The next code is divided into three main points:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; Code with clean tasks (transform NA values, remove of columns…) and exploratory analyses.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; Function with every step during cleaning of data.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; Development of model, prediction and comparison of predicted vs real total cases detected.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load of libraries
+
+library(tidyverse)
+library(zoo)
+library(corrplot)
+library(MASS)
+library(reshape2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load data
+train_features &amp;lt;- read.csv(&amp;#39;data/dengue_post/dengue_features_train.csv&amp;#39;)
+  
+train_labels &amp;lt;- read.csv(&amp;#39;data/dengue_post/dengue_labels_train.csv&amp;#39;)
+
+test_features &amp;lt;- read.csv(&amp;#39;data/dengue_post/dengue_features_test.csv&amp;#39;)
+
+submission_format &amp;lt;- read.csv(&amp;#39;data/dengue_post/submission_format.csv&amp;#39;)
+  
+# Filter of data by city  
+
+sj_train_labels &amp;lt;- filter(train_labels, city == &amp;#39;sj&amp;#39;)
+sj_train_features &amp;lt;- filter(train_features, city == &amp;#39;sj&amp;#39;)
+
+iq_train_labels &amp;lt;- filter(train_labels, city == &amp;#39;iq&amp;#39;)
+iq_train_features &amp;lt;- filter(train_features, city == &amp;#39;iq&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Is there NA values?
+
+df_na_sj &amp;lt;- as.data.frame(apply(sj_train_features,2, function(x) any(is.na(x))))
+colnames(df_na_sj) &amp;lt;- &amp;#39;is_there_NA&amp;#39;
+df_na_sj$number_NA &amp;lt;- apply(sj_train_features,2, function(x) sum(is.na(x)))
+df_na_sj$mean_NA &amp;lt;- apply(sj_train_features, 2, function(x) mean(is.na(x)))
+
+df_na_iq &amp;lt;- as.data.frame(apply(iq_train_features, 2, function(x) any(is.na(x))))
+colnames(df_na_iq) &amp;lt;- &amp;#39;is_there_NA&amp;#39;
+df_na_iq$number_NA &amp;lt;- apply(iq_train_features, 2, function(x) sum(is.na(x)))
+df_na_iq$mean_NA &amp;lt;- apply(iq_train_features, 2, function(x) mean(is.na(x)))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Vegetation Index over Time Plot with NAs
+
+ggplot(sj_train_features, aes(x = as.Date(week_start_date), y = ndvi_ne )) +
+  ggtitle(&amp;#39;Vegetation Index over Time&amp;#39;) +
+  theme_bw() +
+  xlab(&amp;#39;Title&amp;#39;) +
+  geom_line(na.rm = FALSE, color = &amp;#39;blue&amp;#39;) +
+  theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Remove &amp;#39;weekofyear&amp;#39; column
+
+sj_train_features &amp;lt;- dplyr::select(sj_train_features, -week_start_date)
+
+iq_train_features &amp;lt;- dplyr::select(iq_train_features, -week_start_date)
+
+# Fill the NA values with the previous value
+
+sj_train_features &amp;lt;- sj_train_features %&amp;gt;%
+            do(na.locf(.))
+
+iq_train_features &amp;lt;- iq_train_features %&amp;gt;%
+            do(na.locf(.))
+
+# Distribution of labels
+
+# print(mean(sj_train_labels$total_cases))
+# print(var(sj_train_labels$total_cases))
+# 
+# print(mean(iq_train_labels$total_cases))
+# print(var(iq_train_labels$total_cases))
+
+
+ggplot(sj_train_labels, aes(x = total_cases)) +
+  theme_bw() +
+  ggtitle(&amp;#39;Cases of dengue in San Juan&amp;#39;) +
+  geom_histogram() +
+  theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(iq_train_labels, aes(x = total_cases)) +
+  theme_bw() +
+  ggtitle(&amp;#39;Cases of dengue in Iquitos&amp;#39;) +
+  geom_histogram() +
+  theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Add total_cases column to *_train_features dataframes
+
+
+# sj_train_features &amp;lt;- left_join(sj_train_features, sj_train_labels, by = c(&amp;#39;city&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;weekofyear&amp;#39;))
+ sj_train_features$total_cases &amp;lt;- sj_train_labels$total_cases
+
+# iq_train_features &amp;lt;- left_join(iq_train_features, iq_train_labels, by = c(&amp;#39;city&amp;#39;, &amp;#39;year&amp;#39;, &amp;#39;weekofyear&amp;#39;))
+iq_train_features$total_cases &amp;lt;- iq_train_labels$total_cases
+
+# Correlation matrix
+
+m_sj_train_features &amp;lt;- data.matrix(sj_train_features)
+m_sj_train_features &amp;lt;- cor(x = m_sj_train_features[,3:24], use = &amp;#39;complete.obs&amp;#39;, method = &amp;#39;pearson&amp;#39;)
+
+m_iq_train_features &amp;lt;- data.matrix(iq_train_features)
+m_iq_train_features &amp;lt;- cor(x = m_iq_train_features[,3:24], use = &amp;#39;everything&amp;#39;, method = &amp;#39;pearson&amp;#39;)
+
+# Correlation Heatmap
+
+corrplot(m_sj_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method=&amp;quot;shade&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;corrplot(m_iq_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method = &amp;#39;shade&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Correlation Bar plot
+
+df_sj_train_features &amp;lt;- data.frame(m_sj_train_features)[2:21,] 
+df_sj_train_features &amp;lt;- dplyr::select(df_sj_train_features, total_cases) 
+                                    
+df_iq_train_features &amp;lt;- data.frame(m_iq_train_features)[2:21,]
+df_iq_train_features &amp;lt;- dplyr::select(df_iq_train_features, total_cases) 
+
+ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
+  geom_bar(stat = &amp;#39;identity&amp;#39;) +
+  theme_bw() +
+  ggtitle(&amp;#39;Correlation of variables in San Juan&amp;#39;) +
+  ylab(&amp;#39;Correlation&amp;#39;) +
+  xlab(&amp;#39;Variables&amp;#39;) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df_iq_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
+  geom_bar(stat = &amp;#39;identity&amp;#39;) +
+  theme_bw() +
+  ggtitle(&amp;#39;Correlation of variables in Iquitos&amp;#39;) +
+  ylab(&amp;#39;Correlation&amp;#39;) +
+  xlab(&amp;#39;Variables&amp;#39;) +
+  coord_flip()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Function data cleaning
+
+data_clean &amp;lt;- function(df_dengue_features, df_dengue_labels = NULL, add_cases = TRUE) {
+  
+  # Filter by city
+  sj_df_dengue_features &amp;lt;- filter(df_dengue_features, city == &amp;#39;sj&amp;#39;)
+  iq_df_dengue_features &amp;lt;- filter(df_dengue_features, city == &amp;#39;iq&amp;#39;)
+  
+  if (add_cases == TRUE) {
+  sj_df_dengue_labels &amp;lt;- filter(df_dengue_labels, city == &amp;#39;sj&amp;#39;)
+  iq_df_dengue_labels &amp;lt;- filter(df_dengue_labels, city == &amp;#39;iq&amp;#39;)
+  }
+  # Removing week_start_date column
+  sj_df_dengue_features &amp;lt;- dplyr::select(sj_df_dengue_features, -week_start_date)
+  iq_df_dengue_features &amp;lt;- dplyr::select(iq_df_dengue_features, -week_start_date)
+
+  # Fill of NA values with the previous value
+  sj_df_dengue_features &amp;lt;- sj_df_dengue_features %&amp;gt;%
+    do(na.locf(.))
+  
+  iq_df_dengue_features &amp;lt;- iq_df_dengue_features %&amp;gt;%
+    do(na.locf(.))
+  
+  # Add total_cases to dataframe with features
+  if (add_cases == TRUE) {
+  sj_df_dengue_features$total_cases &amp;lt;- sj_df_dengue_labels$total_cases
+  iq_df_dengue_features$total_cases &amp;lt;- iq_df_dengue_labels$total_cases
+  }
+  
+  # Converting character columns into numbers
+  sj_df_dengue_features &amp;lt;- as.data.frame(apply(sj_df_dengue_features,2,as.numeric))
+  sj_df_dengue_features$city &amp;lt;- rep(&amp;#39;sj&amp;#39;, nrow(sj_df_dengue_features))
+  iq_df_dengue_features &amp;lt;- as.data.frame(apply(iq_df_dengue_features,2,as.numeric))
+  iq_df_dengue_features$city &amp;lt;- rep(&amp;#39;iq&amp;#39;, nrow(iq_df_dengue_features))
+  
+  result &amp;lt;- list(sj_df_dengue_features, iq_df_dengue_features )
+  
+  return(result)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Getting data_training clean
+
+data_train &amp;lt;- data_clean(train_features, train_labels, TRUE)
+
+# Getting negative binomials models by city
+
+training_sj &amp;lt;- glm.nb(formula = total_cases ~ reanalysis_specific_humidity_g_per_kg +
+                     reanalysis_dew_point_temp_k +
+                     station_min_temp_c +
+                     station_avg_temp_c, data = data_train[[1]])
+
+training_iq &amp;lt;- glm.nb(formula = total_cases ~ reanalysis_specific_humidity_g_per_kg +
+                        reanalysis_dew_point_temp_k +
+                        station_min_temp_c +
+                        station_avg_temp_c, data = data_train[[2]])
+
+# Getting data_test clean
+
+data_test &amp;lt;- data_clean(test_features, add_cases = FALSE)
+
+
+# Testing model with training data
+
+prediction_train_sj &amp;lt;-  predict(training_sj, data_train[[1]], type = &amp;#39;response&amp;#39;)
+prediction_train_iq &amp;lt;-  predict(training_iq, data_train[[2]], type = &amp;#39;response&amp;#39;)
+
+df_prediction_train_sj &amp;lt;- data.frame(&amp;#39;prediction&amp;#39; = prediction_train_sj, &amp;#39;actual&amp;#39; = data_train[[1]]$total_cases,
+                                     &amp;#39;time&amp;#39; = as.Date(train_features$week_start_date[1:936]))
+df_prediction_train_sj &amp;lt;- melt(df_prediction_train_sj, id.vars = &amp;#39;time&amp;#39;)
+ggplot(df_prediction_train_sj, aes(x = time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-San Juan) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_prediction_train_iq &amp;lt;- data.frame(&amp;#39;prediction&amp;#39; = prediction_train_iq, &amp;#39;actual&amp;#39; = data_train[[2]]$total_cases,
+                                     &amp;#39;time&amp;#39; = as.Date(train_features$week_start_date[937:1456]))
+df_prediction_train_iq &amp;lt;- melt(df_prediction_train_iq, id.vars = &amp;#39;time&amp;#39;)
+ggplot(df_prediction_train_iq, aes(x = time, y = value, color = variable)) +
+  geom_line() +
+  ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-Iquitos) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Prediction of total_cases in the data set
+
+prediction_sj &amp;lt;-  predict(training_sj, data_test[[1]], type = &amp;#39;response&amp;#39;)
+prediction_iq &amp;lt;-  predict(training_iq, data_test[[2]], type = &amp;#39;response&amp;#39;)
+ 
+data_prediction_sj &amp;lt;- data.frame(&amp;#39;city&amp;#39; = rep(&amp;#39;sj&amp;#39;, length(prediction_sj) ), 
+                                 &amp;#39;total_cases&amp;#39; = prediction_sj, 
+                                 &amp;#39;weekofyear&amp;#39; = data_test[[1]]$weekofyear,
+                                 &amp;#39;year&amp;#39; = data_test[[1]]$year )
+
+data_prediction_iq &amp;lt;- data.frame(&amp;#39;city&amp;#39; = rep(&amp;#39;iq&amp;#39;, length(prediction_iq) ), 
+                                 &amp;#39;total_cases&amp;#39; = prediction_iq,
+                                 &amp;#39;weekofyear&amp;#39; = data_test[[2]]$weekofyear,
+                                 &amp;#39;year&amp;#39; = data_test[[2]]$year)
+
+
+  
+submission_format$total_cases &amp;lt;- as.numeric(c(data_prediction_sj$total_cases, 
+                                                   data_prediction_iq$total_cases))
+
+submission_format$total_cases &amp;lt;- round(submission_format$total_cases, 0)
+  
+write.csv(submission_format,
+          file = &amp;#39;submission_format_submit.csv&amp;#39;, row.names = F)&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
