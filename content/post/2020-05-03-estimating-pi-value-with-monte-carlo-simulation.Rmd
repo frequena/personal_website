@@ -30,7 +30,7 @@ library(gganimate)
 ```{r}
 
 
-n_simulations <- 1000
+n_simulations <- 3000
 
 df <- tibble(
   
@@ -84,7 +84,9 @@ ggplot(df, aes(id, pi_value)) +
   labs(title = 'Nº of observations: {frame_along} of {n_simulations}',
        subtitle = 'Estimated value of pi: {df$pi_value[as.integer(frame_along)]}',
        x = 'Sample size',
-       y = 'Pi value')
+       y = 'Pi value') +
+    coord_cartesian(ylim=c(0, 4)) 
+
 ```
 
 

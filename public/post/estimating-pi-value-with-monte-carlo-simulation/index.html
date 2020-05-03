@@ -27,7 +27,7 @@
   
     
   
-  <meta name="description" content="# Load of librarieslibrary(tidyverse)library(sp)library(gganimate)n_simulations &lt;- 1000df &lt;- tibble(values_x = runif(n_simulations,0,1),values_y = runif(n_simulations,0,1))circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2){tt &lt;- seq(start*pi, end*pi, length.">
+  <meta name="description" content="# Load of librarieslibrary(tidyverse)library(sp)library(gganimate)n_simulations &lt;- 3000df &lt;- tibble(values_x = runif(n_simulations,0,1),values_y = runif(n_simulations,0,1))circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2){tt &lt;- seq(start*pi, end*pi, length.">
 
   
   <link rel="alternate" hreflang="en-us" href="/post/estimating-pi-value-with-monte-carlo-simulation/">
@@ -235,7 +235,7 @@
   <meta property="og:site_name" content="Francisco Requena">
   <meta property="og:url" content="/post/estimating-pi-value-with-monte-carlo-simulation/">
   <meta property="og:title" content="Estimating pi value with Monte Carlo simulation | Francisco Requena">
-  <meta property="og:description" content="# Load of librarieslibrary(tidyverse)library(sp)library(gganimate)n_simulations &lt;- 1000df &lt;- tibble(values_x = runif(n_simulations,0,1),values_y = runif(n_simulations,0,1))circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2){tt &lt;- seq(start*pi, end*pi, length."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="og:description" content="# Load of librarieslibrary(tidyverse)library(sp)library(gganimate)n_simulations &lt;- 3000df &lt;- tibble(values_x = runif(n_simulations,0,1),values_y = runif(n_simulations,0,1))circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2){tt &lt;- seq(start*pi, end*pi, length."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
   <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
@@ -285,7 +285,7 @@
       "url": "/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "# Load of libraries\rlibrary(tidyverse)\rlibrary(sp)\rlibrary(gganimate)\rn_simulations \u0026lt;- 1000\rdf \u0026lt;- tibble(\rvalues_x = runif(n_simulations,0,1),\rvalues_y = runif(n_simulations,0,1)\r)\rcircleFun \u0026lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2)\r{\rtt \u0026lt;- seq(start*pi, end*pi, length."
+  "description": "# Load of libraries\rlibrary(tidyverse)\rlibrary(sp)\rlibrary(gganimate)\rn_simulations \u0026lt;- 3000\rdf \u0026lt;- tibble(\rvalues_x = runif(n_simulations,0,1),\rvalues_y = runif(n_simulations,0,1)\r)\rcircleFun \u0026lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2)\r{\rtt \u0026lt;- seq(start*pi, end*pi, length."
 }
 </script>
 
@@ -682,7 +682,7 @@
 library(tidyverse)
 library(sp)
 library(gganimate)</code></pre>
-<pre class="r"><code>n_simulations &lt;- 1000
+<pre class="r"><code>n_simulations &lt;- 3000
 
 df &lt;- tibble(
   
@@ -729,7 +729,8 @@ df &lt;- df %&gt;%
   labs(title = &#39;Nº of observations: {frame_along} of {n_simulations}&#39;,
        subtitle = &#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&#39;,
        x = &#39;Sample size&#39;,
-       y = &#39;Pi value&#39;)</code></pre>
+       y = &#39;Pi value&#39;) +
+    coord_cartesian(ylim=c(0, 4)) </code></pre>
 <p><img src="/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif" /><!-- --></p>
 
     </div>

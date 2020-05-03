@@ -90,7 +90,7 @@
 library(tidyverse)
 library(sp)
 library(gganimate)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n_simulations &amp;lt;- 1000
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n_simulations &amp;lt;- 3000
 
 df &amp;lt;- tibble(
   
@@ -137,7 +137,8 @@ df &amp;lt;- df %&amp;gt;%
   labs(title = &amp;#39;Nº of observations: {frame_along} of {n_simulations}&amp;#39;,
        subtitle = &amp;#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&amp;#39;,
        x = &amp;#39;Sample size&amp;#39;,
-       y = &amp;#39;Pi value&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+       y = &amp;#39;Pi value&amp;#39;) +
+    coord_cartesian(ylim=c(0, 4)) &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 </description>
     </item>

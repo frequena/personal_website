@@ -24,7 +24,7 @@ projects: []
 library(tidyverse)
 library(sp)
 library(gganimate)</code></pre>
-<pre class="r"><code>n_simulations &lt;- 1000
+<pre class="r"><code>n_simulations &lt;- 3000
 
 df &lt;- tibble(
   
@@ -71,5 +71,6 @@ df &lt;- df %&gt;%
   labs(title = &#39;Nº of observations: {frame_along} of {n_simulations}&#39;,
        subtitle = &#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&#39;,
        x = &#39;Sample size&#39;,
-       y = &#39;Pi value&#39;)</code></pre>
+       y = &#39;Pi value&#39;) +
+    coord_cartesian(ylim=c(0, 4)) </code></pre>
 <p><img src="/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif" /><!-- --></p>
