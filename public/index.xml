@@ -77,6 +77,72 @@
     </item>
     
     <item>
+      <title>Estimating pi value with Monte Carlo simulation</title>
+      <link>/post/estimating-pi-value-with-monte-carlo-simulation/</link>
+      <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/estimating-pi-value-with-monte-carlo-simulation/</guid>
+      <description> 
+
+
+
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load of libraries
+
+library(tidyverse)
+library(sp)
+library(gganimate)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n_simulations &amp;lt;- 1000
+
+df &amp;lt;- tibble(
+  
+  values_x = runif(n_simulations,0,1),
+  values_y = runif(n_simulations,0,1)
+)
+
+
+circleFun &amp;lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2)
+{
+  tt &amp;lt;- seq(start*pi, end*pi, length.out=npoints)
+  data.frame(x = center[1] + diameter / 2 * cos(tt), 
+             y = center[2] + diameter / 2 * sin(tt))
+}
+
+dat &amp;lt;- circleFun(c(0,0), 2, start=1.5, end=2.5)
+
+
+df &amp;lt;- df %&amp;gt;%
+  rowwise() %&amp;gt;%
+  mutate(label = point.in.polygon(values_x, values_y, dat$x, dat$y, mode.checked=FALSE)) %&amp;gt;%
+  ungroup() %&amp;gt;%
+  mutate(count_in = cumsum(label),
+         id = row_number(),
+         pi_value = 4*(count_in / id))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df) +
+  geom_rect(aes(xmin = -1, xmax = 1, ymin = -1, ymax = 1), 
+            colour = &amp;quot;black&amp;quot;, show.legend = FALSE) +
+  geom_polygon(aes(x, y), data = dat, alpha = 0.4) +
+  geom_point(aes(x = values_x, y = values_y, fill = factor(label), group=id), 
+             color = &amp;#39;black&amp;#39;, shape = 21, show.legend = FALSE) +
+  theme_minimal() +
+  coord_cartesian(ylim=c(0, 1), xlim = c(0,1)) +
+  transition_reveal(id)  +
+  labs(title = &amp;#39;Nº of observations: {frame_along} of {n_simulations}&amp;#39;,
+       subtitle = &amp;#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df, aes(id, pi_value)) +
+  geom_line() +
+  geom_point(colour = &amp;#39;red&amp;#39;, size = 3) +
+  transition_reveal(id) +
+  geom_hline(yintercept = pi, color = &amp;#39;red&amp;#39;, linetype= &amp;#39;dashed&amp;#39;) +
+  theme_bw() +
+  labs(title = &amp;#39;Nº of observations: {frame_along} of {n_simulations}&amp;#39;,
+       subtitle = &amp;#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&amp;#39;,
+       x = &amp;#39;Sample size&amp;#39;,
+       y = &amp;#39;Pi value&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Exploring world flights using a network approach</title>
       <link>/post/exploring-world-airline-network/</link>
       <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>

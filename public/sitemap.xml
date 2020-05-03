@@ -28,6 +28,16 @@
   </url>
   
   <url>
+    <loc>/post/estimating-pi-value-with-monte-carlo-simulation/</loc>
+    <lastmod>2020-05-03T19:26:09+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-05-03T19:26:09+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
@@ -44,11 +54,6 @@
   
   <url>
     <loc>/categories/open-data/</loc>
-    <lastmod>2020-05-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
   
