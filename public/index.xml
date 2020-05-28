@@ -91,9 +91,9 @@
 &lt;div id=&#34;poisson-distribution&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Poisson distribution&lt;/h2&gt;
 &lt;p&gt;In genomics, many of the events we observe correspond to countable values. For instance, the number of mutations found in a specific type of genomic regions or a patient cohort, sequence reads…The Poisson distribution is a &lt;em&gt;discrete probability model&lt;/em&gt; that takes countable numbers as the mentioned before and will be defined as &lt;em&gt;events&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (&lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;). This value is known as the &lt;em&gt;rate parameter&lt;/em&gt; and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.&lt;/p&gt;
-&lt;p&gt;Once we know lambda, we can calculate the probability of seeing &lt;span class=&#34;math inline&#34;&gt;\(/x\)&lt;/span&gt; number of events on a given interval, following this formula:&lt;/p&gt;
-&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (&lt;span class=&#34;math display&#34;&gt;\[\lambda\]&lt;/span&gt;). This value is known as the &lt;em&gt;rate parameter&lt;/em&gt; and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.&lt;/p&gt;
+&lt;p&gt;Once we know lambda, we can calculate the probability of seeing &lt;span class=&#34;math display&#34;&gt;\[/x\]&lt;/span&gt; number of events on a given interval, following this formula:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\]&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;In the next example, we are going to generate a Poisson distribution of 100 samples whose lambda value is equal to 2 with the &lt;code&gt;rpois&lt;/code&gt; function:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load libraries
 library(dplyr)

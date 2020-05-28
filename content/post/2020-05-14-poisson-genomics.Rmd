@@ -26,11 +26,11 @@ In this post, I will discuss briefly what is the Poisson distribution and descri
 
 In genomics, many of the events we observe correspond to countable values. For instance, the number of mutations found in a specific type of genomic regions or a patient cohort, sequence reads...The Poisson distribution is a *discrete probability model* that takes countable numbers as the mentioned before and will be defined as _events_. 
 
-To calculate a Poisson distribution, we need to specify a single parameter which is called lambda ($\lambda$). This value is known as the *rate parameter* and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.
+To calculate a Poisson distribution, we need to specify a single parameter which is called lambda ($$\lambda$$). This value is known as the *rate parameter* and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.
 
-Once we know lambda, we can calculate the probability of seeing $/x$ number of events on a given interval, following this formula:
+Once we know lambda, we can calculate the probability of seeing $$/x$$ number of events on a given interval, following this formula:
 
-$P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}$
+$$P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}$$
 
 In the next example, we are going to generate a Poisson distribution of 100 samples whose lambda value is equal to 2 with the `rpois` function:
 

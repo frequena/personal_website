@@ -683,9 +683,9 @@
 <div id="poisson-distribution" class="section level2">
 <h2>Poisson distribution</h2>
 <p>In genomics, many of the events we observe correspond to countable values. For instance, the number of mutations found in a specific type of genomic regions or a patient cohort, sequence reads…The Poisson distribution is a <em>discrete probability model</em> that takes countable numbers as the mentioned before and will be defined as <em>events</em>.</p>
-<p>To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (<span class="math inline">\(\lambda\)</span>). This value is known as the <em>rate parameter</em> and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.</p>
-<p>Once we know lambda, we can calculate the probability of seeing <span class="math inline">\(/x\)</span> number of events on a given interval, following this formula:</p>
-<p><span class="math inline">\(P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\)</span></p>
+<p>To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (<span class="math display">\[\lambda\]</span>). This value is known as the <em>rate parameter</em> and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.</p>
+<p>Once we know lambda, we can calculate the probability of seeing <span class="math display">\[/x\]</span> number of events on a given interval, following this formula:</p>
+<p><span class="math display">\[P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\]</span></p>
 <p>In the next example, we are going to generate a Poisson distribution of 100 samples whose lambda value is equal to 2 with the <code>rpois</code> function:</p>
 <pre class="r"><code># Load libraries
 library(dplyr)
