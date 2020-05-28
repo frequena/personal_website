@@ -13,14 +13,15 @@ education:
 
 email: "frequena.sanchez@hotmail.com"
 interests:
-- Genetics
+- Human genetics
+- Rare diseases
 - Machine learning
 - Non-coding regions
 name: Francisco Requena
 organizations:
 - name: Imagine Institut.
   url: "https://www.institutimagine.org/en"
-role: PhD Student
+role: PhD Student - Bioinformatics
 social:
 - icon: envelope
   icon_pack: fas

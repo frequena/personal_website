@@ -207,7 +207,7 @@ p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;What is the shortest path between two airports?&lt;/h2&gt;
 &lt;p&gt;We can select an airport and calculate the shortest path needed to reach another one. For instance, the Charles de Gaulle Airport (Paris) is one step from Adolfo Suárez Madrid–Barajas (Madrid), but what is the number of steps needed to reach the Hawai’s airport from Paris? Let’s calculate it:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shortest_paths(df_graph, &amp;#39;CDG&amp;#39;, &amp;#39;HNL&amp;#39;)$vpath[[1]]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## + 3/3209 vertices, named, from 802f930:
+&lt;pre&gt;&lt;code&gt;## + 3/3209 vertices, named, from 9a73413:
 ## [1] CDG ORD HNL&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The &lt;strong&gt;shortest path&lt;/strong&gt; from Paris to Honolulu is: Paris -&amp;gt; Chicago -&amp;gt; Honolulu.&lt;/p&gt;
 &lt;p&gt;Now, imagine that we calculate all the shortest paths between Paris and the rest of airports and we repeat it with every airport and calculate the average. This value is called: &lt;strong&gt;average shortest path&lt;/strong&gt; and is average number of minimum connections required from any airport to any other airport.&lt;/p&gt;

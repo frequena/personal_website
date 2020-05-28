@@ -77,6 +77,104 @@
     </item>
     
     <item>
+      <title>Poisson distribution applied in genomics</title>
+      <link>/post/poisson-distribution-applied-in-genomics/</link>
+      <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/poisson-distribution-applied-in-genomics/</guid>
+      <description>
+
+
+&lt;div id=&#34;overview&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;In this post, I will discuss briefly what is the Poisson distribution and describe two examples extracted from research articles in the genomics field. One of them based on the distribution of structural variants across the genome and other about &lt;em&gt;de novo&lt;/em&gt; variants in a patient cohort.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;poisson-distribution&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Poisson distribution&lt;/h2&gt;
+&lt;p&gt;In genomics, many of the events we observe correspond to countable values. For instance, the number of mutations found in a specific type of genomic regions or a patient cohort, sequence reads…The Poisson distribution is a &lt;em&gt;discrete probability model&lt;/em&gt; that takes countable numbers as the mentioned before and will be defined as &lt;em&gt;events&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (&lt;span class=&#34;math inline&#34;&gt;\(\lambda\)&lt;/span&gt;). This value is known as the &lt;em&gt;rate parameter&lt;/em&gt; and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.&lt;/p&gt;
+&lt;p&gt;Once we know lambda, we can calculate the probability of seeing &lt;span class=&#34;math inline&#34;&gt;\(/x\)&lt;/span&gt; number of events on a given interval, following this formula:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math inline&#34;&gt;\(P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\)&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In the next example, we are going to generate a Poisson distribution of 100 samples whose lambda value is equal to 2 with the &lt;code&gt;rpois&lt;/code&gt; function:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load libraries
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+library(tidyr)
+
+
+tibble(x = rpois(n = 100, lambda = 2)) %&amp;gt;%
+ ggplot(aes(x)) +
+ geom_histogram(binwidth = 1, fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) + 
+ theme_bw() +
+ labs(title = &amp;#39;Poisson distribution&amp;#39;, x = &amp;#39;Events&amp;#39;, y = &amp;#39;Count&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;An interesting aspect about the Poisson distribution: the mean and variance of the distribution are equal to the value of lambda. Therefore, the probability of finding an interval with 3 events (for instance) is higher as long as we increase the value of lambda.&lt;/p&gt;
+&lt;p&gt;Confusing? Check out this example:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;poisson_tbl &amp;lt;- tibble(lambda = seq(1.2, 7, 0.2)) %&amp;gt;% 
+ rowwise() %&amp;gt;%
+ mutate(value = paste(rpois(1000, lambda), collapse = &amp;#39;,&amp;#39;)) %&amp;gt;%
+ separate_rows(value, sep = &amp;#39;,&amp;#39;) %&amp;gt;%
+ mutate(value = as.integer(value)) %&amp;gt;%
+ mutate(prob_7 = round(dpois(7, lambda), 5))
+
+poisson_tbl %&amp;gt;%
+ ggplot(aes(value)) +
+ geom_histogram(binwidth = 1, fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) +
+ transition_states(lambda) +
+ geom_vline(xintercept = 7, color = &amp;#39;red&amp;#39;, linetype = 4 ) +
+ labs(title = &amp;#39;Poisson distribution&amp;#39;, 
+  subtitle = &amp;#39;lambda: {closest_state}, P(X = 7) : {poisson_tbl[poisson_tbl$lambda == {closest_state},] %&amp;gt;% pull(prob_7) %&amp;gt;% unique()}&amp;#39;,
+  x = &amp;#39;Events&amp;#39;,
+  y = &amp;#39;Count&amp;#39;) +
+ theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;In the example above, we are generating 30 times a set of 1000 random values following a Poisson distribution, increasing each time the value of lambda (from 1.2 to 7). The probability of finding an interval with 7 events (red line) is higher as long as we increase lambda.&lt;/p&gt;
+&lt;p&gt;As we said before, we only need lambda to generate a Poisson distribution. Generally, we calculate this value if we know beforehand the number of events and intervals (as we will see in the second example, this is not always the case).&lt;/p&gt;
+&lt;p&gt;Let’s put some examples of what an interval or event can be:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Intervals&lt;/em&gt;. We can define intervals as &lt;em&gt;fixed&lt;/em&gt; time units, such as days, months, years…or also delimited areas of a geographical region (see this nice &lt;a href=&#34;https://sciprincess.wordpress.com/2019/03/05/cancer-clusters-and-the-poisson-distributions/&#34;&gt;post&lt;/a&gt; of cancer clusters or &lt;a href=&#34;https://www.wired.com/2012/12/what-does-randomness-look-like/&#34;&gt;this one&lt;/a&gt; about the distribution of impacts of V-1 and V-2 missiles during WWII).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;em&gt;Events&lt;/em&gt;. The amount of clicks on a banner or the number of homicides or blackouts every year…An important condition is that each event is independent of each other (events occur independently).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Every time, we perform a Poisson distribution, we always ask ourselves the same question: are these events distributed randomly across the intervals?&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;poisson-distribution-in-genomics&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Poisson distribution in genomics&lt;/h2&gt;
+&lt;p&gt;In genomics, as many other fields, there are different ways to define intervals and events. In the next examples, we will explore two completely different approaches:&lt;/p&gt;
+&lt;div id=&#34;example-1-structural-variants-in-the-human-genome&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;em&gt;Example 1&lt;/em&gt; : Structural variants in the human genome&lt;/h3&gt;
+&lt;p&gt;Structural Variants (SVs) are mutations of more than 50bp and include deletions, duplications, inversion, translocations…These types of variants are important causes of multiple disorders, such as autism, schizoprenia, autoimmune diseases or developmental disorders.&lt;/p&gt;
+&lt;p&gt;In this article &lt;a href=&#34;https://academic.oup.com/gbe/article/11/4/1136/5384496&#34;&gt;Fine-scale characterization of genomic structural variation in the human genome reveals adaptive and biomedically relevant hotspots&lt;/a&gt; [1], the authors explore whether the distribution of this type of mutations is random or follow any pattern across the genome.&lt;/p&gt;
+&lt;p&gt;To do this, the researchers defined each structural variant as an event. Next, they divided the human genome into 100 kb intervals and after discarding incomplete intervals (the intervals need to be &lt;em&gt;fixed&lt;/em&gt;), they got a total of 28,103 intervals.&lt;/p&gt;
+&lt;p&gt;The number of structural variants is 42,758 SVs. Therefore, to calculate lambda, they just had to divide this number by the total number of intervals. Finally, they generated a Poisson distribution and defined as “hotspot regions” all the intervals that exceeded the 99th percentile (6 SVs per 100 kb interval) concluding that these intervals had more SVs than expected by chance. Furthermore, they were able to identify “desert regions” as those intervals with a lower nº of SVs as compared with the number expected by chance.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;example-2-de-novo-variants-in-neurodevelopmental-disorders&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;em&gt;Example 2&lt;/em&gt; : De novo variants in neurodevelopmental disorders&lt;/h3&gt;
+&lt;p&gt;In this article &lt;a href=&#34;https://www.nature.com/articles/nature25983&#34;&gt;De novo mutations in regulatory elements in neurodevelopmental disorders&lt;/a&gt; [2], the researchers explore the impact
+of de novo variants (those present on children but not their parents) on regulatory regions of the genome in a cohort of patients with neurodevelopmental disorders. The majority of patients in this cohort did not present any de novo mutations (DNMs) in protein-coding genes. Therefore, a plausible hypothesis is to find some of these DNMs in those regions of the DNA yet unexplored: regulatory regions.&lt;/p&gt;
+&lt;p&gt;Most of the human genome (98%) do not encode for protein regions. Therefore, the researchers decided to narrow down the search and focus only on those regulatory regions based on two features: regions highly conserved or experimentally validated.&lt;/p&gt;
+&lt;p&gt;Finally, they found DNMs mapping this set of regulatory regions, which is great since it allows us to identify the causal mutation and find a diagnos….but wait a minute: Each person’s genome harbors many variants and most of the time, these variants are not harmful. So, we expect to find variants &lt;em&gt;randomly&lt;/em&gt; in these regulatory regions just &lt;em&gt;by chance&lt;/em&gt;. Yes, as you can guess…here it comes the &lt;em&gt;Poisson distribution&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;The researchers knew this fact, therefore, to validate their results, they performed (surprise…) a Poisson distribution. First, they calculated the lambda parameter following the next approach:&lt;/p&gt;
+&lt;p&gt;They focused on 6,239 individuals and counted the number of mutations found in regulatory regions. Furthermore, for each region, they calculated the expected number of mutations given the nucleotide context.&lt;/p&gt;
+&lt;p&gt;Once they got the expected number of mutations for each regulatory region, they summed the values and multiplied by the total number of individuals (6,239) to obtain lambda. This value represents the expected number of mutations. Finally, they generated a Poisson distribution with lambda and compared it with the number of observed mutations. This allowed them to demonstrate, first, there were some subgroups of regulatory regions with an excess of the novo variants and second, this excess could be considered as statistically significative. These significant regions were mostly featured by fetal brain DNase signal.&lt;/p&gt;
+&lt;p&gt;Contrary to what we saw at the beginning of the post, the approach to calculate lambda has been completely different in the second example. Precisely, this versatility makes the Poisson distribution one of the most popular ways to model counted data.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;We discussed here about two different scenarios whose events were defined as mutations. But the Poisson distribution can help us to modelate other kind of events, for instance, sequence data. One of the most used techniques for the identification of peaks in Chip-seq analysis is called Model-based Analysis of ChIP-Seq data ( &lt;a href=&#34;https://genomebiology.biomedcentral.com/articles/10.1186/gb-2008-9-9-r137&#34;&gt;MACS&lt;/a&gt;). This program generates a Poisson distribution to identify regions with a higher number of reads than just by chance.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When we use the genome to produce fixed size intervals to generate a Poisson distribution, an important aspect, it is the genome size. In principle, we already know this value: ~3,100 milions b.p (hg19) and ~ 3,200 millions b.p (hg38). Unfortunately, there are many inaccesible regions (gap regions) represented by Ns. Therefore, the use of the total size would artificially decrease the value of lambda and increase the number of false findings. As a consequence, we need to provide a &lt;em&gt;effective genome size&lt;/em&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;references&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;References&lt;/h2&gt;
+&lt;p&gt;[1] Lin, Yen-Lung, and Omer Gokcumen. “Fine-scale characterization of genomic structural variation in the human genome reveals adaptive and biomedically relevant hotspots” Genome biology and evolution 11.4 (2019): 1136-1151.&lt;/p&gt;
+&lt;p&gt;[2] Short, Patrick J., et al. “De novo mutations in regulatory elements in neurodevelopmental disorders.” Nature 555.7698 (2018): 611-616.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Estimating pi value with Monte Carlo simulation</title>
       <link>/post/estimating-pi-value-with-monte-carlo-simulation/</link>
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
@@ -338,7 +436,7 @@ p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;What is the shortest path between two airports?&lt;/h2&gt;
 &lt;p&gt;We can select an airport and calculate the shortest path needed to reach another one. For instance, the Charles de Gaulle Airport (Paris) is one step from Adolfo Suárez Madrid–Barajas (Madrid), but what is the number of steps needed to reach the Hawai’s airport from Paris? Let’s calculate it:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;shortest_paths(df_graph, &amp;#39;CDG&amp;#39;, &amp;#39;HNL&amp;#39;)$vpath[[1]]&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;## + 3/3209 vertices, named, from 802f930:
+&lt;pre&gt;&lt;code&gt;## + 3/3209 vertices, named, from 9a73413:
 ## [1] CDG ORD HNL&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The &lt;strong&gt;shortest path&lt;/strong&gt; from Paris to Honolulu is: Paris -&amp;gt; Chicago -&amp;gt; Honolulu.&lt;/p&gt;
 &lt;p&gt;Now, imagine that we calculate all the shortest paths between Paris and the rest of airports and we repeat it with every airport and calculate the average. This value is called: &lt;strong&gt;average shortest path&lt;/strong&gt; and is average number of minimum connections required from any airport to any other airport.&lt;/p&gt;

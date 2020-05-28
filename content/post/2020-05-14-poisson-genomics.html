@@ -1,0 +1,108 @@
+---
+title: Poisson distribution applied in genomics
+author: ~
+date: '2020-05-14'
+categories: []
+featured: no
+image:
+ caption: ''
+ focal_point: ''
+ preview_only: no
+lastmod: '2020-05-14T18:03:29+02:00'
+projects: []
+slug: poisson-distribution-applied-in-genomics 
+subtitle: ''
+summary: ''
+tags: [statistics]
+authors: []
+---
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>In this post, I will discuss briefly what is the Poisson distribution and describe two examples extracted from research articles in the genomics field. One of them based on the distribution of structural variants across the genome and other about <em>de novo</em> variants in a patient cohort.</p>
+</div>
+<div id="poisson-distribution" class="section level2">
+<h2>Poisson distribution</h2>
+<p>In genomics, many of the events we observe correspond to countable values. For instance, the number of mutations found in a specific type of genomic regions or a patient cohort, sequence reads…The Poisson distribution is a <em>discrete probability model</em> that takes countable numbers as the mentioned before and will be defined as <em>events</em>.</p>
+<p>To calculate a Poisson distribution, we need to specify a single parameter which is called lambda (<span class="math inline">\(\lambda\)</span>). This value is known as the <em>rate parameter</em> and defines the mean number of events in a given interval. In other words, if we know the total number of events of our system, we just need to divide it by the number of intervals. We will see further some examples of this.</p>
+<p>Once we know lambda, we can calculate the probability of seeing <span class="math inline">\(/x\)</span> number of events on a given interval, following this formula:</p>
+<p><span class="math inline">\(P\left( x \right) = \frac{{e^{ - \lambda } \lambda ^x }}{{x!}}\)</span></p>
+<p>In the next example, we are going to generate a Poisson distribution of 100 samples whose lambda value is equal to 2 with the <code>rpois</code> function:</p>
+<pre class="r"><code># Load libraries
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+library(tidyr)
+
+
+tibble(x = rpois(n = 100, lambda = 2)) %&gt;%
+ ggplot(aes(x)) +
+ geom_histogram(binwidth = 1, fill = &#39;steelblue&#39;, color = &#39;black&#39;) + 
+ theme_bw() +
+ labs(title = &#39;Poisson distribution&#39;, x = &#39;Events&#39;, y = &#39;Count&#39;)</code></pre>
+<p><img src="/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>An interesting aspect about the Poisson distribution: the mean and variance of the distribution are equal to the value of lambda. Therefore, the probability of finding an interval with 3 events (for instance) is higher as long as we increase the value of lambda.</p>
+<p>Confusing? Check out this example:</p>
+<pre class="r"><code>poisson_tbl &lt;- tibble(lambda = seq(1.2, 7, 0.2)) %&gt;% 
+ rowwise() %&gt;%
+ mutate(value = paste(rpois(1000, lambda), collapse = &#39;,&#39;)) %&gt;%
+ separate_rows(value, sep = &#39;,&#39;) %&gt;%
+ mutate(value = as.integer(value)) %&gt;%
+ mutate(prob_7 = round(dpois(7, lambda), 5))
+
+poisson_tbl %&gt;%
+ ggplot(aes(value)) +
+ geom_histogram(binwidth = 1, fill = &#39;steelblue&#39;, color = &#39;black&#39;) +
+ transition_states(lambda) +
+ geom_vline(xintercept = 7, color = &#39;red&#39;, linetype = 4 ) +
+ labs(title = &#39;Poisson distribution&#39;, 
+  subtitle = &#39;lambda: {closest_state}, P(X = 7) : {poisson_tbl[poisson_tbl$lambda == {closest_state},] %&gt;% pull(prob_7) %&gt;% unique()}&#39;,
+  x = &#39;Events&#39;,
+  y = &#39;Count&#39;) +
+ theme_bw()</code></pre>
+<p><img src="/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif" /><!-- --></p>
+<p>In the example above, we are generating 30 times a set of 1000 random values following a Poisson distribution, increasing each time the value of lambda (from 1.2 to 7). The probability of finding an interval with 7 events (red line) is higher as long as we increase lambda.</p>
+<p>As we said before, we only need lambda to generate a Poisson distribution. Generally, we calculate this value if we know beforehand the number of events and intervals (as we will see in the second example, this is not always the case).</p>
+<p>Let’s put some examples of what an interval or event can be:</p>
+<ul>
+<li><p><em>Intervals</em>. We can define intervals as <em>fixed</em> time units, such as days, months, years…or also delimited areas of a geographical region (see this nice <a href="https://sciprincess.wordpress.com/2019/03/05/cancer-clusters-and-the-poisson-distributions/">post</a> of cancer clusters or <a href="https://www.wired.com/2012/12/what-does-randomness-look-like/">this one</a> about the distribution of impacts of V-1 and V-2 missiles during WWII).</p></li>
+<li><p><em>Events</em>. The amount of clicks on a banner or the number of homicides or blackouts every year…An important condition is that each event is independent of each other (events occur independently).</p></li>
+</ul>
+<p>Every time, we perform a Poisson distribution, we always ask ourselves the same question: are these events distributed randomly across the intervals?</p>
+</div>
+<div id="poisson-distribution-in-genomics" class="section level2">
+<h2>Poisson distribution in genomics</h2>
+<p>In genomics, as many other fields, there are different ways to define intervals and events. In the next examples, we will explore two completely different approaches:</p>
+<div id="example-1-structural-variants-in-the-human-genome" class="section level3">
+<h3><em>Example 1</em> : Structural variants in the human genome</h3>
+<p>Structural Variants (SVs) are mutations of more than 50bp and include deletions, duplications, inversion, translocations…These types of variants are important causes of multiple disorders, such as autism, schizoprenia, autoimmune diseases or developmental disorders.</p>
+<p>In this article <a href="https://academic.oup.com/gbe/article/11/4/1136/5384496">Fine-scale characterization of genomic structural variation in the human genome reveals adaptive and biomedically relevant hotspots</a> [1], the authors explore whether the distribution of this type of mutations is random or follow any pattern across the genome.</p>
+<p>To do this, the researchers defined each structural variant as an event. Next, they divided the human genome into 100 kb intervals and after discarding incomplete intervals (the intervals need to be <em>fixed</em>), they got a total of 28,103 intervals.</p>
+<p>The number of structural variants is 42,758 SVs. Therefore, to calculate lambda, they just had to divide this number by the total number of intervals. Finally, they generated a Poisson distribution and defined as “hotspot regions” all the intervals that exceeded the 99th percentile (6 SVs per 100 kb interval) concluding that these intervals had more SVs than expected by chance. Furthermore, they were able to identify “desert regions” as those intervals with a lower nº of SVs as compared with the number expected by chance.</p>
+</div>
+<div id="example-2-de-novo-variants-in-neurodevelopmental-disorders" class="section level3">
+<h3><em>Example 2</em> : De novo variants in neurodevelopmental disorders</h3>
+<p>In this article <a href="https://www.nature.com/articles/nature25983">De novo mutations in regulatory elements in neurodevelopmental disorders</a> [2], the researchers explore the impact
+of de novo variants (those present on children but not their parents) on regulatory regions of the genome in a cohort of patients with neurodevelopmental disorders. The majority of patients in this cohort did not present any de novo mutations (DNMs) in protein-coding genes. Therefore, a plausible hypothesis is to find some of these DNMs in those regions of the DNA yet unexplored: regulatory regions.</p>
+<p>Most of the human genome (98%) do not encode for protein regions. Therefore, the researchers decided to narrow down the search and focus only on those regulatory regions based on two features: regions highly conserved or experimentally validated.</p>
+<p>Finally, they found DNMs mapping this set of regulatory regions, which is great since it allows us to identify the causal mutation and find a diagnos….but wait a minute: Each person’s genome harbors many variants and most of the time, these variants are not harmful. So, we expect to find variants <em>randomly</em> in these regulatory regions just <em>by chance</em>. Yes, as you can guess…here it comes the <em>Poisson distribution</em>.</p>
+<p>The researchers knew this fact, therefore, to validate their results, they performed (surprise…) a Poisson distribution. First, they calculated the lambda parameter following the next approach:</p>
+<p>They focused on 6,239 individuals and counted the number of mutations found in regulatory regions. Furthermore, for each region, they calculated the expected number of mutations given the nucleotide context.</p>
+<p>Once they got the expected number of mutations for each regulatory region, they summed the values and multiplied by the total number of individuals (6,239) to obtain lambda. This value represents the expected number of mutations. Finally, they generated a Poisson distribution with lambda and compared it with the number of observed mutations. This allowed them to demonstrate, first, there were some subgroups of regulatory regions with an excess of the novo variants and second, this excess could be considered as statistically significative. These significant regions were mostly featured by fetal brain DNase signal.</p>
+<p>Contrary to what we saw at the beginning of the post, the approach to calculate lambda has been completely different in the second example. Precisely, this versatility makes the Poisson distribution one of the most popular ways to model counted data.</p>
+</div>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<ul>
+<li><p>We discussed here about two different scenarios whose events were defined as mutations. But the Poisson distribution can help us to modelate other kind of events, for instance, sequence data. One of the most used techniques for the identification of peaks in Chip-seq analysis is called Model-based Analysis of ChIP-Seq data ( <a href="https://genomebiology.biomedcentral.com/articles/10.1186/gb-2008-9-9-r137">MACS</a>). This program generates a Poisson distribution to identify regions with a higher number of reads than just by chance.</p></li>
+<li><p>When we use the genome to produce fixed size intervals to generate a Poisson distribution, an important aspect, it is the genome size. In principle, we already know this value: ~3,100 milions b.p (hg19) and ~ 3,200 millions b.p (hg38). Unfortunately, there are many inaccesible regions (gap regions) represented by Ns. Therefore, the use of the total size would artificially decrease the value of lambda and increase the number of false findings. As a consequence, we need to provide a <em>effective genome size</em>.</p></li>
+</ul>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>[1] Lin, Yen-Lung, and Omer Gokcumen. “Fine-scale characterization of genomic structural variation in the human genome reveals adaptive and biomedically relevant hotspots” Genome biology and evolution 11.4 (2019): 1136-1151.</p>
+<p>[2] Short, Patrick J., et al. “De novo mutations in regulatory elements in neurodevelopmental disorders.” Nature 555.7698 (2018): 611-616.</p>
+</div>

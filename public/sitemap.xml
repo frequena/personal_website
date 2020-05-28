@@ -28,12 +28,27 @@
   </url>
   
   <url>
-    <loc>/post/estimating-pi-value-with-monte-carlo-simulation/</loc>
-    <lastmod>2020-05-03T19:26:09+02:00</lastmod>
+    <loc>/post/poisson-distribution-applied-in-genomics/</loc>
+    <lastmod>2020-05-14T18:03:29+02:00</lastmod>
   </url>
   
   <url>
     <loc>/post/</loc>
+    <lastmod>2020-05-14T18:03:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/statistics/</loc>
+    <lastmod>2020-05-14T18:03:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-05-14T18:03:29+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/estimating-pi-value-with-monte-carlo-simulation/</loc>
     <lastmod>2020-05-03T19:26:09+02:00</lastmod>
   </url>
   
@@ -129,11 +144,6 @@
   
   <url>
     <loc>/project/sciencenet/</loc>
-    <lastmod>2016-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
