@@ -2,7 +2,7 @@
 title: 'An introduction to uncertainty with Bayesian models'
 author: ~
 date: '2020-05-29'
-slug: tba
+slug: introduction-uncertainty-bayesian-models
 categories: [machine-learning]
 tags: []
 subtitle: ''
