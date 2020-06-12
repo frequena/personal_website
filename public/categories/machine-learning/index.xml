@@ -13,7 +13,7 @@
     </image>
     
     <item>
-      <title>Uncertainty and Bayesian models: a first approach</title>
+      <title>An introduction to uncertainty with Bayesian models</title>
       <link>/post/tba/</link>
       <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
       <guid>/post/tba/</guid>
@@ -152,9 +152,9 @@ hab_test &amp;lt;- haberman %&amp;gt;%
 ## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 1: 
-## Chain 1:  Elapsed Time: 0.118 seconds (Warm-up)
-## Chain 1:                0.15 seconds (Sampling)
-## Chain 1:                0.268 seconds (Total)
+## Chain 1:  Elapsed Time: 0.127 seconds (Warm-up)
+## Chain 1:                0.133 seconds (Sampling)
+## Chain 1:                0.26 seconds (Total)
 ## Chain 1: 
 ## 
 ## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 2).
@@ -177,9 +177,9 @@ hab_test &amp;lt;- haberman %&amp;gt;%
 ## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 2: 
-## Chain 2:  Elapsed Time: 0.124 seconds (Warm-up)
-## Chain 2:                0.144 seconds (Sampling)
-## Chain 2:                0.268 seconds (Total)
+## Chain 2:  Elapsed Time: 0.13 seconds (Warm-up)
+## Chain 2:                0.145 seconds (Sampling)
+## Chain 2:                0.275 seconds (Total)
 ## Chain 2: 
 ## 
 ## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 3).
@@ -202,9 +202,9 @@ hab_test &amp;lt;- haberman %&amp;gt;%
 ## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 3: 
-## Chain 3:  Elapsed Time: 0.128 seconds (Warm-up)
-## Chain 3:                0.129 seconds (Sampling)
-## Chain 3:                0.257 seconds (Total)
+## Chain 3:  Elapsed Time: 0.131 seconds (Warm-up)
+## Chain 3:                0.143 seconds (Sampling)
+## Chain 3:                0.274 seconds (Total)
 ## Chain 3: 
 ## 
 ## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 4).
@@ -227,9 +227,9 @@ hab_test &amp;lt;- haberman %&amp;gt;%
 ## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 ## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 ## Chain 4: 
-## Chain 4:  Elapsed Time: 0.128 seconds (Warm-up)
-## Chain 4:                0.144 seconds (Sampling)
-## Chain 4:                0.272 seconds (Total)
+## Chain 4:  Elapsed Time: 0.124 seconds (Warm-up)
+## Chain 4:                0.137 seconds (Sampling)
+## Chain 4:                0.261 seconds (Total)
 ## Chain 4:&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;div id=&#34;performance&#34; class=&#34;section level2&#34;&gt;
