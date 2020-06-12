@@ -16,7 +16,7 @@ interests:
 - Human genetics
 - Rare diseases
 - Machine learning
-- Non-coding regions
+- Non-coding DNA
 name: Francisco Requena
 organizations:
 - name: Imagine Institut.

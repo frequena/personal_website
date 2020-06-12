@@ -77,6 +77,410 @@
     </item>
     
     <item>
+      <title>Uncertainty and Bayesian models: a first approach</title>
+      <link>/post/tba/</link>
+      <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
+      <guid>/post/tba/</guid>
+      <description>
+
+
+&lt;div id=&#34;overview&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Overview&lt;/h1&gt;
+&lt;p&gt;In this post, we will get a first approximation to the “uncertainty” concept. First, we will train two models: logistic regression and its “Bayesian version” and compare their performance. Furthermore, we will explore the advantage of using a Bayesian model when we want to estimate how likely is our prediction. Finally, we will briefly discuss why there are some predicted values more probable than others.&lt;/p&gt;
+&lt;div id=&#34;get-the-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Get the data&lt;/h2&gt;
+&lt;p&gt;First, we download this data from &lt;a href=&#34;https://www.kaggle.com/gilsousa/habermans-survival-data-set&#34;&gt;Kaggle&lt;/a&gt;. This dataset includes 306 patients from a study of patients that had undergone a surgical operation on breast cancer. The table consists of three explanatory variables:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Age of patient during surgical operation (&lt;code&gt;age&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Year when the operation was made (&lt;code&gt;operation_year&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;Number of positive axillary nodes detected (&lt;code&gt;nodes&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Furthermore, there is a column (&lt;code&gt;survival&lt;/code&gt;) that indicates whether the patient survived at least 5 years after the operation.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(patchwork) # merge plots
+library(ggridges) # ridges plot
+library(glue) # paste plot labels
+library(yardstick) # helper roc curves and auc
+library(rstanarm) # bayesian model
+library(bayestestR) # helper for the bayesian model
+library(broom) # make tidy
+
+# Source: https://www.kaggle.com/gilsousa/habermans-survival-data-set
+haberman &amp;lt;- read_csv(&amp;#39;data/haberman.csv&amp;#39;, col_names = c(&amp;#39;age&amp;#39;, 
+                                                        &amp;#39;operation_year&amp;#39;, 
+                                                        &amp;#39;nodes&amp;#39;, 
+                                                        &amp;#39;survival&amp;#39;))
+
+haberman &amp;lt;- haberman %&amp;gt;%
+  mutate(survival = factor(if_else(survival == 1, &amp;#39;Yes&amp;#39;, &amp;#39;No&amp;#39;))) %&amp;gt;%
+  mutate(operation_year = factor(operation_year)) %&amp;gt;%
+  mutate(id = as.character(row_number())) %&amp;gt;% 
+  select(id, everything())&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;exploratory-analysis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Exploratory analysis&lt;/h2&gt;
+&lt;p&gt;Since the dataset has 3 explanatory variables, let’s plot the distribution of each one of them with the response variable &lt;em&gt;survival&lt;/em&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p1 &amp;lt;- haberman %&amp;gt;%
+  ggplot(aes(age)) +
+  geom_density(aes(fill = survival), color = &amp;#39;black&amp;#39;, alpha = 0.4) +
+  theme_bw()
+
+p2 &amp;lt;- haberman %&amp;gt;%
+  ggplot(aes(nodes)) +
+  geom_density(aes(fill = survival), color = &amp;#39;black&amp;#39;, alpha = 0.4) +
+  theme_bw()
+
+p3 &amp;lt;- haberman %&amp;gt;%
+  group_by(operation_year, survival) %&amp;gt;%
+  summarise(n = n()) %&amp;gt;%
+  mutate(perc = 100*(n / sum(n))) %&amp;gt;%
+  ggplot(aes(operation_year, perc)) +
+  geom_col(aes(fill = survival), color = &amp;#39;black&amp;#39;) +
+  theme_bw() +
+  labs(y = &amp;#39;Percentage (%)&amp;#39;)
+
+
+p1 + p2 + p3 + patchwork::plot_layout(nrow = 3)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Age and number of nodes seem to have a reasonable distribution but surprisingly, patient survival does not increase along the operation year. In theory, the patient survival of most cancer types has increased dramatically over the years. Therefore, it seems reasonable to find a similar pattern in this dataset. The interval of time (1958-1969) seems long enough and happened during a period of major progress in clinical therapies.&lt;/p&gt;
+&lt;p&gt;A plausible explanation is an underlying effect of, at least, one remaining variable. Let’s observe the distribution of the variable age of patient over the years:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
+  ggplot(aes(age, operation_year)) +
+  geom_density_ridges(aes(fill = operation_year), show.legend = FALSE) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
+  ggplot(aes(operation_year, age)) +
+  geom_boxplot(aes(fill = operation_year), show.legend = FALSE) +
+  theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;There seem to be differences over the years. In this post, further analysis to control for this effect is out of scope, but a more exhaustive analysis of this dataset should be aware of it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;classification&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Classification&lt;/h1&gt;
+&lt;p&gt;Once we have explored quickly the dataset, we are going to train a model to try to predict whether the patient survived 5 years after the operation.&lt;/p&gt;
+&lt;p&gt;To do so, we are going to test two different approaches:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Logistic regression&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Bayesian generalized linear models&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In this blog post, we will skip aspects such as cross-validation, feature engineering, precision-recall curve, or unbalanced labels (there is).&lt;/p&gt;
+&lt;div id=&#34;split-data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Split data&lt;/h2&gt;
+&lt;p&gt;First, we will split the available dataset &lt;code&gt;haberman&lt;/code&gt; into two sets, a training (70%) and a test (30%).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;set.seed(991)
+
+training_ids &amp;lt;- haberman %&amp;gt;% sample_frac(0.7) %&amp;gt;% pull(id)
+
+hab_training &amp;lt;- haberman %&amp;gt;% 
+  filter(id %in% training_ids) %&amp;gt;% 
+  mutate(operation_year = as.integer(operation_year))
+
+hab_test &amp;lt;- haberman %&amp;gt;% 
+  filter(!id %in% training_ids) %&amp;gt;% 
+  mutate(operation_year = as.integer(operation_year))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We will train independently both models with the training set and predict the labels of the response variable (“survive”, “no survive”) in the test dataset. These predicted labels will be useful to compare both models in terms of performance and further aspects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;training---logistic-regression&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Training - logistic regression&lt;/h2&gt;
+&lt;p&gt;In R, we just need to use the &lt;code&gt;glm&lt;/code&gt; function and specify the argument &lt;code&gt;family = binomial&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logistic_model &amp;lt;- glm(survival ~ age + nodes + operation_year, family = &amp;#39;binomial&amp;#39;, 
+                      data = hab_training)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;training---bayesian-logistic-regression&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Training - Bayesian logistic regression&lt;/h2&gt;
+&lt;p&gt;Thanks to the package &lt;code&gt;rstanarm&lt;/code&gt; that provides an elegant interface to &lt;a href=&#34;https://mc-stan.org/&#34;&gt;stan&lt;/a&gt;, we can keep almost the same syntax used before. In this case, we use the function &lt;code&gt;stan_glm&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bayesian_model &amp;lt;- rstanarm::stan_glm(survival ~ age + nodes + operation_year, 
+                                     family = &amp;#39;binomial&amp;#39;,
+                                     data = hab_training,
+                                     prior = normal())&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 1).
+## Chain 1: 
+## Chain 1: Gradient evaluation took 0 seconds
+## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 1: Adjust your expectations accordingly!
+## Chain 1: 
+## Chain 1: 
+## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 1: 
+## Chain 1:  Elapsed Time: 0.118 seconds (Warm-up)
+## Chain 1:                0.15 seconds (Sampling)
+## Chain 1:                0.268 seconds (Total)
+## Chain 1: 
+## 
+## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 2).
+## Chain 2: 
+## Chain 2: Gradient evaluation took 0 seconds
+## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 2: Adjust your expectations accordingly!
+## Chain 2: 
+## Chain 2: 
+## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 2: 
+## Chain 2:  Elapsed Time: 0.124 seconds (Warm-up)
+## Chain 2:                0.144 seconds (Sampling)
+## Chain 2:                0.268 seconds (Total)
+## Chain 2: 
+## 
+## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 3).
+## Chain 3: 
+## Chain 3: Gradient evaluation took 0 seconds
+## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 3: Adjust your expectations accordingly!
+## Chain 3: 
+## Chain 3: 
+## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 3: 
+## Chain 3:  Elapsed Time: 0.128 seconds (Warm-up)
+## Chain 3:                0.129 seconds (Sampling)
+## Chain 3:                0.257 seconds (Total)
+## Chain 3: 
+## 
+## SAMPLING FOR MODEL &amp;#39;bernoulli&amp;#39; NOW (CHAIN 4).
+## Chain 4: 
+## Chain 4: Gradient evaluation took 0 seconds
+## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+## Chain 4: Adjust your expectations accordingly!
+## Chain 4: 
+## Chain 4: 
+## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
+## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
+## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
+## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
+## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
+## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
+## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
+## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
+## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
+## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
+## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
+## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
+## Chain 4: 
+## Chain 4:  Elapsed Time: 0.128 seconds (Warm-up)
+## Chain 4:                0.144 seconds (Sampling)
+## Chain 4:                0.272 seconds (Total)
+## Chain 4:&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;performance&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Performance&lt;/h2&gt;
+&lt;p&gt;Once we trained both models, we are going to compare their performance with the test set (split at the beginning of the post). To that end, we calculate the ROC curve and the Area Under the Curve (AUC) of each model:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred_logistic &amp;lt;- predict(logistic_model, hab_test, type = &amp;#39;response&amp;#39;)
+pred_bayesian &amp;lt;- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %&amp;gt;% 
+  as_tibble() %&amp;gt;%
+  map_dbl(~ map_estimate(.x) )
+
+check_pred &amp;lt;- hab_test %&amp;gt;%
+  select(id) %&amp;gt;%
+  mutate(pred_surv_no_log = pred_logistic,
+         pred_surv_no_bay = 1-pred_bayesian) %&amp;gt;%
+  left_join(haberman %&amp;gt;% select(id, survival), by = &amp;#39;id&amp;#39;)
+
+
+roc_logistic &amp;lt;- check_pred %&amp;gt;% roc_curve(survival, pred_surv_no_log) %&amp;gt;% mutate(model = &amp;#39;logistic&amp;#39;)
+roc_bayesian &amp;lt;- check_pred %&amp;gt;% roc_curve(survival, pred_surv_no_bay) %&amp;gt;% mutate(model = &amp;#39;bayesian&amp;#39;)
+
+auc_logistic &amp;lt;- check_pred %&amp;gt;% roc_auc(survival, pred_surv_no_log) %&amp;gt;% pull(.estimate) %&amp;gt;% round(3)
+auc_bayesian &amp;lt;- check_pred %&amp;gt;% roc_auc(survival, pred_surv_no_bay) %&amp;gt;% pull(.estimate) %&amp;gt;% round(3)
+
+roc_both &amp;lt;- roc_logistic %&amp;gt;% bind_rows(roc_bayesian)
+
+
+roc_both %&amp;gt;%
+  ggplot(aes((1-specificity), sensitivity)) +
+    geom_line(aes(color = model), size = 1) +
+    theme_bw() +
+  geom_abline(linetype = 3) +
+    labs(title = &amp;#39;Comparison performance logistic and Bayesian model&amp;#39;,
+         subtitle = glue(&amp;#39;AUC (logistic) = {auc_logistic} - AUC (Bayesian) = {auc_bayesian}&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Both models demonstrate similar performance. If we would have to decide, at this step of the analysis, one of them (logistic or Bayesian), there would not be a reason to choose one or the other. Probably, the logistic one, since it may sounds more familiar. But this might change when the &lt;strong&gt;uncertainty idea&lt;/strong&gt; comes up!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;uncertainty&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Uncertainty&lt;/h2&gt;
+&lt;p&gt;First, we are going to explore the outcomes of the test set provided by the &lt;em&gt;logistic model&lt;/em&gt;. These values represent the probability [2] of each instance of being labeled as “No survive” five years after the operation:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pred_logistic &amp;lt;- predict(logistic_model, hab_test, type = &amp;#39;response&amp;#39;)
+
+p1 &amp;lt;- pred_logistic %&amp;gt;%
+  enframe() %&amp;gt;%
+  ggplot(aes(value)) +
+  geom_density(fill = &amp;#39;steelblue&amp;#39;, alpha = 0.5) +
+  theme_bw() +
+  labs(x = &amp;#39;Probability&amp;#39;, y = &amp;#39;Density&amp;#39;)
+
+
+p2 &amp;lt;- pred_logistic %&amp;gt;%
+  enframe() %&amp;gt;%
+  ggplot(aes(value)) +
+  geom_histogram(fill = &amp;#39;yellow&amp;#39;, alpha = 0.5, color = &amp;#39;black&amp;#39;, binwidth = 0.05) +
+  theme_bw() +
+  labs(x = &amp;#39;Probability&amp;#39;, y = &amp;#39;Density&amp;#39;)
+
+p1 + p2 + plot_layout(ncol = 2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Each probability value represents a single observation. To convert the predicted probability to labels, the user needs to specify a threshold where every value above the threshold is defined as “No survive”, otherwise “survive”. Most of the cases, this creates problematic scenarios where two observations can be equally labeled in spite of having distinct probabilities (e.g. 0.6 and 0.95).&lt;/p&gt;
+&lt;p&gt;By contrast, for each one of observations in the test set, the &lt;strong&gt;Bayesian model&lt;/strong&gt; does not provide a single probability value but a posterior distribution. We can represent the posterior distributions from the 92 observations (test set) with a boxplot, for instance:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty &amp;lt;- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %&amp;gt;% 
+  as_tibble() %&amp;gt;%
+  pivot_longer(everything(), names_to = &amp;#39;rank_obs&amp;#39;, values_to = &amp;#39;pred_surv_n_bay&amp;#39;)
+
+plot_uncertainty %&amp;gt;%
+  ggplot(aes(rank_obs, pred_surv_n_bay)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = &amp;#39;Test set - Observation&amp;#39;, y = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Another way to check the dispersion of the predicted outcome is with a ridge plot, that is especially useful when the number of samples is low. So, let’s pick only two observations:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty %&amp;gt;%
+  # if you want to reproduce this code, just change the character &amp;#39;1&amp;#39; or &amp;#39;5&amp;#39; for any other.
+  filter(rank_obs %in% c(&amp;#39;1&amp;#39;, &amp;#39;5&amp;#39;)) %&amp;gt;%
+  ggplot(aes(pred_surv_n_bay, rank_obs)) +
+    geom_density_ridges(aes(fill = rank_obs), alpha = 0.6) +
+    theme_bw() +
+    labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Picking joint bandwidth of 0.0101&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the above plot, we observe that both distributions have a “peak” (known as MAP [1]) above 0.5, therefore the predicted label would be, in both cases, ‘no survive’. But, are these two predictions equally certain? Well, we notice, at least, two things:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Both MAPs have different values (sample 1 - 0.9, sample 5 - 7.2).&lt;/li&gt;
+&lt;li&gt;Observation number 5 has a flatter curve in comparison with the number 1.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In both cases, observation 5 reflects a higher uncertainty regarding its predicted label in comparison with observation 1. Should we make the same clinical decisions in both cases? Would this information be valuable in a clinical environment…? Probably yes, but first, we should find a way to measure it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;measuring-uncertainty-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Measuring uncertainty [3]&lt;/h2&gt;
+&lt;p&gt;A handy option is to use the standard deviation (sd) of the distribution, so we can estimate one value for each observation. With this in mind, we can plot the distribution of the sd from the 92 observations of the test dataset:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;std_dev_tbl &amp;lt;- plot_uncertainty %&amp;gt;%
+  group_by(rank_obs) %&amp;gt;%
+  summarise(std_dev = sd(pred_surv_n_bay)) %&amp;gt;%
+  ungroup()
+
+
+std_dev_tbl %&amp;gt;% 
+  ggplot(aes(std_dev)) +
+  geom_density(fill = &amp;#39;steelblue&amp;#39;, alpha = 0.5) +
+  theme_bw() +
+  labs(x = &amp;#39;Standard deviation (sd)&amp;#39;,
+       y = &amp;#39;Density&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Most of observations have a standard deviation of around 0.04. There are a few extreme values in the interval 0.08-0.10. In short, this plot shows that there are some observations whose sd is twice as high as others.&lt;/p&gt;
+&lt;p&gt;We can filter and select observations based on the dispersion of its posterior distribution. For instance, we can split the test set of 92 observations in percentiles using the sd and plot the 1st (lowest sd) and 10th percentile (highest sd). In this way, it allows us to compare those observations with the highest and lowest standard deviation:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_sd &amp;lt;- std_dev_tbl %&amp;gt;% 
+  mutate(tile = ntile(std_dev, 10)) %&amp;gt;%
+  filter(tile == 1 | tile == 10)
+
+plot_uncertainty %&amp;gt;%
+  # left_join(std_dev, by = &amp;#39;rank_obs&amp;#39;) %&amp;gt;%
+  filter(rank_obs %in% top_sd$rank_obs) %&amp;gt;%
+  ggplot(aes(pred_surv_n_bay, rank_obs)) +
+  geom_density_ridges(aes(fill = rank_obs), alpha = 0.6, show.legend = FALSE) +
+  theme_bw() +
+  labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the above plot, we easily identify to which group each observation belongs to. Independently of the predicted labels, should their predictions be considered equally likely? If the final user of the model just receives a categorical outcome, he/she is definitely skipping some valuable information since some predictions look more unlikely than others. As an alternative, predictions could be grouped into categories and neglect those with a high dispersion or make it clear than further support should be required.&lt;/p&gt;
+&lt;p&gt;In this post, we have measured the uncertainty of observations and identifying those samples with high uncertainty. But, we have not talked yet about what is the origin of it.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-some-predictions-are-more-unlikely-than-others&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Why some predictions are more unlikely than others?&lt;/h2&gt;
+&lt;p&gt;In other words, why our model has more doubts about a sample than others? I find two possible explanations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The sample is mislabeled.&lt;/li&gt;
+&lt;li&gt;Group variability.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The first one is difficult to address but we can explore the group variability. Since we have three continuous explanatory variable, we can easily do a PCA with the function &lt;code&gt;prcomp&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl &amp;lt;- hab_test %&amp;gt;%
+  # take only numeric columns
+  select_if(is.numeric) %&amp;gt;%
+  # Important - we need to scale and center each variable before PCA
+  prcomp(scale = TRUE, center = TRUE) %&amp;gt;%
+  tidy() %&amp;gt;%
+  mutate(row = as.character(row)) %&amp;gt;%
+  pivot_wider(id_cols = row, values_from = value, names_from = PC, names_prefix = &amp;#39;PC&amp;#39;) %&amp;gt;%
+  left_join(top_sd %&amp;gt;% select(-std_dev), by = c(&amp;#39;row&amp;#39; = &amp;#39;rank_obs&amp;#39;)) %&amp;gt;%
+  mutate(tile = ifelse(is.na(tile), &amp;#39;ok&amp;#39;, tile)) %&amp;gt;%
+  left_join(hab_test %&amp;gt;% select(survival) %&amp;gt;% mutate(row = as.character(row_number())), 
+            by = &amp;#39;row&amp;#39;)
+
+
+pca_tbl %&amp;gt;%
+  ggplot(aes(PC1, PC2)) +
+    geom_point() +
+    theme_bw()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As we have observations in two categories, let’s split them into two plots:&lt;/p&gt;
+&lt;p&gt;Since we have observations defined into two categories (survival = Yes, survival = No), let’s lay out the plot into two different:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
+  ggplot(aes(PC1, PC2)) +
+    geom_point() +
+    theme_bw() +
+    facet_grid(~ survival)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Furthermore, we are going to highlight those observations that belong to the highest and lowest sd groups:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
+  mutate(tile = case_when(
+    tile == &amp;#39;1&amp;#39; ~ &amp;#39;lowest sd&amp;#39;,
+    tile == &amp;#39;10&amp;#39; ~ &amp;#39;highest sd&amp;#39;,
+    tile == &amp;#39;ok&amp;#39; ~ &amp;#39;ok&amp;#39;
+  )) %&amp;gt;%
+  ggplot(aes(PC1, PC2)) +
+    geom_point(aes(fill = tile), color = &amp;#39;black&amp;#39;, shape = 21, size = 2) +
+    theme_bw() +
+    facet_grid(~ survival) +
+    labs(fill = &amp;#39;Category&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;On the one hand, “lowest sd” group observations are centrally located in the plot. This reflects a tendency of these samples to have similar features values with observations belonging to their own label. On the other hand, “highest sd” group points tend to be dispersed from the rest, all over the components. It makes sense since the uncertainty to predict these points come from the fact that their own feature values are different from points on the same category.&lt;/p&gt;
+&lt;p&gt;Surprisingly, there is a red point on the left panel whose location is centric respect to the rest of the values. This perhaps arises the disadvantage of reducing a probability distribution to a point-estimate (standard deviation). The dispersion estimation might have not be accurate enough and further ways of measuring might be needed.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;As humans, we make decisions based on uncertainty, even though we are not aware of it. If the weather forecasters show 10% of raining on the weekend, we will probably make a plan to go to the mountain. With 90% we may rethink about it…When we are talking with someone about a delicate topic, we pick the words based on the uncertainty of his/her predicted response: words with a broad meaning and therefore ambiguous might not be chosen, due to the high uncertainty. Therefore, if we constantly map our reality and &lt;em&gt;act&lt;/em&gt; through the constant evaluation of uncertainty, &lt;em&gt;why should we believe in predictions from machines without a shadow of doubt?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;My personal view is that the measurement of uncertainty will end up being essential. Especially, for every decision process supported by a machine in a clinical environment. In that way, I find &lt;em&gt;Bayesian models&lt;/em&gt; a nice fit for many of the challenges of tomorrow.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;p&gt;[1] To calculate the roc curves of the Bayesian model’s predictions, a single probability value for each observation is required. There are multiple ways to estimate it, such as mean, median, and MAP (Highest Maximum A Posteriori). In this case, I chose the latest because it provided the highest performance.&lt;/p&gt;
+&lt;p&gt;[2] The function &lt;code&gt;predict&lt;/code&gt; retrieves outcomes as probabilities because we specified &lt;code&gt;type = response&lt;/code&gt; as argument. Otherwise, the default output would be as logit.&lt;/p&gt;
+&lt;p&gt;[3] I am interested to know more ways to estimate the “uncertainty” of a prediction. Please if you have any reference or idea, let me know! ;P&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Poisson distribution applied in genomics</title>
       <link>/post/poisson-distribution-applied-in-genomics/</link>
       <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
