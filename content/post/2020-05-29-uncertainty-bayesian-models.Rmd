@@ -40,15 +40,15 @@ library(broom) # make tidy
 
 # Source: https://www.kaggle.com/gilsousa/habermans-survival-data-set
 haberman <- read_csv('data/haberman.csv', col_names = c('age', 
-                                                        'operation_year', 
-                                                        'nodes', 
-                                                        'survival'))
+                            'operation_year', 
+                            'nodes', 
+                            'survival'))
 
 haberman <- haberman %>%
-  mutate(survival = factor(if_else(survival == 1, 'Yes', 'No'))) %>%
-  mutate(operation_year = factor(operation_year)) %>%
-  mutate(id = as.character(row_number())) %>% 
-  select(id, everything())
+ mutate(survival = factor(if_else(survival == 1, 'Yes', 'No'))) %>%
+ mutate(operation_year = factor(operation_year)) %>%
+ mutate(id = as.character(row_number())) %>% 
+ select(id, everything())
 
 
 ```
@@ -60,23 +60,23 @@ Since the dataset has 3 explanatory variables, let's plot the distribution of ea
 ```{r}
 
 p1 <- haberman %>%
-  ggplot(aes(age)) +
-  geom_density(aes(fill = survival), color = 'black', alpha = 0.4) +
-  theme_bw()
+ ggplot(aes(age)) +
+ geom_density(aes(fill = survival), color = 'black', alpha = 0.4) +
+ theme_bw()
 
 p2 <- haberman %>%
-  ggplot(aes(nodes)) +
-  geom_density(aes(fill = survival), color = 'black', alpha = 0.4) +
-  theme_bw()
+ ggplot(aes(nodes)) +
+ geom_density(aes(fill = survival), color = 'black', alpha = 0.4) +
+ theme_bw()
 
 p3 <- haberman %>%
-  group_by(operation_year, survival) %>%
-  summarise(n = n()) %>%
-  mutate(perc = 100*(n / sum(n))) %>%
-  ggplot(aes(operation_year, perc)) +
-  geom_col(aes(fill = survival), color = 'black') +
-  theme_bw() +
-  labs(y = 'Percentage (%)')
+ group_by(operation_year, survival) %>%
+ summarise(n = n()) %>%
+ mutate(perc = 100*(n / sum(n))) %>%
+ ggplot(aes(operation_year, perc)) +
+ geom_col(aes(fill = survival), color = 'black') +
+ theme_bw() +
+ labs(y = 'Percentage (%)')
 
 
 p1 + p2 + p3 + patchwork::plot_layout(nrow = 3)
@@ -84,22 +84,22 @@ p1 + p2 + p3 + patchwork::plot_layout(nrow = 3)
 
 ```
 
-Age and number of nodes seem to have a reasonable distribution but surprisingly, patient survival does not increase along the operation year. In theory, the patient survival of most cancer types has increased dramatically  over the years. Therefore, it seems reasonable to find a similar pattern in this dataset. The interval of time (1958-1969) seems long enough and happened during a period of major progress in clinical therapies.
+Age and number of nodes seem to have a reasonable distribution but surprisingly, patient survival does not increase along the operation year. In theory, the patient survival of most cancer types has increased dramatically over the years. Therefore, it seems reasonable to find a similar pattern in this dataset. The interval of time (1958-1969) seems long enough and happened during a period of major progress in clinical therapies.
 
 A plausible explanation is an underlying effect of, at least, one remaining variable. Let's observe the distribution of the variable age of patient over the years:
 
 ```{r message=FALSE}
 
 haberman %>%
-  ggplot(aes(age, operation_year)) +
-  geom_density_ridges(aes(fill = operation_year), show.legend = FALSE) +
-  theme_bw()
+ ggplot(aes(age, operation_year)) +
+ geom_density_ridges(aes(fill = operation_year), show.legend = FALSE) +
+ theme_bw()
 
 haberman %>%
-  ggplot(aes(operation_year, age)) +
-  geom_boxplot(aes(fill = operation_year), show.legend = FALSE) +
-  theme_bw()
-  
+ ggplot(aes(operation_year, age)) +
+ geom_boxplot(aes(fill = operation_year), show.legend = FALSE) +
+ theme_bw()
+ 
 
 ```
 
@@ -126,12 +126,12 @@ set.seed(991)
 training_ids <- haberman %>% sample_frac(0.7) %>% pull(id)
 
 hab_training <- haberman %>% 
-  filter(id %in% training_ids) %>% 
-  mutate(operation_year = as.integer(operation_year))
+ filter(id %in% training_ids) %>% 
+ mutate(operation_year = as.integer(operation_year))
 
 hab_test <- haberman %>% 
-  filter(!id %in% training_ids) %>% 
-  mutate(operation_year = as.integer(operation_year))
+ filter(!id %in% training_ids) %>% 
+ mutate(operation_year = as.integer(operation_year))
 ```
 
 We will train independently both models with the training set and predict the labels of the response variable ("survive", "no survive") in the test dataset. These predicted labels will be useful to compare both models in terms of performance and further aspects.
@@ -143,7 +143,7 @@ In R, we just need to use the `glm` function and specify the argument `family = 
 ```{r}
 
 logistic_model <- glm(survival ~ age + nodes + operation_year, family = 'binomial', 
-                      data = hab_training)
+           data = hab_training)
 
 ```
 
@@ -155,9 +155,9 @@ Thanks to the package `rstanarm` that provides an elegant interface to [stan](ht
 ```{r message=FALSE, warning=FALSE}
 
 bayesian_model <- rstanarm::stan_glm(survival ~ age + nodes + operation_year, 
-                                     family = 'binomial',
-                                     data = hab_training,
-                                     prior = normal())
+                   family = 'binomial',
+                   data = hab_training,
+                   prior = normal())
 
 ```
 
@@ -170,14 +170,14 @@ Once we trained both models, we are going to compare their performance with the 
 
 pred_logistic <- predict(logistic_model, hab_test, type = 'response')
 pred_bayesian <- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %>% 
-  as_tibble() %>%
-  map_dbl(~ map_estimate(.x) )
+ as_tibble() %>%
+ map_dbl(~ map_estimate(.x) )
 
 check_pred <- hab_test %>%
-  select(id) %>%
-  mutate(pred_surv_no_log = pred_logistic,
-         pred_surv_no_bay = 1-pred_bayesian) %>%
-  left_join(haberman %>% select(id, survival), by = 'id')
+ select(id) %>%
+ mutate(pred_surv_no_log = pred_logistic,
+     pred_surv_no_bay = pred_bayesian) %>%
+ left_join(haberman %>% select(id, survival), by = 'id')
 
 
 roc_logistic <- check_pred %>% roc_curve(survival, pred_surv_no_log) %>% mutate(model = 'logistic')
@@ -190,16 +190,16 @@ roc_both <- roc_logistic %>% bind_rows(roc_bayesian)
 
 
 roc_both %>%
-  ggplot(aes((1-specificity), sensitivity)) +
-    geom_line(aes(color = model), size = 1) +
-    theme_bw() +
-  geom_abline(linetype = 3) +
-    labs(title = 'Comparison performance logistic and Bayesian model',
-         subtitle = glue('AUC (logistic) = {auc_logistic} - AUC (Bayesian) = {auc_bayesian}'))
-    
+ ggplot(aes((1-specificity), sensitivity)) +
+  geom_line(aes(color = model), size = 1) +
+  theme_bw() +
+ geom_abline(linetype = 3) +
+  labs(title = 'Comparison performance logistic and Bayesian model',
+     subtitle = glue('AUC (logistic) = {auc_logistic} - AUC (Bayesian) = {auc_bayesian}'))
+  
 ```
 
-Both models demonstrate similar performance. If we would have to decide, at this step of the analysis, one of them (logistic or Bayesian), there would not be a reason to choose  one or the other. Probably, the logistic one, since it may sounds more familiar. But this might change when the **uncertainty idea** comes up!
+Both models demonstrate similar performance. If we would have to decide, at this step of the analysis, one of them (logistic or Bayesian), there would not be a reason to choose one or the other. Probably, the logistic one, since it may sounds more familiar. But this might change when the **uncertainty idea** comes up!
 
 ## Uncertainty
 
@@ -210,22 +210,22 @@ First, we are going to explore the outcomes of the test set provided by the *log
 pred_logistic <- predict(logistic_model, hab_test, type = 'response')
 
 p1 <- pred_logistic %>%
-  enframe() %>%
-  ggplot(aes(value)) +
-  geom_density(fill = 'steelblue', alpha = 0.5) +
-  theme_bw() +
-  labs(x = 'Probability', y = 'Density')
+ enframe() %>%
+ ggplot(aes(value)) +
+ geom_density(fill = 'steelblue', alpha = 0.5) +
+ theme_bw() +
+ labs(x = 'Probability', y = 'Density')
 
 
 p2 <- pred_logistic %>%
-  enframe() %>%
-  ggplot(aes(value)) +
-  geom_histogram(fill = 'yellow', alpha = 0.5, color = 'black', binwidth = 0.05) +
-  theme_bw() +
-  labs(x = 'Probability', y = 'Density')
+ enframe() %>%
+ ggplot(aes(value)) +
+ geom_histogram(fill = 'yellow', alpha = 0.5, color = 'black', binwidth = 0.05) +
+ theme_bw() +
+ labs(x = 'Probability', y = 'Density')
 
 p1 + p2 + plot_layout(ncol = 2)
-  
+ 
 
 ```
 
@@ -236,14 +236,14 @@ By contrast, for each one of observations in the test set, the **Bayesian model*
 ```{r}
 
 plot_uncertainty <- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %>% 
-  as_tibble() %>%
-  pivot_longer(everything(), names_to = 'rank_obs', values_to = 'pred_surv_n_bay')
+ as_tibble() %>%
+ pivot_longer(everything(), names_to = 'rank_obs', values_to = 'pred_surv_n_bay')
 
 plot_uncertainty %>%
-  ggplot(aes(rank_obs, pred_surv_n_bay)) +
-  geom_boxplot() +
-  theme_bw() +
-  labs(x = 'Test set - Observation', y = 'Probability (survival == "No survive")')
+ ggplot(aes(rank_obs, pred_surv_n_bay)) +
+ geom_boxplot() +
+ theme_bw() +
+ labs(x = 'Test set - Observation', y = 'Probability (survival == "No survive")')
 
 ```
 
@@ -251,12 +251,12 @@ Another way to check the dispersion of the predicted outcome is with a ridge plo
 
 ```{r}
 plot_uncertainty %>%
-  # if you want to reproduce this code, just change the character '1' or '5' for any other.
-  filter(rank_obs %in% c('1', '5')) %>%
-  ggplot(aes(pred_surv_n_bay, rank_obs)) +
-    geom_density_ridges(aes(fill = rank_obs), alpha = 0.6) +
-    theme_bw() +
-    labs(y = 'Test set - Observation', x = 'Probability (survival == "No survive")')
+ # if you want to reproduce this code, just change the character '1' or '5' for any other.
+ filter(rank_obs %in% c('1', '5')) %>%
+ ggplot(aes(pred_surv_n_bay, rank_obs)) +
+  geom_density_ridges(aes(fill = rank_obs), alpha = 0.6) +
+  theme_bw() +
+  labs(y = 'Test set - Observation', x = 'Probability (survival == "No survive")')
 
 
 
@@ -277,17 +277,17 @@ A handy option is to use the standard deviation (sd) of the distribution, so we 
 
 ```{r}
 std_dev_tbl <- plot_uncertainty %>%
-  group_by(rank_obs) %>%
-  summarise(std_dev = sd(pred_surv_n_bay)) %>%
-  ungroup()
+ group_by(rank_obs) %>%
+ summarise(std_dev = sd(pred_surv_n_bay)) %>%
+ ungroup()
 
 
 std_dev_tbl %>% 
-  ggplot(aes(std_dev)) +
-  geom_density(fill = 'steelblue', alpha = 0.5) +
-  theme_bw() +
-  labs(x = 'Standard deviation (sd)',
-       y = 'Density') 
+ ggplot(aes(std_dev)) +
+ geom_density(fill = 'steelblue', alpha = 0.5) +
+ theme_bw() +
+ labs(x = 'Standard deviation (sd)',
+    y = 'Density') 
 
 ```
 
@@ -298,16 +298,16 @@ We can filter and select observations based on the dispersion of its posterior d
 
 ```{r message=FALSE, warning=FALSE}
 top_sd <- std_dev_tbl %>% 
-  mutate(tile = ntile(std_dev, 10)) %>%
-  filter(tile == 1 | tile == 10)
+ mutate(tile = ntile(std_dev, 10)) %>%
+ filter(tile == 1 | tile == 10)
 
 plot_uncertainty %>%
-  # left_join(std_dev, by = 'rank_obs') %>%
-  filter(rank_obs %in% top_sd$rank_obs) %>%
-  ggplot(aes(pred_surv_n_bay, rank_obs)) +
-  geom_density_ridges(aes(fill = rank_obs), alpha = 0.6, show.legend = FALSE) +
-  theme_bw() +
-  labs(y = 'Test set - Observation', x = 'Probability (survival == "No survive")')
+ # left_join(std_dev, by = 'rank_obs') %>%
+ filter(rank_obs %in% top_sd$rank_obs) %>%
+ ggplot(aes(pred_surv_n_bay, rank_obs)) +
+ geom_density_ridges(aes(fill = rank_obs), alpha = 0.6, show.legend = FALSE) +
+ theme_bw() +
+ labs(y = 'Test set - Observation', x = 'Probability (survival == "No survive")')
 
 
 ```
@@ -327,23 +327,23 @@ The first one is difficult to address but we can explore the group variability. 
 
 ```{r}
 pca_tbl <- hab_test %>%
-  # take only numeric columns
-  select_if(is.numeric) %>%
-  # Important - we need to scale and center each variable before PCA
-  prcomp(scale = TRUE, center = TRUE) %>%
-  tidy() %>%
-  mutate(row = as.character(row)) %>%
-  pivot_wider(id_cols = row, values_from = value, names_from = PC, names_prefix = 'PC') %>%
-  left_join(top_sd %>% select(-std_dev), by = c('row' = 'rank_obs')) %>%
-  mutate(tile = ifelse(is.na(tile), 'ok', tile)) %>%
-  left_join(hab_test %>% select(survival) %>% mutate(row = as.character(row_number())), 
-            by = 'row')
+ # take only numeric columns
+ select_if(is.numeric) %>%
+ # Important - we need to scale and center each variable before PCA
+ prcomp(scale = TRUE, center = TRUE) %>%
+ tidy() %>%
+ mutate(row = as.character(row)) %>%
+ pivot_wider(id_cols = row, values_from = value, names_from = PC, names_prefix = 'PC') %>%
+ left_join(top_sd %>% select(-std_dev), by = c('row' = 'rank_obs')) %>%
+ mutate(tile = ifelse(is.na(tile), 'ok', tile)) %>%
+ left_join(hab_test %>% select(survival) %>% mutate(row = as.character(row_number())), 
+      by = 'row')
 
 
 pca_tbl %>%
-  ggplot(aes(PC1, PC2)) +
-    geom_point() +
-    theme_bw()
+ ggplot(aes(PC1, PC2)) +
+  geom_point() +
+  theme_bw()
 
 ```
 
@@ -353,10 +353,10 @@ Since we have observations defined into two categories (survival = Yes, survival
 
 ```{r}
 pca_tbl %>%
-  ggplot(aes(PC1, PC2)) +
-    geom_point() +
-    theme_bw() +
-    facet_grid(~ survival)
+ ggplot(aes(PC1, PC2)) +
+  geom_point() +
+  theme_bw() +
+  facet_grid(~ survival)
 ```
 
 Furthermore, we are going to highlight those observations that belong to the highest and lowest sd groups:
@@ -364,20 +364,20 @@ Furthermore, we are going to highlight those observations that belong to the hig
 
 ```{r}
 pca_tbl %>%
-  mutate(tile = case_when(
-    tile == '1' ~ 'lowest sd',
-    tile == '10' ~ 'highest sd',
-    tile == 'ok' ~ 'ok'
-  )) %>%
-  ggplot(aes(PC1, PC2)) +
-    geom_point(aes(fill = tile), color = 'black', shape = 21, size = 2) +
-    theme_bw() +
-    facet_grid(~ survival) +
-    labs(fill = 'Category')
+ mutate(tile = case_when(
+  tile == '1' ~ 'lowest sd',
+  tile == '10' ~ 'highest sd',
+  tile == 'ok' ~ 'ok'
+ )) %>%
+ ggplot(aes(PC1, PC2)) +
+  geom_point(aes(fill = tile), color = 'black', shape = 21, size = 2) +
+  theme_bw() +
+  facet_grid(~ survival) +
+  labs(fill = 'Category')
 ```
 
 
-On the one hand, "lowest sd" group  observations are centrally located in the plot. This reflects a tendency of these samples to have similar features values with observations belonging to their own label. On the other hand, "highest sd" group points tend to be dispersed from the rest, all over the components. It makes sense since the uncertainty to predict these points come from the fact that their own feature values are different from points on the same category. 
+On the one hand, "lowest sd" group observations are centrally located in the plot. This reflects a tendency of these samples to have similar features values with observations belonging to their own label. On the other hand, "highest sd" group points tend to be dispersed from the rest, all over the components. It makes sense since the uncertainty to predict these points come from the fact that their own feature values are different from points on the same category. 
 
 Surprisingly, there is a red point on the left panel whose location is centric respect to the rest of the values. This perhaps arises the disadvantage of reducing a probability distribution to a point-estimate (standard deviation). The dispersion estimation might have not be accurate enough and further ways of measuring might be needed.
 

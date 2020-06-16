@@ -1,0 +1,286 @@
+---
+title: An introduction to ROC curves with animated examples
+author: ~
+date: '2020-06-12'
+slug: roc-curves-an-animated-example
+categories: [machine-learning]
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-06-12T10:51:01+02:00'
+featured: no
+image:
+ caption: ''
+ focal_point: ''
+ preview_only: no
+projects: []
+---
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>Receiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance. Possibly, because we are used to interpreting information as single values, such as mean, median, accuracy…ROC curves are different because it represents a group of values conforming a curve. Besides, it is the most popular way to represent a model performance for a <em>particular dataset</em> where the task is a binary classification.</p>
+<p>Before explaining where the ROC curves come from, let’s focus on what is the outcome of most of the classification models. To illustrate this point, let’s train a few logistic regression models with a toy dataset and use the package <code>parsnip</code> which provides a common interface to train models from many other packages.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>For this post, we are going to use a dataset that includes 310 patients and six explanatory variables related to biomechanical features of the vertebral column. Besides, it contains a response variable <code>abnormality</code> that defines if the patient has been diagnosed with a medical condition in the vertebral column (<code>yes</code> and <code>no</code>).</p>
+<pre class="r"><code>library(tidyverse)
+library(gganimate) # animated plots
+library(magick) # combine two gif
+library(yardstick) # roc_curve helper
+library(parsnip) # train logistic regression models
+
+
+# Source: https://archive.ics.uci.edu/ml/machine-learning-databases/00212/
+verterbral &lt;- read.table(&#39;data/column_2C.dat&#39;, header = FALSE, sep = &#39; &#39;)
+colnames(verterbral) &lt;- c(&#39;pelvic_incidence&#39;, 
+             &#39;pelvic_tilt&#39;, 
+             &#39;lumbar_lordosis_angle&#39;, 
+             &#39;sacral_slope&#39;, &#39;pelvic_radius&#39;, 
+             &#39;degree_spondylolisthesis&#39;, &#39;abnormality&#39;) 
+
+verterbral &lt;- verterbral %&gt;%
+ select(abnormality, everything()) %&gt;%
+ mutate(id = row_number()) %&gt;%
+ mutate(abnormality = factor(if_else(abnormality == &#39;AB&#39;, &#39;yes&#39;, &#39;no&#39;)))</code></pre>
+</div>
+<div id="split-data" class="section level2">
+<h2>Split data</h2>
+<p>…and split it in training (70%) and test set (30%).</p>
+<pre class="r"><code>set.seed(992)
+
+training_ids &lt;- verterbral %&gt;% sample_frac(0.7) %&gt;% pull(id)
+
+vert_training &lt;- verterbral %&gt;% 
+ filter(id %in% training_ids)
+
+vert_test &lt;- verterbral %&gt;% 
+ filter(!id %in% training_ids)</code></pre>
+</div>
+<div id="train-models" class="section level2">
+<h2>Train models</h2>
+<pre class="r"><code>logistic_model_one &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ pelvic_incidence, data = vert_training)
+
+
+logistic_model_two &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ pelvic_incidence + pelvic_tilt, data = vert_training)
+
+logistic_model_three &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ pelvic_incidence + pelvic_tilt + sacral_slope, data = vert_training)
+
+logistic_model_four &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ pelvic_incidence + pelvic_tilt + sacral_slope + pelvic_radius, data = vert_training)
+
+logistic_model_five &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ pelvic_incidence + pelvic_tilt + sacral_slope + pelvic_radius + lumbar_lordosis_angle, data = vert_training)
+
+logistic_model_all &lt;- logistic_reg() %&gt;%
+ set_engine(&quot;glm&quot;) %&gt;%
+ set_mode(&quot;classification&quot;) %&gt;%
+ fit(abnormality ~ ., data = vert_training[,-ncol(vert_training)])
+
+check_pred &lt;- vert_test %&gt;%
+ select(id) %&gt;%
+ mutate( pred_logistic_one = predict(logistic_model_one, vert_test, type = &#39;prob&#39;)$.pred_yes,
+     pred_logistic_two = predict(logistic_model_two, vert_test, type = &#39;prob&#39;)$.pred_yes,
+     pred_logistic_three = predict(logistic_model_three, vert_test, type = &#39;prob&#39;)$.pred_yes,
+     pred_logistic_four = predict(logistic_model_four, vert_test, type = &#39;prob&#39;)$.pred_yes,
+     pred_logistic_five = predict(logistic_model_five, vert_test, type = &#39;prob&#39;)$.pred_yes,
+     pred_logistic_all = predict(logistic_model_all, vert_test, type = &#39;prob&#39;)$.pred_yes
+     ) %&gt;%
+ left_join(verterbral %&gt;% select(id, abnormality), by = &#39;id&#39;)</code></pre>
+</div>
+<div id="plot-raw-outcome" class="section level2">
+<h2>Plot raw outcome</h2>
+<pre class="r"><code>check_pred %&gt;% glimpse()</code></pre>
+<pre><code>## Observations: 93
+## Variables: 8
+## $ id                  &lt;int&gt; 1, 3, 6, 9, 10, 11, 12, 13, 20, 22, 27, 43, 44,...
+## $ pred_logistic_one   &lt;dbl&gt; 0.7499979, 0.8028267, 0.4747471, 0.5213208, 0.4...
+## $ pred_logistic_two   &lt;dbl&gt; 0.7940143, 0.8233949, 0.5251698, 0.5516503, 0.3...
+## $ pred_logistic_three &lt;dbl&gt; 0.7939271, 0.8233653, 0.5240107, 0.5505372, 0.3...
+## $ pred_logistic_four  &lt;dbl&gt; 0.9301525, 0.9029361, 0.4239115, 0.5079236, 0.8...
+## $ pred_logistic_five  &lt;dbl&gt; 0.9035941, 0.8837432, 0.3236233, 0.5683134, 0.9...
+## $ pred_logistic_all   &lt;dbl&gt; 0.7531384, 0.2486521, 0.4043606, 0.8549908, 0.9...
+## $ abnormality         &lt;fct&gt; yes, yes, yes, yes, yes, yes, yes, yes, yes, ye...</code></pre>
+<p>For each observation of the test set, the models retrieve a probability. This value represents how likely that observation belongs to the label <code>abnormality == yes</code>[1].</p>
+<p>Probability is not a particular output format of logistic regressions models [2], but a standard way of many models. For instance, models based on tree decisions, such as gradient boosting [3] or random forest, retrieve probabilities as output.</p>
+<p>To make it simple, for now, we will use only the predicted values (<code>pred_logistic_all</code>) from the trained model that used all the explanatory variables.</p>
+<p>Since we have all the probabilities values retrieved by the model in the variable <code>pred_logistic_all</code>, we can explore the distribution of the model’s outcome. To do this, there are two common ways: boxplot and density plots. For the scope of this post, we are going to use the latter. Besides, since our observations are defined by two label options (survival == ‘yes’, survival = ‘no’), we are going to plot two different distributions, one for each label:</p>
+<pre class="r"><code>check_pred %&gt;% 
+ ggplot(aes(pred_logistic_all)) +
+  geom_density(aes(fill = abnormality), alpha = 0.4) +
+  theme_bw() +
+  scale_fill_viridis_d()</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can extract some ideas from the above plot:</p>
+<ul>
+<li><p>Since this value represents the probability of an observation to belong to <code>abnormality = 'yes'</code>, it makes sense to find observations whose real label is ‘yes’ with high probability. On the other way around, we expect to find observations whose real label is <code>abnormality = 'no'</code> with low probability. Though this is what we expect, this is not always the case, since we find also observations whose probability of belonging to <code>abnormality = 'yes'</code> is quite low, even though, its real label is <code>yes</code>.</p></li>
+<li><p>There is a twilight zone, where we have observations from both labels levels that have “inaccurate” probabilities.</p></li>
+<li><p>We can somehow see how well a model performed based on the overlapping of these two distributions.</p></li>
+<li><p>A perfect model would retrieve both distributions with no overlapping.</p></li>
+</ul>
+<p>Since these models do not retrieve directly the label of the response variable. A threshold to discretize a continuous probability is required to transform the probability into a label. This is a difficult part, because no matter where you define the threshold, we face a trade-off between the percentage of False Positives (FP) and False Negatives (FN). Besides, there is not a clear rule for it, and the results can be pretty arbitrary.</p>
+<p>Another problem arises: if the selection of the threshold is arbitrary, how do we <em>compare different models</em>? Here it is where the ROC curves come out!</p>
+<p>ROC curves try to overcome this issue, taking into account all the possible scenarios given multiple thresholds. This allows us to estimate the performance of our model independently of the threshold you take.</p>
+</div>
+<div id="how-to-create-a-roc-curve" class="section level2">
+<h2>How to create a ROC curve?</h2>
+<p>To create a ROC curve, the starting point is precisely the same information we used to display the density plot: a column with predicted probabilities and another with the real labels. Each row is an observation of the test set.</p>
+<p>Once we have this information, we define as many thresholds [4] as observations found in the test set (plus Inf and -Inf). These values are defined by the probability of each observation.</p>
+<p>Furthermore, for each threshold value, all the probabilities above it will be identified as <code>abnormality = yes</code> and we count the number of True Positive (TP), True Negative (TN), but also, those observations predicted as abnormality = yes but actually are <code>no</code> (False Positive (FP)) and those predicted as <code>no</code> but actually are <code>yes</code> (False Negative (FN)).</p>
+<p>Finally, we need this information to calculate the values that will make up the ROC curve axis:</p>
+<ul>
+<li><strong>Sensitivity</strong> (also known as True positive rate). This metric reflects the number of positives in the test dataset that are correctly identified.</li>
+<li><strong>Specificity</strong> (also known as True negative rate). This metric measures the number of negatives in the test dataset that are correctly identified.</li>
+</ul>
+<p>In both cases, a result of 1 is considered perfect.</p>
+<p>To facilitate this, there are multiple packages in R to calculate the ROC curve. For this case, I am going to use the function <code>roc_curve</code> from the package <code>yardstick</code> which I recommend.</p>
+<p>Check the output of the function <code>roc_curve</code>:</p>
+<pre class="r"><code># we just need to specify the column with the labels (abnormality) and the predicted probabilities (pred_logistic_all)
+roc_logistic &lt;- check_pred %&gt;% roc_curve(abnormality, pred_logistic_all)
+roc_logistic %&gt;% head()</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   .threshold specificity sensitivity
+##        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+## 1  -Inf                1      0     
+## 2     0.0179           1      0.0294
+## 3     0.0292           1      0.0588
+## 4     0.0369           1      0.0882
+## 5     0.0372           1      0.118 
+## 6     0.0493           1      0.147</code></pre>
+<p>Finally, for the visualization, we only need to modify the specificity variable as <code>1 - specificity</code>:</p>
+<pre class="r"><code>roc_logistic %&gt;%
+ ggplot(aes(x = (1 - specificity), y = sensitivity)) +
+ geom_line() +
+ geom_abline(linetype = 3) +
+ theme_bw()</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="animated-roc-curve" class="section level2">
+<h2>Animated ROC curve</h2>
+<p>To build some intuition, we can see how to build the ROC curve while we define thresholds values in the density plot:</p>
+<pre class="r"><code>a &lt;- check_pred %&gt;% 
+ ggplot() +
+  geom_density(aes(x = pred_logistic_all, fill = abnormality), alpha = 0.5) +
+  geom_vline(data = roc_logistic %&gt;% filter( .threshold != Inf) %&gt;% filter(.threshold != -Inf), aes(xintercept = .threshold, group = .threshold)) +
+  transition_reveal(.threshold) +
+  theme_bw()
+
+
+b &lt;- roc_logistic %&gt;%
+ ggplot(aes(x = (1 - specificity), y = sensitivity)) +
+ geom_line() +
+  geom_point(colour = &#39;red&#39;, size = 3) +
+  transition_reveal(sensitivity) +
+ geom_abline(linetype = 3) +
+ theme_bw()
+
+# Code below from https://github.com/thomasp85/gganimate/wiki/Animation-Composition
+a_gif &lt;- animate(a, width = 440, height = 440)
+b_gif &lt;- animate(b, width = 440, height = 440)
+
+a_mgif &lt;- image_read(a_gif)
+b_mgif &lt;- image_read(b_gif)
+
+new_gif &lt;- image_append(c(a_mgif[1], b_mgif[1]))
+for(i in 2:100){
+ combined &lt;- image_append(c(a_mgif[i], b_mgif[i]))
+ new_gif &lt;- c(new_gif, combined)
+}
+
+new_gif</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-8-1.gif" /><!-- --></p>
+</div>
+<div id="comparing-six-models" class="section level2">
+<h2>Comparing six models</h2>
+<p>At the beginning of this post, we trained five models, each one with a different number of explanatory variables: one, two, three, four, five, and six.</p>
+<p>We can easily display their probability distribution:</p>
+<pre class="r"><code>comparison_six &lt;- check_pred %&gt;%
+ pivot_longer(starts_with(&#39;pred&#39;), names_to = &#39;model&#39;, values_to = &#39;prob&#39;) %&gt;%
+ mutate(model = fct_inorder(as.factor(model)))
+
+
+comparison_six %&gt;%
+ ggplot(aes(prob)) +
+  geom_density(aes(fill = abnormality), alpha = 0.4) +
+  theme_bw() +
+  scale_fill_viridis_d() +
+ facet_wrap(~ model)</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>In the example above, we observe that the overlapping between both distributions decreases as we increase the number of explanatory variables. In other words, since we increase the amount of useful information to discriminate between the two labels (<em>yes</em>, <em>no</em>), the predictive power of the model improves.</p>
+<p>Besides, we can plot their ROC curves:</p>
+<pre class="r"><code>comparison_six %&gt;%
+ group_by(model) %&gt;%
+ roc_curve(abnormality, prob) %&gt;%
+  ggplot(aes(x = (1 - specificity), y = sensitivity)) +
+ geom_line(aes(color = model)) +
+ geom_abline(linetype = 3) +
+ theme_bw()</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+</div>
+<div id="animated-comparison" class="section level2">
+<h2>Animated comparison</h2>
+<p>Finally, we can replicate the previous code and compare the six models:</p>
+<pre class="r"><code>roc_comparison &lt;- comparison_six %&gt;%
+ group_by(model) %&gt;%
+ roc_curve(abnormality, prob) %&gt;% ungroup()
+
+a &lt;- comparison_six %&gt;%
+ ggplot(aes(prob)) +
+  geom_density(aes(fill = abnormality), alpha = 0.4) +
+  geom_vline(data = roc_comparison %&gt;% filter(.threshold != Inf) %&gt;% filter(.threshold != -Inf),
+        aes(xintercept = .threshold, group = .threshold)) +
+  theme_bw() +
+  scale_fill_viridis_d() +
+  transition_reveal(.threshold) +
+  facet_wrap(~ model)
+
+
+
+b &lt;- roc_comparison %&gt;%
+ ggplot(aes(x = (1 - specificity), y = sensitivity, group = model)) +
+  geom_line(aes(color = model)) +
+  geom_point(colour = &#39;red&#39;, size = 3) +
+  transition_reveal(sensitivity) +
+  geom_abline(linetype = 3) +
+  theme_bw()
+
+# Code below from https://github.com/thomasp85/gganimate/wiki/Animation-Composition
+a_gif &lt;- animate(a, width = 440, height = 440)
+b_gif &lt;- animate(b, width = 440, height = 440)
+
+a_mgif &lt;- image_read(a_gif)
+b_mgif &lt;- image_read(b_gif)
+
+new_gif &lt;- image_append(c(a_mgif[1], b_mgif[1]))
+
+for(i in 2:100){
+ combined &lt;- image_append(c(a_mgif[i], b_mgif[i]))
+ new_gif &lt;- c(new_gif, combined)
+}
+
+new_gif</code></pre>
+<p><img src="/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-11-1.gif" /><!-- --></p>
+</div>
+<div id="notes" class="section level2">
+<h2>Notes</h2>
+<p>[1] The package <code>yardstick</code> as many other packages use the first level of the response variable factor as the “event”. Therefore, the probability output determines how likely an observation belongs to the <em>first level of the factor</em> of the response variable. This behavior can be changed in the <code>yardstick</code> package global options.</p>
+<p>[2] The default output has a logit scale and needs to be transformed first to a probability value. This can be done automatically if we specify in the function <code>predict</code> the argument <strong>type</strong> as <em>prob</em>.</p>
+<p>[3] Apart from tree decisions, linear models can be also used in gradient boosting.</p>
+<p>[4] Because of this reason, ROC curves might not be appropriate to evaluate the performance of models on small test sets.</p>
+</div>

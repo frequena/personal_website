@@ -19,7 +19,7 @@ interests:
 - Non-coding DNA
 name: Francisco Requena
 organizations:
-- name: Imagine Institut.
+- name: Institut Imagine.
   url: "https://www.institutimagine.org/en"
 role: PhD Student - Bioinformatics
 social:
