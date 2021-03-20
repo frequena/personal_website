@@ -17,21 +17,21 @@ interests:
 - Rare diseases
 - Machine learning
 - Non-coding DNA
-name: Francisco Requena
+name: Francisco Requena [firstname.lastname@institutimagine.org]
 organizations:
 - name: Institut Imagine.
   url: "https://www.institutimagine.org/en"
 role: PhD Student - Bioinformatics
 social:
-- icon: envelope
-  icon_pack: fas
-  link: '#contact'
+# - icon: envelope
+#   icon_pack: fas
+#   link: 'mailto:francisco.requena@institutimagine.org'
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/datarequena
-# - icon: google-scholar
-#   icon_pack: ai
-#   link: https://scholar.google.co.uk/citations?user=sIwtMXoAAAAJ
+- icon: google-scholar
+  icon_pack: ai
+  link: https://scholar.google.com/citations?user=MPD3J0AAAAAJ
 - icon: github
   icon_pack: fab
   link: https://github.com/frequena
