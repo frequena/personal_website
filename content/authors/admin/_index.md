@@ -25,7 +25,7 @@ role: PhD Student - Bioinformatics
 social:
 - icon: envelope
   icon_pack: fas
-  link: 'mailto:francisco.requena@institutimagine.org'
+  link: mailto:francisco.requena@institutimagine.org
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/datarequena
