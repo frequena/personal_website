@@ -1,0 +1,80 @@
+---
+title: Extracting gene panels from the Genomics England Panelapp
+author: frequena
+date: '2021-03-20'
+slug: []
+categories: []
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-03-20T16:44:30+01:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+The [Genomics England PanelApp](https://panelapp.genomicsengland.co.uk/) provides panels of genes related to human disorders manually curated by healthcare experts. From a clinical and research perspective, this is a remarkable resource. At the time of writing this post, over 320 panels have been published.
+
+Unfortunately, you can only download the panels manually one at a time or through an API that retrieves the information as a JSON file.
+
+Alternatively, below you can find a script in R to extract all the panels from the website and merge them into a single dataset. Please note the following points before using the script:
+
+* I only consider genes labeled as "Expert Review Green" defined as "gene-disease association with a high level of evidence" and exclude STRs and CNVs entities. More information on the criteria used can be found on the main page (heading: Understanding gene classifications in a version 1+ gene panel.
+* The script selects only a subset of columns from the total available. 
+Be careful, the script will download more than 320 files automatically (on my laptop, the execution process is ~7 min).
+* The script is ready to run on the Linux system.
+
+As the script is based on the current website structure, any changes could break the code. Please let me know if this happens. I will try to code an updated version of the code.
+
+```{r eval=FALSE}
+library(rvest)
+library(purrr)
+library(tidyverse)
+website <- "https://panelapp.genomicsengland.co.uk/panels/"
+page <- read_html(website)
+
+c_ref <- page %>%
+  html_nodes("a") %>% # find all links
+  html_attr("href")
+
+df_ref <- tibble(ref = c_ref, id = NA) %>%
+  filter(str_detect(ref, 'download')) %>%
+  mutate(ref = str_remove(ref, '/panels/')) %>%
+  mutate(id = ref) %>%
+  mutate(id = str_remove(id, '/download/01234/'))
+
+# Linux command - if you are using Windows, please make sure that you create a new folder with the name 'gene_panel'
+# and remove the "system('mkdir gene_panel')" line
+system('mkdir gene_panel')
+setwd('gene_panel')
+
+walk2(df_ref$ref, df_ref$id, function(a, b)
+  download.file(url = paste0(website, a), destfile = paste0('gene_panel_', b))
+)
+
+files_panel <- list.files()
+panel_total <- files_panel %>% map_dfr(~ read_tsv(.x) %>% 
+                                         select(`Entity Name`, `Entity type`, `Gene Symbol`, `Sources(; separated)`, 
+                                                Level4, Phenotypes) %>% 
+                                         mutate(source = .x) )
+
+
+# Filtering out genes with a evidence level (red - amber)
+panel_total <- panel_total %>%
+  rename(entity_name = `Entity Name`,
+         entity_type = `Entity type`,
+         gene = `Gene Symbol`,
+         sources = `Sources(; separated)`) %>%
+  filter(entity_type == 'gene') %>%  # optional - we can include regions in our analysis
+  filter(str_detect(sources, 'Expert Review Green')) %>%
+  select(gene, Level4, -sources, source, Phenotypes)
+
+setwd('..')
+
+write_tsv(panel_total, 'panel_genes.tsv')
+```
+

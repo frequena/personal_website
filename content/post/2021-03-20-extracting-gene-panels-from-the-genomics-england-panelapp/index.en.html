@@ -1,0 +1,77 @@
+---
+title: Extracting gene panels from the Genomics England Panelapp
+author: frequena
+date: '2021-03-20'
+slug: []
+categories: []
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-03-20T16:44:30+01:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<script src="{{< blogdown/postref >}}index.en_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The <a href="https://panelapp.genomicsengland.co.uk/">Genomics England PanelApp</a> provides panels of genes related to human disorders manually curated by healthcare experts. From a clinical and research perspective, this is a remarkable resource. At the time of writing this post, over 320 panels have been published.</p>
+<p>Unfortunately, you can only download the panels manually one at a time or through an API that retrieves the information as a JSON file.</p>
+<p>Alternatively, below you can find a script in R to extract all the panels from the website and merge them into a single dataset. Please note the following points before using the script:</p>
+<ul>
+<li>I only consider genes labeled as “Expert Review Green” defined as “gene-disease association with a high level of evidence” and exclude STRs and CNVs entities. More information on the criteria used can be found on the main page (heading: Understanding gene classifications in a version 1+ gene panel.</li>
+<li>The script selects only a subset of columns from the total available.
+Be careful, the script will download more than 320 files automatically (on my laptop, the execution process is ~7 min).</li>
+<li>The script is ready to run on the Linux system.</li>
+</ul>
+<p>As the script is based on the current website structure, any changes could break the code. Please let me know if this happens. I will try to code an updated version of the code.</p>
+<pre class="r"><code>library(rvest)
+library(purrr)
+library(tidyverse)
+website &lt;- &quot;https://panelapp.genomicsengland.co.uk/panels/&quot;
+page &lt;- read_html(website)
+
+c_ref &lt;- page %&gt;%
+  html_nodes(&quot;a&quot;) %&gt;% # find all links
+  html_attr(&quot;href&quot;)
+
+df_ref &lt;- tibble(ref = c_ref, id = NA) %&gt;%
+  filter(str_detect(ref, &#39;download&#39;)) %&gt;%
+  mutate(ref = str_remove(ref, &#39;/panels/&#39;)) %&gt;%
+  mutate(id = ref) %&gt;%
+  mutate(id = str_remove(id, &#39;/download/01234/&#39;))
+
+# Linux command - if you are using Windows, please make sure that you create a new folder with the name &#39;gene_panel&#39;
+# and remove the &quot;system(&#39;mkdir gene_panel&#39;)&quot; line
+system(&#39;mkdir gene_panel&#39;)
+setwd(&#39;gene_panel&#39;)
+
+walk2(df_ref$ref, df_ref$id, function(a, b)
+  download.file(url = paste0(website, a), destfile = paste0(&#39;gene_panel_&#39;, b))
+)
+
+files_panel &lt;- list.files()
+panel_total &lt;- files_panel %&gt;% map_dfr(~ read_tsv(.x) %&gt;% 
+                                         select(`Entity Name`, `Entity type`, `Gene Symbol`, `Sources(; separated)`, 
+                                                Level4, Phenotypes) %&gt;% 
+                                         mutate(source = .x) )
+
+
+# Filtering out genes with a evidence level (red - amber)
+panel_total &lt;- panel_total %&gt;%
+  rename(entity_name = `Entity Name`,
+         entity_type = `Entity type`,
+         gene = `Gene Symbol`,
+         sources = `Sources(; separated)`) %&gt;%
+  filter(entity_type == &#39;gene&#39;) %&gt;%  # optional - we can include regions in our analysis
+  filter(str_detect(sources, &#39;Expert Review Green&#39;)) %&gt;%
+  select(gene, Level4, -sources, source, Phenotypes)
+
+setwd(&#39;..&#39;)
+
+write_tsv(panel_total, &#39;panel_genes.tsv&#39;)</code></pre>
