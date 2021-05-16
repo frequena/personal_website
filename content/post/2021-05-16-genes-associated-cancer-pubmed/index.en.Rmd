@@ -33,8 +33,8 @@ To do so, we will write a simple code in R that will make a query for each gene 
 
 The script has two simple steps:
 
-Download the official list of protein-coding gene symbols from HUGO.
-For each gene, make the following query "gene_symbol[Title/Abstract] AND cancer[Title/Abstract]" in PubMed (1-2).
+* Download the official list of protein-coding gene symbols from HUGO.
+* For each gene, make the following query "gene_symbol[Title/Abstract] AND cancer[Title/Abstract]" in PubMed (1-2).
 
 You can find the code below:
 

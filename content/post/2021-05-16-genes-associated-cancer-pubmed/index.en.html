@@ -28,8 +28,10 @@ projects: []
 <p>To explore this problem, we will count the number of articles in PubMed associating cancer with each one of the 19,205 protein-coding genes in the human genome.</p>
 <p>To do so, we will write a simple code in R that will make a query for each gene to PubMed using the fantastic rentrez package.</p>
 <p>The script has two simple steps:</p>
-<p>Download the official list of protein-coding gene symbols from HUGO.
-For each gene, make the following query “gene_symbol[Title/Abstract] AND cancer[Title/Abstract]” in PubMed (1-2).</p>
+<ul>
+<li>Download the official list of protein-coding gene symbols from HUGO.</li>
+<li>For each gene, make the following query “gene_symbol[Title/Abstract] AND cancer[Title/Abstract]” in PubMed (1-2).</li>
+</ul>
 <p>You can find the code below:</p>
 <pre class="r"><code>library(tidyverse)
 library(scales)
