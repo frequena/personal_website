@@ -96,9 +96,9 @@ result_genes %>%
 
 
 
-As you can see in the plot, 43% of the genes have been associated with cancer in more than five articles, 36% in 1-5 articles, and only 23% of the genes with no publications. 
+As you can see in the plot, 41% of the genes have been associated with cancer in more than five articles, 36% in 1-5 articles, and only 23% of the genes with no publications. 
 
-If I choose a random protein-coding from the human genome and do a query in PubMed, it is more likely (76%) to find at least one article than none.
+If I choose a random protein-coding from the human genome and do a query in PubMed, it is more likely (77%) to find at least one article than none.
 
 This data reflects how easy it is to find articles associating cancer with most of the genes. Therefore, when a reader finds this kind of argument [my gene is important -> gene + cancer + references] should take it with a grain of salt.
 

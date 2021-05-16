@@ -74,8 +74,8 @@ result_genes &lt;- gene_symbols %&gt;% map_dfr(~ query_pubmed(.x))</code></pre>
   labs(fill = &#39;Category&#39;, x = &#39;Category&#39;, y = &#39;Percentage&#39;) +
   theme_minimal()</code></pre>
 <p><img src="{{< blogdown/postref >}}index.en_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<p>As you can see in the plot, 43% of the genes have been associated with cancer in more than five articles, 36% in 1-5 articles, and only 23% of the genes with no publications.</p>
-<p>If I choose a random protein-coding from the human genome and do a query in PubMed, it is more likely (76%) to find at least one article than none.</p>
+<p>As you can see in the plot, 41% of the genes have been associated with cancer in more than five articles, 36% in 1-5 articles, and only 23% of the genes with no publications.</p>
+<p>If I choose a random protein-coding from the human genome and do a query in PubMed, it is more likely (77%) to find at least one article than none.</p>
 <p>This data reflects how easy it is to find articles associating cancer with most of the genes. Therefore, when a reader finds this kind of argument [my gene is important -&gt; gene + cancer + references] should take it with a grain of salt.</p>
 <p>An interesting point is the reasons behind these numbers. From a biological perspective, it is difficult to assume the relevance in cancer of most of the human genome even though cancer is a group including many different kinds of diseases with their subgroups.</p>
 <p>In the following points, I describe some of the reasons that might explain these numbers:</p>
