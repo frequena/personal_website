@@ -27,10 +27,10 @@
   
     
   
-  <meta name="description" content="OverviewReceiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance.">
+  <meta name="description" content="Overview Receiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance.">
 
   
-  <link rel="alternate" hreflang="en-us" href="/post/roc-curves-an-animated-example/">
+  <link rel="alternate" hreflang="en-us" href="https://franciscorequena.com/post/roc-curves-an-animated-example/">
 
   
 
@@ -205,6 +205,44 @@
 
 
 
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111824788-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-111824788-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
   
 
 
@@ -217,7 +255,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/post/roc-curves-an-animated-example/">
+  <link rel="canonical" href="https://franciscorequena.com/post/roc-curves-an-animated-example/">
 
   
   
@@ -233,10 +271,10 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Francisco Requena">
-  <meta property="og:url" content="/post/roc-curves-an-animated-example/">
+  <meta property="og:url" content="https://franciscorequena.com/post/roc-curves-an-animated-example/">
   <meta property="og:title" content="An introduction to ROC curves with animated examples | Francisco Requena">
-  <meta property="og:description" content="OverviewReceiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance."><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
-  <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="Overview Receiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance."><meta property="og:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2020-06-12T00:00:00&#43;00:00">
@@ -265,7 +303,7 @@
   "@type": "BlogPosting",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/post/roc-curves-an-animated-example/"
+    "@id": "https://franciscorequena.com/post/roc-curves-an-animated-example/"
   },
   "headline": "An introduction to ROC curves with animated examples",
   
@@ -282,10 +320,10 @@
     "name": "Francisco Requena",
     "logo": {
       "@type": "ImageObject",
-      "url": "/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+      "url": "https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
-  "description": "Overview\rReceiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance."
+  "description": "Overview Receiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance."
 }
 </script>
 
@@ -461,86 +499,6 @@
 
         <li class="nav-item">
           <a class="nav-link " href="/#projects"><span>Projects</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#featured"><span>Publications</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/courses/"><span>Courses</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#contact"><span>Contact</span></a>
         </li>
 
         
@@ -967,7 +925,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/post/roc-curves-an-animated-example/&amp;text=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://franciscorequena.com/post/roc-curves-an-animated-example/&amp;text=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -980,7 +938,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/post/roc-curves-an-animated-example/&amp;t=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://franciscorequena.com/post/roc-curves-an-animated-example/&amp;t=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -993,7 +951,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="mailto:?subject=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples&amp;body=/post/roc-curves-an-animated-example/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples&amp;body=https://franciscorequena.com/post/roc-curves-an-animated-example/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -1006,7 +964,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/post/roc-curves-an-animated-example/&amp;title=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://franciscorequena.com/post/roc-curves-an-animated-example/&amp;title=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -1019,7 +977,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples%20/post/roc-curves-an-animated-example/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples%20https://franciscorequena.com/post/roc-curves-an-animated-example/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -1032,7 +990,7 @@ new_gif</code></pre>
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/post/roc-curves-an-animated-example/&amp;title=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://franciscorequena.com/post/roc-curves-an-animated-example/&amp;title=An%20introduction%20to%20ROC%20curves%20with%20animated%20examples" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -1072,7 +1030,7 @@ new_gif</code></pre>
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="/">Francisco Requena</a></h5>
+      <h5 class="card-title"><a href="https://franciscorequena.com/">Francisco Requena</a></h5>
       <h6 class="card-subtitle">PhD Student - Bioinformatics</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -1086,10 +1044,8 @@ new_gif</code></pre>
     
     
     
-      
-    
     <li>
-      <a href="/#contact" >
+      <a href="mailto:francisco.requena@institutimagine.org" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -1108,6 +1064,21 @@ new_gif</code></pre>
     <li>
       <a href="https://twitter.com/datarequena" target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=MPD3J0AAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
       </a>
     </li>
   
@@ -1267,16 +1238,6 @@ new_gif</code></pre>
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">

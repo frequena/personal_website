@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>machine learning | Francisco Requena</title>
-    <link>/categories/machine-learning/</link>
-      <atom:link href="/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/categories/machine-learning/</link>
+      <atom:link href="https://franciscorequena.com/categories/machine-learning/index.xml" rel="self" type="application/rss+xml" />
     <description>machine learning</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 12 Jun 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>machine learning</title>
-      <link>/categories/machine-learning/</link>
+      <link>https://franciscorequena.com/categories/machine-learning/</link>
     </image>
     
     <item>
       <title>An introduction to ROC curves with animated examples</title>
-      <link>/post/roc-curves-an-animated-example/</link>
+      <link>https://franciscorequena.com/post/roc-curves-an-animated-example/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
-      <guid>/post/roc-curves-an-animated-example/</guid>
+      <guid>https://franciscorequena.com/post/roc-curves-an-animated-example/</guid>
       <description>
 
 
@@ -127,7 +127,7 @@ check_pred &amp;lt;- vert_test %&amp;gt;%
   geom_density(aes(fill = abnormality), alpha = 0.4) +
   theme_bw() +
   scale_fill_viridis_d()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can extract some ideas from the above plot:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Since this value represents the probability of an observation to belong to &lt;code&gt;abnormality = &#39;yes&#39;&lt;/code&gt;, it makes sense to find observations whose real label is ‘yes’ with high probability. On the other way around, we expect to find observations whose real label is &lt;code&gt;abnormality = &#39;no&#39;&lt;/code&gt; with low probability. Though this is what we expect, this is not always the case, since we find also observations whose probability of belonging to &lt;code&gt;abnormality = &#39;yes&#39;&lt;/code&gt; is quite low, even though, its real label is &lt;code&gt;yes&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
@@ -170,7 +170,7 @@ roc_logistic %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
  geom_line() +
  geom_abline(linetype = 3) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;animated-roc-curve&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Animated ROC curve&lt;/h2&gt;
@@ -205,7 +205,7 @@ for(i in 2:100){
 }
 
 new_gif&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;comparing-six-models&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Comparing six models&lt;/h2&gt;
@@ -222,7 +222,7 @@ comparison_six %&amp;gt;%
   theme_bw() +
   scale_fill_viridis_d() +
  facet_wrap(~ model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the example above, we observe that the overlapping between both distributions decreases as we increase the number of explanatory variables. In other words, since we increase the amount of useful information to discriminate between the two labels (&lt;em&gt;yes&lt;/em&gt;, &lt;em&gt;no&lt;/em&gt;), the predictive power of the model improves.&lt;/p&gt;
 &lt;p&gt;Besides, we can plot their ROC curves:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;comparison_six %&amp;gt;%
@@ -232,7 +232,7 @@ comparison_six %&amp;gt;%
  geom_line(aes(color = model)) +
  geom_abline(linetype = 3) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;animated-comparison&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Animated comparison&lt;/h2&gt;
@@ -276,7 +276,7 @@ for(i in 2:100){
 }
 
 new_gif&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-11-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-11-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Notes&lt;/h2&gt;
@@ -290,9 +290,9 @@ new_gif&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>An introduction to uncertainty with Bayesian models</title>
-      <link>/post/introduction-uncertainty-bayesian-models/</link>
+      <link>https://franciscorequena.com/post/introduction-uncertainty-bayesian-models/</link>
       <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/introduction-uncertainty-bayesian-models/</guid>
+      <guid>https://franciscorequena.com/post/introduction-uncertainty-bayesian-models/</guid>
       <description>
 
 
@@ -353,19 +353,19 @@ p3 &amp;lt;- haberman %&amp;gt;%
 
 
 p1 + p2 + p3 + patchwork::plot_layout(nrow = 3)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Age and number of nodes seem to have a reasonable distribution but surprisingly, patient survival does not increase along the operation year. In theory, the patient survival of most cancer types has increased dramatically over the years. Therefore, it seems reasonable to find a similar pattern in this dataset. The interval of time (1958-1969) seems long enough and happened during a period of major progress in clinical therapies.&lt;/p&gt;
 &lt;p&gt;A plausible explanation is an underlying effect of, at least, one remaining variable. Let’s observe the distribution of the variable age of patient over the years:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
  ggplot(aes(age, operation_year)) +
  geom_density_ridges(aes(fill = operation_year), show.legend = FALSE) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
  ggplot(aes(operation_year, age)) +
  geom_boxplot(aes(fill = operation_year), show.legend = FALSE) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There seem to be differences over the years. In this post, further analysis to control for this effect is out of scope, but a more exhaustive analysis of this dataset should be aware of it.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -539,7 +539,7 @@ roc_both %&amp;gt;%
  geom_abline(linetype = 3) +
   labs(title = &amp;#39;Comparison performance logistic and Bayesian model&amp;#39;,
      subtitle = glue(&amp;#39;AUC (logistic) = {auc_logistic} - AUC (Bayesian) = {auc_bayesian}&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Both models demonstrate similar performance. If we would have to decide, at this step of the analysis, one of them (logistic or Bayesian), there would not be a reason to choose one or the other. Probably, the logistic one, since it may sounds more familiar. But this might change when the &lt;strong&gt;uncertainty idea&lt;/strong&gt; comes up!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;uncertainty&#34; class=&#34;section level2&#34;&gt;
@@ -563,7 +563,7 @@ p2 &amp;lt;- pred_logistic %&amp;gt;%
  labs(x = &amp;#39;Probability&amp;#39;, y = &amp;#39;Density&amp;#39;)
 
 p1 + p2 + plot_layout(ncol = 2)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Each probability value represents a single observation. To convert the predicted probability to labels, the user needs to specify a threshold where every value above the threshold is defined as “No survive”, otherwise “survive”. Most of the cases, this creates problematic scenarios where two observations can be equally labeled in spite of having distinct probabilities (e.g. 0.6 and 0.95).&lt;/p&gt;
 &lt;p&gt;By contrast, for each one of observations in the test set, the &lt;strong&gt;Bayesian model&lt;/strong&gt; does not provide a single probability value but a posterior distribution. We can represent the posterior distributions from the 92 observations (test set) with a boxplot, for instance:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty &amp;lt;- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %&amp;gt;% 
@@ -575,7 +575,7 @@ plot_uncertainty %&amp;gt;%
  geom_boxplot() +
  theme_bw() +
  labs(x = &amp;#39;Test set - Observation&amp;#39;, y = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Another way to check the dispersion of the predicted outcome is with a ridge plot, that is especially useful when the number of samples is low. So, let’s pick only two observations:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty %&amp;gt;%
  # if you want to reproduce this code, just change the character &amp;#39;1&amp;#39; or &amp;#39;5&amp;#39; for any other.
@@ -585,7 +585,7 @@ plot_uncertainty %&amp;gt;%
   theme_bw() +
   labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Picking joint bandwidth of 0.0101&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the above plot, we observe that both distributions have a “peak” (known as MAP [1]) above 0.5, therefore the predicted label would be, in both cases, ‘no survive’. But, are these two predictions equally certain? Well, we notice, at least, two things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Both MAPs have different values (sample 1 - 0.9, sample 5 - 7.2).&lt;/li&gt;
@@ -608,7 +608,7 @@ std_dev_tbl %&amp;gt;%
  theme_bw() +
  labs(x = &amp;#39;Standard deviation (sd)&amp;#39;,
     y = &amp;#39;Density&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Most of observations have a standard deviation of around 0.04. There are a few extreme values in the interval 0.08-0.10. In short, this plot shows that there are some observations whose sd is twice as high as others.&lt;/p&gt;
 &lt;p&gt;We can filter and select observations based on the dispersion of its posterior distribution. For instance, we can split the test set of 92 observations in percentiles using the sd and plot the 1st (lowest sd) and 10th percentile (highest sd). In this way, it allows us to compare those observations with the highest and lowest standard deviation:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_sd &amp;lt;- std_dev_tbl %&amp;gt;% 
@@ -622,7 +622,7 @@ plot_uncertainty %&amp;gt;%
  geom_density_ridges(aes(fill = rank_obs), alpha = 0.6, show.legend = FALSE) +
  theme_bw() +
  labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the above plot, we easily identify to which group each observation belongs to. Independently of the predicted labels, should their predictions be considered equally likely? If the final user of the model just receives a categorical outcome, he/she is definitely skipping some valuable information since some predictions look more unlikely than others. As an alternative, predictions could be grouped into categories and neglect those with a high dispersion or make it clear than further support should be required.&lt;/p&gt;
 &lt;p&gt;In this post, we have measured the uncertainty of observations and identifying those samples with high uncertainty. But, we have not talked yet about what is the origin of it.&lt;/p&gt;
 &lt;/div&gt;
@@ -652,7 +652,7 @@ pca_tbl %&amp;gt;%
  ggplot(aes(PC1, PC2)) +
   geom_point() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we have observations in two categories, let’s split them into two plots:&lt;/p&gt;
 &lt;p&gt;Since we have observations defined into two categories (survival = Yes, survival = No), let’s lay out the plot into two different:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
@@ -660,7 +660,7 @@ pca_tbl %&amp;gt;%
   geom_point() +
   theme_bw() +
   facet_grid(~ survival)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, we are going to highlight those observations that belong to the highest and lowest sd groups:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
  mutate(tile = case_when(
@@ -673,7 +673,7 @@ pca_tbl %&amp;gt;%
   theme_bw() +
   facet_grid(~ survival) +
   labs(fill = &amp;#39;Category&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;On the one hand, “lowest sd” group observations are centrally located in the plot. This reflects a tendency of these samples to have similar features values with observations belonging to their own label. On the other hand, “highest sd” group points tend to be dispersed from the rest, all over the components. It makes sense since the uncertainty to predict these points come from the fact that their own feature values are different from points on the same category.&lt;/p&gt;
 &lt;p&gt;Surprisingly, there is a red point on the left panel whose location is centric respect to the rest of the values. This perhaps arises the disadvantage of reducing a probability distribution to a point-estimate (standard deviation). The dispersion estimation might have not be accurate enough and further ways of measuring might be needed.&lt;/p&gt;
 &lt;/div&gt;
@@ -694,9 +694,9 @@ pca_tbl %&amp;gt;%
     
     <item>
       <title>Can we predict cases of dengue with climate variables?</title>
-      <link>/post/can-we-predict-cases-of-dengue-with-climate-variables/</link>
+      <link>https://franciscorequena.com/post/can-we-predict-cases-of-dengue-with-climate-variables/</link>
       <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
-      <guid>/post/can-we-predict-cases-of-dengue-with-climate-variables/</guid>
+      <guid>https://franciscorequena.com/post/can-we-predict-cases-of-dengue-with-climate-variables/</guid>
       <description>
 
 
@@ -751,7 +751,7 @@ ggplot(sj_train_features, aes(x = as.Date(week_start_date), y = ndvi_ne )) +
   xlab(&amp;#39;Title&amp;#39;) +
   geom_line(na.rm = FALSE, color = &amp;#39;blue&amp;#39;) +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Remove &amp;#39;weekofyear&amp;#39; column
 
 sj_train_features &amp;lt;- dplyr::select(sj_train_features, -week_start_date)
@@ -780,13 +780,13 @@ ggplot(sj_train_labels, aes(x = total_cases)) +
   ggtitle(&amp;#39;Cases of dengue in San Juan&amp;#39;) +
   geom_histogram() +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(iq_train_labels, aes(x = total_cases)) +
   theme_bw() +
   ggtitle(&amp;#39;Cases of dengue in Iquitos&amp;#39;) +
   geom_histogram() +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Add total_cases column to *_train_features dataframes
 
 
@@ -807,9 +807,9 @@ m_iq_train_features &amp;lt;- cor(x = m_iq_train_features[,3:24], use = &amp;#39
 # Correlation Heatmap
 
 corrplot(m_sj_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method=&amp;quot;shade&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;corrplot(m_iq_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method = &amp;#39;shade&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Correlation Bar plot
 
 df_sj_train_features &amp;lt;- data.frame(m_sj_train_features)[2:21,] 
@@ -825,7 +825,7 @@ ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -tot
   ylab(&amp;#39;Correlation&amp;#39;) +
   xlab(&amp;#39;Variables&amp;#39;) +
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df_iq_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
   geom_bar(stat = &amp;#39;identity&amp;#39;) +
   theme_bw() +
@@ -833,7 +833,7 @@ ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -tot
   ylab(&amp;#39;Correlation&amp;#39;) +
   xlab(&amp;#39;Variables&amp;#39;) +
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Function data cleaning
 
 data_clean &amp;lt;- function(df_dengue_features, df_dengue_labels = NULL, add_cases = TRUE) {
@@ -905,14 +905,14 @@ df_prediction_train_sj &amp;lt;- melt(df_prediction_train_sj, id.vars = &amp;#39
 ggplot(df_prediction_train_sj, aes(x = time, y = value, color = variable)) +
   geom_line() +
   ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-San Juan) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_prediction_train_iq &amp;lt;- data.frame(&amp;#39;prediction&amp;#39; = prediction_train_iq, &amp;#39;actual&amp;#39; = data_train[[2]]$total_cases,
                                      &amp;#39;time&amp;#39; = as.Date(train_features$week_start_date[937:1456]))
 df_prediction_train_iq &amp;lt;- melt(df_prediction_train_iq, id.vars = &amp;#39;time&amp;#39;)
 ggplot(df_prediction_train_iq, aes(x = time, y = value, color = variable)) +
   geom_line() +
   ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-Iquitos) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Prediction of total_cases in the data set
 
 prediction_sj &amp;lt;-  predict(training_sj, data_test[[1]], type = &amp;#39;response&amp;#39;)

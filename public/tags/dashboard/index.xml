@@ -2,45 +2,45 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Dashboard | Francisco Requena</title>
-    <link>/tags/dashboard/</link>
-      <atom:link href="/tags/dashboard/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/tags/dashboard/</link>
+      <atom:link href="https://franciscorequena.com/tags/dashboard/index.xml" rel="self" type="application/rss+xml" />
     <description>Dashboard</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Wed, 27 Apr 2016 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Dashboard</title>
-      <link>/tags/dashboard/</link>
+      <link>https://franciscorequena.com/tags/dashboard/</link>
     </image>
     
     <item>
       <title>Drugsplot</title>
-      <link>/project/drugsplot/</link>
+      <link>https://franciscorequena.com/project/drugsplot/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/drugsplot/</guid>
+      <guid>https://franciscorequena.com/project/drugsplot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>HealthPlot</title>
-      <link>/project/healthplot/</link>
+      <link>https://franciscorequena.com/project/healthplot/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/healthplot/</guid>
+      <guid>https://franciscorequena.com/project/healthplot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rsciencexplorer</title>
-      <link>/project/rsciencexplorer/</link>
+      <link>https://franciscorequena.com/project/rsciencexplorer/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/rsciencexplorer/</guid>
+      <guid>https://franciscorequena.com/project/rsciencexplorer/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ScienceNet</title>
-      <link>/project/sciencenet/</link>
+      <link>https://franciscorequena.com/project/sciencenet/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/sciencenet/</guid>
+      <guid>https://franciscorequena.com/project/sciencenet/</guid>
       <description></description>
     </item>
     

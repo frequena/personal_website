@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Source Themes | Francisco Requena</title>
-    <link>/tags/source-themes/</link>
-      <atom:link href="/tags/source-themes/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/tags/source-themes/</link>
+      <atom:link href="https://franciscorequena.com/tags/source-themes/index.xml" rel="self" type="application/rss+xml" />
     <description>Source Themes</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Tue, 01 Sep 2015 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Source Themes</title>
-      <link>/tags/source-themes/</link>
+      <link>https://franciscorequena.com/tags/source-themes/</link>
     </image>
     
     <item>
       <title>NOMePlot - analysis of DNA methylation and nucleosome occupancy at the single molecule</title>
-      <link>/publication/journal-article/</link>
+      <link>https://franciscorequena.com/publication/journal-article/</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>/publication/journal-article/</guid>
+      <guid>https://franciscorequena.com/publication/journal-article/</guid>
       <description>&lt;!---
 # &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;

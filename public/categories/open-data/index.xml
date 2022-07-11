@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>open data | Francisco Requena</title>
-    <link>/categories/open-data/</link>
-      <atom:link href="/categories/open-data/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/categories/open-data/</link>
+      <atom:link href="https://franciscorequena.com/categories/open-data/index.xml" rel="self" type="application/rss+xml" />
     <description>open data</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Fri, 01 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>open data</title>
-      <link>/categories/open-data/</link>
+      <link>https://franciscorequena.com/categories/open-data/</link>
     </image>
     
     <item>
       <title>Exploring world flights using a network approach</title>
-      <link>/post/exploring-world-airline-network/</link>
+      <link>https://franciscorequena.com/post/exploring-world-airline-network/</link>
       <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/exploring-world-airline-network/</guid>
+      <guid>https://franciscorequena.com/post/exploring-world-airline-network/</guid>
       <description>
 
 
@@ -61,7 +61,7 @@ p2 &amp;lt;- ggplot(df, aes(degrees, frequency)) +
   theme_bw()
 
 p1 + p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Many real networks share this feature. For instance, if we take a look how internet is organized and calculate the number of links that every site has, we find that the most of websites (nodes) have a low number of links (edges) and very few will have a large number of links (e.g. Google, Facebook…). Other examples are social, co-authorship or protein-protein network.&lt;/p&gt;
 &lt;p&gt;We hope to see the same pattern through our airport’s network: &lt;em&gt;very few airports have a large number of routes while the most will have few routes&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -137,7 +137,7 @@ ggplot(df_nodes, aes(n_degree)) +
   ylab(&amp;#39;Frequency&amp;#39;) +
   xlab(&amp;#39;Number of links&amp;#39;) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we saw at the beginning, both networks follow a power-law distribution.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;where-is-my-airport&#34; class=&#34;section level2&#34;&gt;
@@ -151,7 +151,7 @@ ggplot(df_airport, aes(long, lat)) + worldmap +
   theme_void() +
   guides(fill = guide_legend(override.aes = list(size = 7))) +
   ggtitle(&amp;#39; Aiports across the world by region&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see the biggest hubs are influenced by the economical situation and the population density of the region.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;what-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
@@ -187,9 +187,9 @@ p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, 
         text = element_text(size=20))
 
 p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;div id=&#34;what-is-the-longest-path-possible&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;What is the longest path possible?&lt;/h2&gt;
 &lt;p&gt;Can you guess how many steps would be required to travel the longest path possible between two airports? This number is called diameter and can be calculated easily:&lt;/p&gt;
@@ -243,7 +243,7 @@ ggplot(df_graph_eccen %&amp;gt;% filter(eccentricity &amp;gt; 2), aes(eccentrici
   geom_histogram(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) +
   ylab(&amp;#39;Nº of airports&amp;#39;) +
   theme(text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we see above, most of the airports are located between 8 and 9. Those airports with the highest number of routes have a value of 7. But there is an airport whose value is 6.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt; df_graph_eccen %&amp;gt;% filter(eccentricity == 6)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 11
@@ -264,7 +264,7 @@ ggplot(df_graph_eccen %&amp;gt;% filter(eccentricity &amp;gt; 2), aes(eccentrici
   ggtitle(&amp;#39; Aiports across the world by region&amp;#39;) +
   labs(fill=&amp;quot;List of Hubs&amp;quot;) +
   theme_map()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have applied a walktrap community finding algorithm that uses random walks between the nodes and group those airports that are connected by short random walks.&lt;/p&gt;
 &lt;p&gt;If you take a look at the map, these hubs represent not only a group of airports densely connected but also political and economical hubs. For instance, a hub includes Ex-soviets states, another Europe, Canary Islands and some cities from Magreb.&lt;/p&gt;
 &lt;p&gt;In addition, we can classify the airports in 3 categories:&lt;/p&gt;
@@ -283,7 +283,7 @@ ggplot(df_nodes, aes(long, lat)) + worldmap +
   theme_map() +
   theme(strip.text = element_text(size=25)) +
   guides(fill = guide_legend(override.aes = list(size = 20)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;which-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
@@ -318,9 +318,9 @@ p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, 
         text = element_text(size=20))
 
 p1 + p2 + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we see above, airports with with a high number of routes usually have a high betweenness. But we find an exception: the &lt;strong&gt;Ted Stevens Anchorage International Airport (ANL)&lt;/strong&gt;. Honestly, I did not expect this airport with the highest betweenness but if we take a look at the organization of the Alaska’s airports:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_def &amp;lt;- df_routes %&amp;gt;% 
   left_join(df_airport, by = c(&amp;#39;src&amp;#39; = &amp;#39;code&amp;#39;)) %&amp;gt;%
@@ -341,7 +341,7 @@ ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
   scale_fill_viridis_c() +
   theme_map() +
   ggtitle(&amp;#39;Ted Stevens Anchorage International Airport&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Crossing this airport is required to reach the rest of airports in Alaska. Therefore, this create a bottleneck where most of nodes have to cross this airport before reach the rest.&lt;/p&gt;
 &lt;div id=&#34;routes-by-number-of-airlines&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;7. Routes by number of airlines&lt;/h2&gt;
@@ -356,7 +356,7 @@ ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
   guides(fill = FALSE) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;connections-between-madrid-and-dubai&#34; class=&#34;section level1&#34;&gt;
@@ -388,9 +388,9 @@ p2 &amp;lt;- ggplot(df_routes_dubai %&amp;gt;% filter(src == &amp;#39;DXB&amp;#3
 
 p1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 10 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;…or the routes between Madrid and the rest of the world:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_madrid &amp;lt;- df_routes_def %&amp;gt;% 
   filter(  src == &amp;#39;MAD&amp;#39; | dest == &amp;#39;MAD&amp;#39;)
@@ -418,9 +418,9 @@ p2 &amp;lt;- ggplot(df_routes_madrid %&amp;gt;% filter(src == &amp;#39;MAD&amp;#
 
 p1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 4 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;The &lt;strong&gt;relevance of an airport&lt;/strong&gt; in the network can be assessed through different metrics: nº of routes, nº of triangles, clustering, betweenness, eccentricity or shortest path. At the same time, the &lt;strong&gt;identification of groups of airports&lt;/strong&gt;, we have clustered airports by continent, random walks algorithm, or using a blend of centrality measures filtering the nodes in three groups (core, bridge, peripherial).&lt;/p&gt;

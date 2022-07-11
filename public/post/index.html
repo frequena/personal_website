@@ -30,7 +30,7 @@
   <meta name="description" content="PhD Student - Bioinformatics">
 
   
-  <link rel="alternate" hreflang="en-us" href="/post/">
+  <link rel="alternate" hreflang="en-us" href="https://franciscorequena.com/post/">
 
   
 
@@ -205,6 +205,44 @@
 
 
 
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111824788-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-111824788-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
   
 
 
@@ -219,7 +257,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/post/">
+  <link rel="canonical" href="https://franciscorequena.com/post/">
 
   
   
@@ -235,12 +273,12 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Francisco Requena">
-  <meta property="og:url" content="/post/">
+  <meta property="og:url" content="https://franciscorequena.com/post/">
   <meta property="og:title" content="Posts | Francisco Requena">
-  <meta property="og:description" content="PhD Student - Bioinformatics"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
-  <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="PhD Student - Bioinformatics"><meta property="og:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
-    <meta property="og:updated_time" content="2020-06-12T00:00:00&#43;00:00">
+    <meta property="og:updated_time" content="2022-06-11T00:00:00&#43;00:00">
   
 
   
@@ -420,86 +458,6 @@
         
         
 
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#featured"><span>Publications</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/courses/"><span>Courses</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#contact"><span>Contact</span></a>
-        </li>
-
-        
-        
-
       
 
         
@@ -597,12 +555,279 @@
   <div class="media-body">
 
     <h3 class="article-title mb-0 mt-0">
+      <a href="/post/2022-07-11-human-genetics-as-a-tool-for-drug-discovery/" >Human genetics as a tool for drug discovery</a>
+    </h3>
+
+    
+    <div class="article-style">
+      For children with a rare disease, an accurate diagnosis is crucial to provide advice, possible therapies and assess the potential risk for family members in future generations. Public initiatives such as the International Rare Diseases Research Consortium (IRDiRC) set the goal for 2017-2027 to &ldquo;enable all people living with a rare disease to receive an accurate diagnosis, care, and available therapy soon after seeking medical care&rdquo; (1).
+    </div>
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+
+      
+        
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Jul 11, 2022
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+  <span class="middot-divider"></span>
+  <span class="article-categories">
+    <i class="fas fa-folder mr-1"></i><a href="/categories/drug-discovery/">drug-discovery</a></span>
+  
+
+</div>
+
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
+    
+  
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item">
+  <div class="media-body">
+
+    <h3 class="article-title mb-0 mt-0">
+      <a href="/post/genes-associated-cancer_pubmed/" >How many genes have been associated with cancer in PubMed?</a>
+    </h3>
+
+    
+    <div class="article-style">
+      In the biomedical literature, it is common to find sentences like:
+“Besides, the gene [gene symbol] has been associated with [type of cancer(s)] [References]”
+The structure of these sentences can change from article to article, but the underlying idea and goal are the same.
+    </div>
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+
+      
+        
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    May 16, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    5 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
+    
+  
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item">
+  <div class="media-body">
+
+    <h3 class="article-title mb-0 mt-0">
+      <a href="/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/" >Extracting gene panels from the Genomics England Panelapp</a>
+    </h3>
+
+    
+    <div class="article-style">
+      The Genomics England PanelApp provides panels of genes related to human disorders manually curated by healthcare experts. From a clinical and research perspective, this is a remarkable resource. At the time of writing this post, over 320 panels have been published.
+    </div>
+    
+
+    <div class="stream-meta article-metadata">
+
+      
+
+      
+        
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+          Last updated on
+      
+    
+    Mar 20, 2021
+  </span>
+  
+
+  
+
+  
+  <span class="middot-divider"></span>
+  <span class="article-reading-time">
+    2 min read
+  </span>
+  
+
+  
+  
+  
+
+  
+  
+
+</div>
+
+      
+    </div>
+
+    
+
+  </div>
+  <div class="ml-3">
+    
+    
+  </div>
+</div>
+
+    
+  
+    
+      
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<div class="media stream-item">
+  <div class="media-body">
+
+    <h3 class="article-title mb-0 mt-0">
       <a href="/post/roc-curves-an-animated-example/" >An introduction to ROC curves with animated examples</a>
     </h3>
 
     
     <div class="article-style">
-      OverviewReceiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance.
+      Overview Receiver operating characteristic (ROC) curves is one of the concepts I have struggled most. As a personal view, I do not find it intuitive or clear at first glance.
     </div>
     
 
@@ -693,7 +918,7 @@
 
     
     <div class="article-style">
-      OverviewIn this post, we will get a first approximation to the “uncertainty” concept. First, we will train two models: logistic regression and its “Bayesian version” and compare their performance.
+      Overview In this post, we will get a first approximation to the “uncertainty” concept. First, we will train two models: logistic regression and its “Bayesian version” and compare their performance.
     </div>
     
 
@@ -784,7 +1009,7 @@
 
     
     <div class="article-style">
-      OverviewIn this post, I will discuss briefly what is the Poisson distribution and describe two examples extracted from research articles in the genomics field. One of them based on the distribution of structural variants across the genome and other about de novo variants in a patient cohort.
+      Overview In this post, I will discuss briefly what is the Poisson distribution and describe two examples extracted from research articles in the genomics field. One of them based on the distribution of structural variants across the genome and other about de novo variants in a patient cohort.
     </div>
     
 
@@ -871,7 +1096,7 @@
 
     
     <div class="article-style">
-      # Load of librarieslibrary(tidyverse)library(sp)library(gganimate)n_simulations &lt;- 3000df &lt;- tibble(values_x = runif(n_simulations,0,1),values_y = runif(n_simulations,0,1))circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2){tt &lt;- seq(start*pi, end*pi, length.
+      # Load of libraries library(tidyverse) library(sp) library(gganimate) n_simulations &lt;- 3000 df &lt;- tibble( values_x = runif(n_simulations,0,1), values_y = runif(n_simulations,0,1) ) circleFun &lt;- function(center=c(0,0), diameter=1, npoints=100, start=0, end=2) { tt &lt;- seq(start*pi, end*pi, length.
     </div>
     
 
@@ -958,7 +1183,7 @@
 
     
     <div class="article-style">
-      IntroductionRecently, I started to read this free accessible book written by Albert-László Barabási. In the Chapter 4 of his book, it depicts the USA airport networks to represent scale-free networks.
+      Introduction Recently, I started to read this free accessible book written by Albert-László Barabási. In the Chapter 4 of his book, it depicts the USA airport networks to represent scale-free networks.
     </div>
     
 
@@ -1232,16 +1457,6 @@ DrivenData offers different competitions related with multiple types of field, s
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">

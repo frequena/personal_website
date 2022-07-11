@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>statistics | Francisco Requena</title>
-    <link>/tags/statistics/</link>
-      <atom:link href="/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/tags/statistics/</link>
+      <atom:link href="https://franciscorequena.com/tags/statistics/index.xml" rel="self" type="application/rss+xml" />
     <description>statistics</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 14 May 2020 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>statistics</title>
-      <link>/tags/statistics/</link>
+      <link>https://franciscorequena.com/tags/statistics/</link>
     </image>
     
     <item>
       <title>Poisson distribution applied in genomics</title>
-      <link>/post/poisson-distribution-applied-in-genomics/</link>
+      <link>https://franciscorequena.com/post/poisson-distribution-applied-in-genomics/</link>
       <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/poisson-distribution-applied-in-genomics/</guid>
+      <guid>https://franciscorequena.com/post/poisson-distribution-applied-in-genomics/</guid>
       <description>
 
 
@@ -43,7 +43,7 @@ tibble(x = rpois(n = 100, lambda = 2)) %&amp;gt;%
  geom_histogram(binwidth = 1, fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) + 
  theme_bw() +
  labs(title = &amp;#39;Poisson distribution&amp;#39;, x = &amp;#39;Events&amp;#39;, y = &amp;#39;Count&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;An interesting aspect about the Poisson distribution: the mean and variance of the distribution are equal to the value of lambda. Therefore, the probability of finding an interval with 3 events (for instance) is higher as long as we increase the value of lambda.&lt;/p&gt;
 &lt;p&gt;Confusing? Check out this example:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;poisson_tbl &amp;lt;- tibble(lambda = seq(1.2, 7, 0.2)) %&amp;gt;% 
@@ -63,7 +63,7 @@ poisson_tbl %&amp;gt;%
   x = &amp;#39;Events&amp;#39;,
   y = &amp;#39;Count&amp;#39;) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;p&gt;In the example above, we are generating 30 times a set of 1000 random values following a Poisson distribution, increasing each time the value of lambda (from 1.2 to 7). The probability of finding an interval with 7 events (red line) is higher as long as we increase lambda.&lt;/p&gt;
 &lt;p&gt;As we said before, we only need lambda to generate a Poisson distribution. Generally, we calculate this value if we know beforehand the number of events and intervals (as we will see in the second example, this is not always the case).&lt;/p&gt;
 &lt;p&gt;Let’s put some examples of what an interval or event can be:&lt;/p&gt;

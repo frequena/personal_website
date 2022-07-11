@@ -3,197 +3,201 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/courses/example/example1/</loc>
+    <loc>https://franciscorequena.com/courses/example/example1/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>/courses/example/</loc>
+    <loc>https://franciscorequena.com/courses/example/</loc>
     <lastmod>2018-09-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/courses/example/example2/</loc>
+    <loc>https://franciscorequena.com/courses/example/example2/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>/talk/example/</loc>
-    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <loc>https://franciscorequena.com/categories/</loc>
+    <lastmod>2022-07-11T13:07:40+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/talk/</loc>
-    <lastmod>2030-06-01T13:00:00+00:00</lastmod>
+    <loc>https://franciscorequena.com/categories/drug-discovery/</loc>
+    <lastmod>2022-07-11T13:07:40+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/roc-curves-an-animated-example/</loc>
+    <loc>https://franciscorequena.com/</loc>
+    <lastmod>2022-07-11T13:07:40+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/post/2022-07-11-human-genetics-as-a-tool-for-drug-discovery/</loc>
+    <lastmod>2022-07-11T13:07:40+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/post/</loc>
+    <lastmod>2022-07-11T13:07:40+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/post/genes-associated-cancer_pubmed/</loc>
+    <lastmod>2021-05-16T18:12:18+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/</loc>
+    <lastmod>2021-03-20T16:44:30+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/post/roc-curves-an-animated-example/</loc>
     <lastmod>2020-06-12T10:51:01+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://franciscorequena.com/categories/machine-learning/</loc>
     <lastmod>2020-06-12T10:51:01+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/machine-learning/</loc>
-    <lastmod>2020-06-12T10:51:01+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-06-12T10:51:01+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/introduction-uncertainty-bayesian-models/</loc>
+    <loc>https://franciscorequena.com/post/introduction-uncertainty-bayesian-models/</loc>
     <lastmod>2020-05-29T13:27:45+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/poisson-distribution-applied-in-genomics/</loc>
+    <loc>https://franciscorequena.com/post/poisson-distribution-applied-in-genomics/</loc>
     <lastmod>2020-05-14T18:03:29+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/statistics/</loc>
+    <loc>https://franciscorequena.com/tags/statistics/</loc>
     <lastmod>2020-05-14T18:03:29+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://franciscorequena.com/tags/</loc>
     <lastmod>2020-05-14T18:03:29+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/estimating-pi-value-with-monte-carlo-simulation/</loc>
+    <loc>https://franciscorequena.com/post/estimating-pi-value-with-monte-carlo-simulation/</loc>
     <lastmod>2020-05-03T19:26:09+02:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/exploring-world-airline-network/</loc>
+    <loc>https://franciscorequena.com/post/exploring-world-airline-network/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/networks/</loc>
+    <loc>https://franciscorequena.com/categories/networks/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/open-data/</loc>
+    <loc>https://franciscorequena.com/categories/open-data/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/r/</loc>
+    <loc>https://franciscorequena.com/categories/r/</loc>
     <lastmod>2020-05-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/courses/</loc>
+    <loc>https://franciscorequena.com/courses/</loc>
     <lastmod>2019-05-05T00:00:00+01:00</lastmod>
   </url>
   
   <url>
-    <loc>/slides/</loc>
+    <loc>https://franciscorequena.com/slides/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/slides/example/</loc>
+    <loc>https://franciscorequena.com/slides/example/</loc>
     <lastmod>2019-02-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/privacy/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/terms/</loc>
-    <lastmod>2018-06-28T00:00:00+01:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/can-we-predict-cases-of-dengue-with-climate-variables/</loc>
+    <loc>https://franciscorequena.com/post/can-we-predict-cases-of-dengue-with-climate-variables/</loc>
     <lastmod>2017-12-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/dashboard/</loc>
+    <loc>https://franciscorequena.com/tags/dashboard/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/drugsplot/</loc>
+    <loc>https://franciscorequena.com/project/drugsplot/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/healthplot/</loc>
+    <loc>https://franciscorequena.com/project/healthplot/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/</loc>
+    <loc>https://franciscorequena.com/project/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/rsciencexplorer/</loc>
+    <loc>https://franciscorequena.com/project/rsciencexplorer/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/project/sciencenet/</loc>
+    <loc>https://franciscorequena.com/project/sciencenet/</loc>
     <lastmod>2016-04-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication_types/2/</loc>
+    <loc>https://franciscorequena.com/publication_types/2/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/__francisco-requena__-helena-g-asenjo-et-al./</loc>
+    <loc>https://franciscorequena.com/authors/__francisco-requena__-helena-g-asenjo-et-al./</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/</loc>
+    <loc>https://franciscorequena.com/authors/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication/journal-article/</loc>
+    <loc>https://franciscorequena.com/publication/journal-article/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication_types/</loc>
+    <loc>https://franciscorequena.com/publication_types/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/publication/</loc>
+    <loc>https://franciscorequena.com/publication/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/source-themes/</loc>
+    <loc>https://franciscorequena.com/tags/source-themes/</loc>
     <lastmod>2015-09-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/authors/admin/</loc>
+    <loc>https://franciscorequena.com/authors/admin/</loc>
+  </url>
+  
+  <url>
+    <loc>https://franciscorequena.com/talk/</loc>
   </url>
   
 </urlset>

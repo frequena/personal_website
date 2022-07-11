@@ -30,7 +30,7 @@
   <meta name="description" content="Dashboard of 40 individual datasets and more than 50 graphics divided into 13 categories (health, religion, politics, genre, security, ancestry, immigration, demography, economic, logistic, languages and population) that reflect some aspects of the North American public health..">
 
   
-  <link rel="alternate" hreflang="en-us" href="/project/healthplot/">
+  <link rel="alternate" hreflang="en-us" href="https://franciscorequena.com/project/healthplot/">
 
   
 
@@ -205,6 +205,44 @@
 
 
 
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111824788-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-111824788-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
   
 
 
@@ -217,7 +255,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/project/healthplot/">
+  <link rel="canonical" href="https://franciscorequena.com/project/healthplot/">
 
   
   
@@ -232,10 +270,10 @@
   <meta property="twitter:card" content="summary_large_image">
   
   <meta property="og:site_name" content="Francisco Requena">
-  <meta property="og:url" content="/project/healthplot/">
+  <meta property="og:url" content="https://franciscorequena.com/project/healthplot/">
   <meta property="og:title" content="HealthPlot | Francisco Requena">
-  <meta property="og:description" content="Dashboard of 40 individual datasets and more than 50 graphics divided into 13 categories (health, religion, politics, genre, security, ancestry, immigration, demography, economic, logistic, languages and population) that reflect some aspects of the North American public health.."><meta property="og:image" content="/project/healthplot/featured.jpg">
-  <meta property="twitter:image" content="/project/healthplot/featured.jpg"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="Dashboard of 40 individual datasets and more than 50 graphics divided into 13 categories (health, religion, politics, genre, security, ancestry, immigration, demography, economic, logistic, languages and population) that reflect some aspects of the North American public health.."><meta property="og:image" content="https://franciscorequena.com/project/healthplot/featured.jpg">
+  <meta property="twitter:image" content="https://franciscorequena.com/project/healthplot/featured.jpg"><meta property="og:locale" content="en-us">
   
     
       <meta property="article:published_time" content="2016-04-27T00:00:00&#43;00:00">
@@ -262,12 +300,12 @@
   "@type": "Article",
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "/project/healthplot/"
+    "@id": "https://franciscorequena.com/project/healthplot/"
   },
   "headline": "HealthPlot",
   
   "image": [
-    "/project/healthplot/featured.jpg"
+    "https://franciscorequena.com/project/healthplot/featured.jpg"
   ],
   
   "datePublished": "2016-04-27T00:00:00Z",
@@ -283,7 +321,7 @@
     "name": "Francisco Requena",
     "logo": {
       "@type": "ImageObject",
-      "url": "/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
+      "url": "https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png"
     }
   },
   "description": "Dashboard of 40 individual datasets and more than 50 graphics divided into 13 categories (health, religion, politics, genre, security, ancestry, immigration, demography, economic, logistic, languages and population) that reflect some aspects of the North American public health.."
@@ -462,86 +500,6 @@
 
         <li class="nav-item">
           <a class="nav-link " href="/#projects"><span>Projects</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#featured"><span>Publications</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/courses/"><span>Courses</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#contact"><span>Contact</span></a>
         </li>
 
         
@@ -743,7 +701,7 @@
       
       
       <li>
-        <a href="https://twitter.com/intent/tweet?url=/project/healthplot/&amp;text=HealthPlot" target="_blank" rel="noopener" class="share-btn-twitter">
+        <a href="https://twitter.com/intent/tweet?url=https://franciscorequena.com/project/healthplot/&amp;text=HealthPlot" target="_blank" rel="noopener" class="share-btn-twitter">
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -756,7 +714,7 @@
       
       
       <li>
-        <a href="https://www.facebook.com/sharer.php?u=/project/healthplot/&amp;t=HealthPlot" target="_blank" rel="noopener" class="share-btn-facebook">
+        <a href="https://www.facebook.com/sharer.php?u=https://franciscorequena.com/project/healthplot/&amp;t=HealthPlot" target="_blank" rel="noopener" class="share-btn-facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
@@ -769,7 +727,7 @@
       
       
       <li>
-        <a href="mailto:?subject=HealthPlot&amp;body=/project/healthplot/" target="_blank" rel="noopener" class="share-btn-email">
+        <a href="mailto:?subject=HealthPlot&amp;body=https://franciscorequena.com/project/healthplot/" target="_blank" rel="noopener" class="share-btn-email">
           <i class="fas fa-envelope"></i>
         </a>
       </li>
@@ -782,7 +740,7 @@
       
       
       <li>
-        <a href="https://www.linkedin.com/shareArticle?url=/project/healthplot/&amp;title=HealthPlot" target="_blank" rel="noopener" class="share-btn-linkedin">
+        <a href="https://www.linkedin.com/shareArticle?url=https://franciscorequena.com/project/healthplot/&amp;title=HealthPlot" target="_blank" rel="noopener" class="share-btn-linkedin">
           <i class="fab fa-linkedin-in"></i>
         </a>
       </li>
@@ -795,7 +753,7 @@
       
       
       <li>
-        <a href="https://web.whatsapp.com/send?text=HealthPlot%20/project/healthplot/" target="_blank" rel="noopener" class="share-btn-whatsapp">
+        <a href="https://web.whatsapp.com/send?text=HealthPlot%20https://franciscorequena.com/project/healthplot/" target="_blank" rel="noopener" class="share-btn-whatsapp">
           <i class="fab fa-whatsapp"></i>
         </a>
       </li>
@@ -808,7 +766,7 @@
       
       
       <li>
-        <a href="https://service.weibo.com/share/share.php?url=/project/healthplot/&amp;title=HealthPlot" target="_blank" rel="noopener" class="share-btn-weibo">
+        <a href="https://service.weibo.com/share/share.php?url=https://franciscorequena.com/project/healthplot/&amp;title=HealthPlot" target="_blank" rel="noopener" class="share-btn-weibo">
           <i class="fab fa-weibo"></i>
         </a>
       </li>
@@ -848,7 +806,7 @@
     
 
     <div class="media-body">
-      <h5 class="card-title"><a href="/">Francisco Requena</a></h5>
+      <h5 class="card-title"><a href="https://franciscorequena.com/">Francisco Requena</a></h5>
       <h6 class="card-subtitle">PhD Student - Bioinformatics</h6>
       
       <ul class="network-icon" aria-hidden="true">
@@ -862,10 +820,8 @@
     
     
     
-      
-    
     <li>
-      <a href="/#contact" >
+      <a href="mailto:francisco.requena@institutimagine.org" >
         <i class="fas fa-envelope"></i>
       </a>
     </li>
@@ -884,6 +840,21 @@
     <li>
       <a href="https://twitter.com/datarequena" target="_blank" rel="noopener">
         <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=MPD3J0AAAAAJ" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
       </a>
     </li>
   
@@ -1072,16 +1043,6 @@
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">

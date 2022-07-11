@@ -4,6 +4,9 @@ authors:
 bio: 
 education:
   courses:
+  - course: PhD Clinical Bioinformatics
+    institution: Paris University
+    year: 2022
   - course: Msc Bioinformatics
     institution: Autonomous University of Madrid
     year: 2019
@@ -14,7 +17,7 @@ education:
 email: "frequena.sanchez@hotmail.com"
 interests:
 - Human genetics
-- Rare diseases
+- Drug discovery
 - Machine learning
 - Non-coding DNA
 name: Francisco Requena
@@ -41,4 +44,4 @@ user_groups:
 - Visitors
 ---
 
-I am a PhD Student at the Clinical Bioinformatics in the Institut Imagine (Paris). My current work focus on the development of new tools for the interpretation of variants in rare diseases.
+I did my PhD at the Clinical Bioinformatics lab in the Imagine Institute (Paris). My current work focuses on the development of computational methods, including machine-learning, for the clinical interpretation of variants in rare disease patients.

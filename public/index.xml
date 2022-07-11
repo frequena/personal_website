@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Francisco Requena</title>
-    <link>/</link>
-      <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <link>https://franciscorequena.com/</link>
+      <atom:link href="https://franciscorequena.com/index.xml" rel="self" type="application/rss+xml" />
     <description>Francisco Requena</description>
-    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Thu, 28 Jun 2018 00:00:00 +0100</lastBuildDate>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator><language>en-us</language><lastBuildDate>Sat, 11 Jun 2022 00:00:00 +0000</lastBuildDate>
     <image>
-      <url>/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
+      <url>https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png</url>
       <title>Francisco Requena</title>
-      <link>/</link>
+      <link>https://franciscorequena.com/</link>
     </image>
     
     <item>
       <title>Example Page 1</title>
-      <link>/courses/example/example1/</link>
+      <link>https://franciscorequena.com/courses/example/example1/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
-      <guid>/courses/example/example1/</guid>
+      <guid>https://franciscorequena.com/courses/example/example1/</guid>
       <description>&lt;p&gt;In this tutorial, I&amp;rsquo;ll share my top 10 tips for getting started with Academic:&lt;/p&gt;
 &lt;h2 id=&#34;tip-1&#34;&gt;Tip 1&lt;/h2&gt;
 &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
@@ -35,9 +35,9 @@
     
     <item>
       <title>Example Page 2</title>
-      <link>/courses/example/example2/</link>
+      <link>https://franciscorequena.com/courses/example/example2/</link>
       <pubDate>Sun, 05 May 2019 00:00:00 +0100</pubDate>
-      <guid>/courses/example/example2/</guid>
+      <guid>https://franciscorequena.com/courses/example/example2/</guid>
       <description>&lt;p&gt;Here are some more tips for getting started with Academic:&lt;/p&gt;
 &lt;h2 id=&#34;tip-3&#34;&gt;Tip 3&lt;/h2&gt;
 &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
@@ -55,32 +55,199 @@
     </item>
     
     <item>
-      <title>Example Talk</title>
-      <link>/talk/example/</link>
-      <pubDate>Sat, 01 Jun 2030 13:00:00 +0000</pubDate>
-      <guid>/talk/example/</guid>
-      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
-  &lt;div&gt;
-    Click on the &lt;strong&gt;Slides&lt;/strong&gt; button above to view the built-in slides feature.
-  &lt;/div&gt;
-&lt;/div&gt;
-&lt;p&gt;Slides can be added in a few ways:&lt;/p&gt;
+      <title>Human genetics as a tool for drug discovery</title>
+      <link>https://franciscorequena.com/post/2022-07-11-human-genetics-as-a-tool-for-drug-discovery/</link>
+      <pubDate>Sat, 11 Jun 2022 00:00:00 +0000</pubDate>
+      <guid>https://franciscorequena.com/post/2022-07-11-human-genetics-as-a-tool-for-drug-discovery/</guid>
+      <description>&lt;p&gt;For children with a rare disease, an accurate diagnosis is crucial to provide advice, possible therapies and assess the potential risk for family members in future generations. Public initiatives such as the International Rare Diseases Research Consortium (IRDiRC) set the goal for 2017-2027 to &amp;ldquo;enable all people living with a rare disease to receive an accurate diagnosis, care, and available therapy soon after seeking medical care&amp;rdquo; (1).&lt;/p&gt;
+&lt;p&gt;Despite significant efforts in the field of drug development, the reality is &lt;strong&gt;discouraging&lt;/strong&gt;. Drug candidates that move from phase 1 clinical trials to approval and launch remain at around 10%. This rate is even lower in some specific fields, such as oncology (3.4%).&lt;/p&gt;
+&lt;p&gt;At the same time, large-scale biomedical databases, such as gnomAD and the UK Biobank, offer the possibility to assess the effect of variants in humans and their association with multiple conditions. In addition, the recruitment of population-based cohorts considered disease-agnostic increases the number of hypotheses that can be tested. In particular, the high scientific value of the UK Biobank is worth mentioning, as it not only releases genomic data but also rich phenotype characterization alongside other data sources (273).&lt;/p&gt;
+&lt;p&gt;Both mutations and drugs share the same mechanism: they disrupt the normal functioning of the human body. How they do so may differ, but it seems plausible to hypothesize that, in some cases, the phenotypic consequences of a loss-of-function SNVs or deletions are similar to the pharmacological effect of an inhibitor drug.&lt;/p&gt;
+&lt;p&gt;There is no doubt that this &lt;strong&gt;view&lt;/strong&gt; poses some problems. As mentioned above, the heterogeneity and particularities in genetics are enormous even for monogenic diseases. Elements such as the genotype of the variant or discrepancies between the predicted effect and the actual consequences can make the use of this approach challenging. For instance, it is already known that LoF mutations may not decrease protein or even mRNA levels.&lt;/p&gt;
+&lt;p&gt;In spite of these drawbacks, &lt;strong&gt;human genetics&lt;/strong&gt; seems to be a great tool for the identification of drugs with therapeutic effects.&lt;/p&gt;
+&lt;p&gt;There is evidence to support this assumption. For instance, gastrointestinal adverse events observed in clinical trials of DGAT1 inhibitors could have been predicted based on the causal relationship between rare and highly penetrant variants of DGAT1 and congenital diarrheal disorder (3).&lt;/p&gt;
+&lt;p&gt;Another well-known example is the association of heterozygous gain-of-function mutations in the PCSK9 gene and familial hypercholesterolemia, which leads to heart attacks or strokes relatively early in life. Strikingly, LoF variants in the PCSK9 gene have been causally associated with low levels of low-density lipoprotein cholesterol (4).&lt;/p&gt;
+&lt;p&gt;This &lt;strong&gt;human genetic evidence&lt;/strong&gt; contributed to the technical and regulatory success of PCSK9 inhibitors, leading to the launch of evolocumab (Amgen) and alirocumab (Regeneron), and has also shown value in patient stratification in clinical trials (5).&lt;/p&gt;
+&lt;p&gt;Other drug candidates with strong genetic evidence between disease phenotypes and functional genetic variants have been identified, such as HSD17B13 for chronic liver disease (6), TYK2 for multiple autoimmune disorders (7), NRXN1 for neuropsychiatric disease (8), ASGR1 for cardiovascular disease (9),&lt;/p&gt;
+&lt;p&gt;These are not isolated examples, but a general trend. Nelson et al. found that pairing genetic target indication with genetic evidence almost doubles the success rate in clinical development. These analyses were re-evaluated three years later by other researchers with data after the original publication and controlling for potential confounding factors and corroborated the same claims (10).&lt;/p&gt;
+&lt;p&gt;Harnessing human genomic data can improve the drug discovery process, from target selection to reducing failures due to lack of efficacy or adverse effects.&lt;/p&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;.Sanders AD, Falconer E, Hills M, Spierings DCJ, Lansdorp PM. Single-cell template strand sequencing by Strand-seq enables the characterization of individual homologs. Nat Protoc. 2017;12: 1151&amp;ndash;1176.&lt;/li&gt;
+&lt;li&gt;Szustakowski JD, Balasubramanian S, Kvikstad E, Khalid S, Bronson PG, Sasson A, et al. Advancing human genetics research and drug discovery through exome sequencing of the UK Biobank. Nat Genet. 2021;53. &lt;a href=&#34;doi:10.1038/s41588-021-00885-0&#34;&gt;doi:10.1038/s41588-021-00885-0&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Haas JT, Winter HS, Lim E, Kirby A, Blumenstiel B, DeFelice M, et al. DGAT1 mutation is linked to a congenital diarrheal disorder. J Clin Invest. 2012;122: 4680&amp;ndash;4684.&lt;/li&gt;
+&lt;li&gt;Cohen JC, Boerwinkle E, Mosley TH Jr, Hobbs HH. Sequence variations in PCSK9, low LDL, and protection against coronary heart disease. N Engl J Med. 2006;354: 1264&amp;ndash;1272.&lt;/li&gt;
+&lt;li&gt;Sabatine MS, Giugliano RP, Keech AC, Honarpour N, Wiviott SD, Murphy SA, et al. Evolocumab and Clinical Outcomes in Patients with Cardiovascular Disease. N Engl J Med. 2017;376: 1713&amp;ndash;1722.&lt;/li&gt;
+&lt;li&gt;Abul-Husn NS, Cheng X, Li AH, Xin Y, Schurmann C, Stevis P, et al. A Protein-Truncating HSD17B13 Variant and Protection from Chronic Liver Disease. N Engl J Med. 2018;378: 1096&amp;ndash;1106.&lt;/li&gt;
+&lt;li&gt;Dendrou CA, Cortes A, Shipman L, Evans HG, Attfield KE, Jostins L, et al. Resolving TYK2 locus genotype-to-phenotype differences in autoimmunity. Sci Transl Med. 2016;8: 363ra149.&lt;/li&gt;
+&lt;li&gt;Noh HJ, Tang R, Flannick J, O&amp;rsquo;Dushlaine C, Swofford R, Howrigan D, et al. Integrating evolutionary and regulatory information with a multispecies approach implicates genes and pathways in obsessive-compulsive disorder. Nat Commun. 2017;8: 774.&lt;/li&gt;
+&lt;li&gt;Nioi P, Sigurdsson A, Thorleifsson G, Helgason H, Agustsdottir AB, Norddahl GL, et al. Variant ASGR1 Associated with a Reduced Risk of Coronary Artery Disease. N Engl J Med. 2016;374: 2131&amp;ndash;2141.&lt;/li&gt;
+&lt;li&gt;King EA, Davis JW, Degner JF. Are drug targets with genetic support twice as likely to be approved? Revised estimates of the impact of genetic support for drug mechanisms on the probability of drug approval. PLoS Genet. 2019;15: e1008489.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How many genes have been associated with cancer in PubMed?</title>
+      <link>https://franciscorequena.com/post/genes-associated-cancer_pubmed/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      <guid>https://franciscorequena.com/post/genes-associated-cancer_pubmed/</guid>
+      <description>
+&lt;script src=&#34;https://franciscorequena.com/post/genes-associated-cancer_pubmed/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;In the biomedical literature, it is common to find sentences like:&lt;/p&gt;
+&lt;p&gt;“Besides, the gene [gene symbol] has been associated with [type of cancer(s)] [References]”&lt;/p&gt;
+&lt;p&gt;The structure of these sentences can change from article to article, but the underlying idea and goal are the same. I will try to summarise it in the following sentence:&lt;/p&gt;
+&lt;p&gt;“Hello reader/editor/reviewer, I was studying [any field], and I found this gene. I think it is a relevant/remarkable finding because it has been associated with cancer [references]. Therefore, it supports my hypothesis about the biological relevance of the gene in my field. Please, publish it.”&lt;/p&gt;
+&lt;p&gt;This approach is valid and logical as long as the association gene &amp;lt;-&amp;gt; cancer has been well-described and validated by different experiments and research teams. Unfortunately, some of these associations will be just spurious and no well-supported.&lt;/p&gt;
+&lt;p&gt;To explore this problem, we will count the number of articles in PubMed associating cancer with each one of the 19,205 protein-coding genes in the human genome.&lt;/p&gt;
+&lt;p&gt;To do so, we will write a simple code in R that will make a query for each gene to PubMed using the fantastic rentrez package.&lt;/p&gt;
+&lt;p&gt;The script has two simple steps:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Create&lt;/strong&gt; slides using Academic&amp;rsquo;s 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/managing-content/#create-slides&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;em&gt;Slides&lt;/em&gt;&lt;/a&gt; feature and link using &lt;code&gt;slides&lt;/code&gt; parameter in the front matter of the talk file&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Upload&lt;/strong&gt; an existing slide deck to &lt;code&gt;static/&lt;/code&gt; and link using &lt;code&gt;url_slides&lt;/code&gt; parameter in the front matter of the talk file&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Embed&lt;/strong&gt; your slides (e.g. Google Slides) or presentation video on this page using 
-&lt;a href=&#34;https://sourcethemes.com/academic/docs/writing-markdown-latex/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;shortcodes&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Download the official list of protein-coding gene symbols from HUGO.&lt;/li&gt;
+&lt;li&gt;For each gene, make the following query “gene_symbol[Title/Abstract] AND cancer[Title/Abstract]” in PubMed (1-2).&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Further talk details can easily be added to this page using &lt;em&gt;Markdown&lt;/em&gt; and $\rm \LaTeX$ math code.&lt;/p&gt;
+&lt;p&gt;You can find the code below:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(tidyverse)
+library(scales)
+library(rentrez)
+
+gene_symbols &amp;lt;- read_tsv(&amp;#39;http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/locus_types/gene_with_protein_product.txt&amp;#39;) %&amp;gt;% 
+  pull(symbol)
+
+# Careful: it takes long to make all the queries
+query_pubmed &amp;lt;- function(input_gene) {
+  
+  print(input_gene)
+  Sys.sleep(0.3)
+  query_tmp &amp;lt;- entrez_search(db =&amp;quot;pubmed&amp;quot;, 
+                             term = paste(paste0(input_gene, &amp;#39;[Title/Abstract]&amp;#39;),&amp;#39; AND &amp;#39;, &amp;#39;cancer[Title/Abstract]&amp;#39;), 
+                             retmax = 600)
+  
+  tibble(&amp;#39;gene&amp;#39; = input_gene, &amp;#39;n_hits&amp;#39; = length(query_tmp[[&amp;#39;ids&amp;#39;]]))
+}
+
+result_genes &amp;lt;- gene_symbols %&amp;gt;% map_dfr(~ query_pubmed(.x))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;result_genes %&amp;gt;%
+  ggplot(aes(n_hits)) +
+  geom_histogram(binwidth = 5) +
+  theme_minimal() +
+  labs(x = &amp;#39;Nº articles&amp;#39;, y = &amp;#39;Nº genes&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/genes-associated-cancer_pubmed/index.en_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;result_genes %&amp;gt;%
+  mutate(category = case_when(
+    n_hits == 0 ~ &amp;#39;0 articles&amp;#39;,
+    n_hits &amp;gt;= 1 &amp;amp; n_hits &amp;lt;= 5 ~ &amp;#39;1-5 articles&amp;#39;,
+    TRUE ~ &amp;#39;&amp;gt;5 articles&amp;#39;
+  )) %&amp;gt;% 
+  count(category) %&amp;gt;%
+  mutate(perc = n / sum(n)) %&amp;gt;%
+  ggplot(aes(reorder(category,perc), perc)) +
+    geom_col(aes(fill = category), color = &amp;#39;black&amp;#39;) +
+  scale_y_continuous(label = percent, limits = c(0, 1)) +
+  geom_label(aes(label = paste0(round(perc, 2)*100, &amp;#39;%&amp;#39;))) +
+  labs(fill = &amp;#39;Category&amp;#39;, x = &amp;#39;Category&amp;#39;, y = &amp;#39;Percentage&amp;#39;) +
+  theme_minimal()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/genes-associated-cancer_pubmed/index.en_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As you can see in the plot, 41% of the genes have been associated with cancer in more than five articles, 36% in 1-5 articles, and only 23% of the genes with no publications.&lt;/p&gt;
+&lt;p&gt;If I choose a random protein-coding from the human genome and do a query in PubMed, it is more likely (77%) to find at least one article than none.&lt;/p&gt;
+&lt;p&gt;This data reflects how easy it is to find articles associating cancer with most of the genes. Therefore, when a reader finds this kind of argument [my gene is important -&amp;gt; gene + cancer + references] should take it with a grain of salt.&lt;/p&gt;
+&lt;p&gt;An interesting point is the reasons behind these numbers. From a biological perspective, it is difficult to assume the relevance in cancer of most of the human genome even though cancer is a group including many different kinds of diseases with their subgroups.&lt;/p&gt;
+&lt;p&gt;In the following points, I describe some of the reasons that might explain these numbers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;In most cases, a tumor is produced by the disruption of multiple genes simultaneously. Structural variants or chromosomal aberrations can map a considerable portion of the genome and disrupt many genes. This scenario makes it difficult to identify the driver mutations from those mutations (passengers) with no relevance and, therefore, finding the causal gene(s).
+Researchers have an important incentive: publish. Therefore, it makes sense that some researchers “orientate” their studies and results to the cancer field because it is a way to give more “weight” to their research even though, in some cases, the evidence for it is scarce.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The overproduction of scientific studies in specific areas of knowledge has already been described. For instance, in a &lt;a href=&#34;https://www.nature.com/articles/d41586-021-00314-6&#34;&gt;comment&lt;/a&gt; published in 2021, the authors find that only 22% of gene-related publications were related to 1% of genes. Also, they find “new yearly publications focusing on a given gene is linearly proportional to the size of previous literature on it”.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It is reasonable to think that a similar scenario happens with many research published trying to link their analysis with any aspect of cancer though the evidence is limit.&lt;/p&gt;
+&lt;p&gt;To clarify, this is by no means a way to discredit researchers with work related to cancer. It is a way to make people aware of the problematic aspect of finding articles in PubMed describing the gene A associated with cancer and using them as evidence without further analysis.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Some ideas for a future version&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;There have been multiple naming conventions to identify genes. A paper describing a gene with a synonymous symbol instead of the official gene will not be reported in our script. Luckily, HUGO reports the list of synonymous symbols along with the official one. Therefore, it would be easy to adapt our script with new queries and merge the number of hits.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Some gene symbols can be confounded with composited names. For instance, the query “A1BG[Title/Abstract] AND cancer[Title/Abstract]” retrieved 22 hits, and one of them was describing the A1BG-AS1 lncRNA.
+An interesting idea would be to reanalyze the data but change cancer by each of the cancer types.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Notes&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;We can run the queries in parallel, adding the tag “future_” to the function “map_dfr” thanks to the package furrr. Note the API has a limit of simultaneous queries per IP.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;I set a limit of 600 articles retrieved to avoid the exceeded limit error of the API.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Extracting gene panels from the Genomics England Panelapp</title>
+      <link>https://franciscorequena.com/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/</link>
+      <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
+      <guid>https://franciscorequena.com/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/</guid>
+      <description>
+&lt;script src=&#34;https://franciscorequena.com/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/index.en_files/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;The &lt;a href=&#34;https://panelapp.genomicsengland.co.uk/&#34;&gt;Genomics England PanelApp&lt;/a&gt; provides panels of genes related to human disorders manually curated by healthcare experts. From a clinical and research perspective, this is a remarkable resource. At the time of writing this post, over 320 panels have been published.&lt;/p&gt;
+&lt;p&gt;Unfortunately, you can only download the panels manually one at a time or through an API that retrieves the information as a JSON file.&lt;/p&gt;
+&lt;p&gt;Alternatively, below you can find a script in R to extract all the panels from the website and merge them into a single dataset. Please note the following points before using the script:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I only consider genes labeled as “Expert Review Green” defined as “gene-disease association with a high level of evidence” and exclude STRs and CNVs entities. More information on the criteria used can be found on the main page (heading: Understanding gene classifications in a version 1+ gene panel.&lt;/li&gt;
+&lt;li&gt;The script selects only a subset of columns from the total available.
+Be careful, the script will download more than 320 files automatically (on my laptop, the execution process is ~7 min).&lt;/li&gt;
+&lt;li&gt;The script is ready to run on the Linux system.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As the script is based on the current website structure, any changes could break the code. Please let me know if this happens. I will try to code an updated version of the code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(rvest)
+library(purrr)
+library(tidyverse)
+website &amp;lt;- &amp;quot;https://panelapp.genomicsengland.co.uk/panels/&amp;quot;
+page &amp;lt;- read_html(website)
+
+c_ref &amp;lt;- page %&amp;gt;%
+  html_nodes(&amp;quot;a&amp;quot;) %&amp;gt;% # find all links
+  html_attr(&amp;quot;href&amp;quot;)
+
+df_ref &amp;lt;- tibble(ref = c_ref, id = NA) %&amp;gt;%
+  filter(str_detect(ref, &amp;#39;download&amp;#39;)) %&amp;gt;%
+  mutate(ref = str_remove(ref, &amp;#39;/panels/&amp;#39;)) %&amp;gt;%
+  mutate(id = ref) %&amp;gt;%
+  mutate(id = str_remove(id, &amp;#39;/download/01234/&amp;#39;))
+
+# Linux command - if you are using Windows, please make sure that you create a new folder with the name &amp;#39;gene_panel&amp;#39;
+# and remove the &amp;quot;system(&amp;#39;mkdir gene_panel&amp;#39;)&amp;quot; line
+system(&amp;#39;mkdir gene_panel&amp;#39;)
+setwd(&amp;#39;gene_panel&amp;#39;)
+
+walk2(df_ref$ref, df_ref$id, function(a, b)
+  download.file(url = paste0(website, a), destfile = paste0(&amp;#39;gene_panel_&amp;#39;, b))
+)
+
+files_panel &amp;lt;- list.files()
+panel_total &amp;lt;- files_panel %&amp;gt;% map_dfr(~ read_tsv(.x) %&amp;gt;% 
+                                         select(`Entity Name`, `Entity type`, `Gene Symbol`, `Sources(; separated)`, 
+                                                Level4, Phenotypes) %&amp;gt;% 
+                                         mutate(source = .x) )
+
+
+# Filtering out genes with a evidence level (red - amber)
+panel_total &amp;lt;- panel_total %&amp;gt;%
+  rename(entity_name = `Entity Name`,
+         entity_type = `Entity type`,
+         gene = `Gene Symbol`,
+         sources = `Sources(; separated)`) %&amp;gt;%
+  filter(entity_type == &amp;#39;gene&amp;#39;) %&amp;gt;%  # optional - we can include regions in our analysis
+  filter(str_detect(sources, &amp;#39;Expert Review Green&amp;#39;)) %&amp;gt;%
+  select(gene, Level4, -sources, source, Phenotypes)
+
+setwd(&amp;#39;..&amp;#39;)
+
+write_tsv(panel_total, &amp;#39;panel_genes.tsv&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
     <item>
       <title>An introduction to ROC curves with animated examples</title>
-      <link>/post/roc-curves-an-animated-example/</link>
+      <link>https://franciscorequena.com/post/roc-curves-an-animated-example/</link>
       <pubDate>Fri, 12 Jun 2020 00:00:00 +0000</pubDate>
-      <guid>/post/roc-curves-an-animated-example/</guid>
+      <guid>https://franciscorequena.com/post/roc-curves-an-animated-example/</guid>
       <description>
 
 
@@ -191,7 +358,7 @@ check_pred &amp;lt;- vert_test %&amp;gt;%
   geom_density(aes(fill = abnormality), alpha = 0.4) +
   theme_bw() +
   scale_fill_viridis_d()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can extract some ideas from the above plot:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;Since this value represents the probability of an observation to belong to &lt;code&gt;abnormality = &#39;yes&#39;&lt;/code&gt;, it makes sense to find observations whose real label is ‘yes’ with high probability. On the other way around, we expect to find observations whose real label is &lt;code&gt;abnormality = &#39;no&#39;&lt;/code&gt; with low probability. Though this is what we expect, this is not always the case, since we find also observations whose probability of belonging to &lt;code&gt;abnormality = &#39;yes&#39;&lt;/code&gt; is quite low, even though, its real label is &lt;code&gt;yes&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
@@ -234,7 +401,7 @@ roc_logistic %&amp;gt;% head()&lt;/code&gt;&lt;/pre&gt;
  geom_line() +
  geom_abline(linetype = 3) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;animated-roc-curve&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Animated ROC curve&lt;/h2&gt;
@@ -269,7 +436,7 @@ for(i in 2:100){
 }
 
 new_gif&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-8-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;comparing-six-models&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Comparing six models&lt;/h2&gt;
@@ -286,7 +453,7 @@ comparison_six %&amp;gt;%
   theme_bw() +
   scale_fill_viridis_d() +
  facet_wrap(~ model)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the example above, we observe that the overlapping between both distributions decreases as we increase the number of explanatory variables. In other words, since we increase the amount of useful information to discriminate between the two labels (&lt;em&gt;yes&lt;/em&gt;, &lt;em&gt;no&lt;/em&gt;), the predictive power of the model improves.&lt;/p&gt;
 &lt;p&gt;Besides, we can plot their ROC curves:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;comparison_six %&amp;gt;%
@@ -296,7 +463,7 @@ comparison_six %&amp;gt;%
  geom_line(aes(color = model)) +
  geom_abline(linetype = 3) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;animated-comparison&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Animated comparison&lt;/h2&gt;
@@ -340,7 +507,7 @@ for(i in 2:100){
 }
 
 new_gif&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-11-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-06-12-roc-curves-an-animated-example_files/figure-html/unnamed-chunk-11-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;notes&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Notes&lt;/h2&gt;
@@ -354,9 +521,9 @@ new_gif&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>An introduction to uncertainty with Bayesian models</title>
-      <link>/post/introduction-uncertainty-bayesian-models/</link>
+      <link>https://franciscorequena.com/post/introduction-uncertainty-bayesian-models/</link>
       <pubDate>Fri, 29 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/introduction-uncertainty-bayesian-models/</guid>
+      <guid>https://franciscorequena.com/post/introduction-uncertainty-bayesian-models/</guid>
       <description>
 
 
@@ -417,19 +584,19 @@ p3 &amp;lt;- haberman %&amp;gt;%
 
 
 p1 + p2 + p3 + patchwork::plot_layout(nrow = 3)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Age and number of nodes seem to have a reasonable distribution but surprisingly, patient survival does not increase along the operation year. In theory, the patient survival of most cancer types has increased dramatically over the years. Therefore, it seems reasonable to find a similar pattern in this dataset. The interval of time (1958-1969) seems long enough and happened during a period of major progress in clinical therapies.&lt;/p&gt;
 &lt;p&gt;A plausible explanation is an underlying effect of, at least, one remaining variable. Let’s observe the distribution of the variable age of patient over the years:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
  ggplot(aes(age, operation_year)) +
  geom_density_ridges(aes(fill = operation_year), show.legend = FALSE) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;haberman %&amp;gt;%
  ggplot(aes(operation_year, age)) +
  geom_boxplot(aes(fill = operation_year), show.legend = FALSE) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;There seem to be differences over the years. In this post, further analysis to control for this effect is out of scope, but a more exhaustive analysis of this dataset should be aware of it.&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -603,7 +770,7 @@ roc_both %&amp;gt;%
  geom_abline(linetype = 3) +
   labs(title = &amp;#39;Comparison performance logistic and Bayesian model&amp;#39;,
      subtitle = glue(&amp;#39;AUC (logistic) = {auc_logistic} - AUC (Bayesian) = {auc_bayesian}&amp;#39;))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Both models demonstrate similar performance. If we would have to decide, at this step of the analysis, one of them (logistic or Bayesian), there would not be a reason to choose one or the other. Probably, the logistic one, since it may sounds more familiar. But this might change when the &lt;strong&gt;uncertainty idea&lt;/strong&gt; comes up!&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;uncertainty&#34; class=&#34;section level2&#34;&gt;
@@ -627,7 +794,7 @@ p2 &amp;lt;- pred_logistic %&amp;gt;%
  labs(x = &amp;#39;Probability&amp;#39;, y = &amp;#39;Density&amp;#39;)
 
 p1 + p2 + plot_layout(ncol = 2)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-8-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Each probability value represents a single observation. To convert the predicted probability to labels, the user needs to specify a threshold where every value above the threshold is defined as “No survive”, otherwise “survive”. Most of the cases, this creates problematic scenarios where two observations can be equally labeled in spite of having distinct probabilities (e.g. 0.6 and 0.95).&lt;/p&gt;
 &lt;p&gt;By contrast, for each one of observations in the test set, the &lt;strong&gt;Bayesian model&lt;/strong&gt; does not provide a single probability value but a posterior distribution. We can represent the posterior distributions from the 92 observations (test set) with a boxplot, for instance:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty &amp;lt;- posterior_linpred(bayesian_model, newdata = hab_test, transform = TRUE) %&amp;gt;% 
@@ -639,7 +806,7 @@ plot_uncertainty %&amp;gt;%
  geom_boxplot() +
  theme_bw() +
  labs(x = &amp;#39;Test set - Observation&amp;#39;, y = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Another way to check the dispersion of the predicted outcome is with a ridge plot, that is especially useful when the number of samples is low. So, let’s pick only two observations:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot_uncertainty %&amp;gt;%
  # if you want to reproduce this code, just change the character &amp;#39;1&amp;#39; or &amp;#39;5&amp;#39; for any other.
@@ -649,7 +816,7 @@ plot_uncertainty %&amp;gt;%
   theme_bw() +
   labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## Picking joint bandwidth of 0.0101&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the above plot, we observe that both distributions have a “peak” (known as MAP [1]) above 0.5, therefore the predicted label would be, in both cases, ‘no survive’. But, are these two predictions equally certain? Well, we notice, at least, two things:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Both MAPs have different values (sample 1 - 0.9, sample 5 - 7.2).&lt;/li&gt;
@@ -672,7 +839,7 @@ std_dev_tbl %&amp;gt;%
  theme_bw() +
  labs(x = &amp;#39;Standard deviation (sd)&amp;#39;,
     y = &amp;#39;Density&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Most of observations have a standard deviation of around 0.04. There are a few extreme values in the interval 0.08-0.10. In short, this plot shows that there are some observations whose sd is twice as high as others.&lt;/p&gt;
 &lt;p&gt;We can filter and select observations based on the dispersion of its posterior distribution. For instance, we can split the test set of 92 observations in percentiles using the sd and plot the 1st (lowest sd) and 10th percentile (highest sd). In this way, it allows us to compare those observations with the highest and lowest standard deviation:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;top_sd &amp;lt;- std_dev_tbl %&amp;gt;% 
@@ -686,7 +853,7 @@ plot_uncertainty %&amp;gt;%
  geom_density_ridges(aes(fill = rank_obs), alpha = 0.6, show.legend = FALSE) +
  theme_bw() +
  labs(y = &amp;#39;Test set - Observation&amp;#39;, x = &amp;#39;Probability (survival == &amp;quot;No survive&amp;quot;)&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;In the above plot, we easily identify to which group each observation belongs to. Independently of the predicted labels, should their predictions be considered equally likely? If the final user of the model just receives a categorical outcome, he/she is definitely skipping some valuable information since some predictions look more unlikely than others. As an alternative, predictions could be grouped into categories and neglect those with a high dispersion or make it clear than further support should be required.&lt;/p&gt;
 &lt;p&gt;In this post, we have measured the uncertainty of observations and identifying those samples with high uncertainty. But, we have not talked yet about what is the origin of it.&lt;/p&gt;
 &lt;/div&gt;
@@ -716,7 +883,7 @@ pca_tbl %&amp;gt;%
  ggplot(aes(PC1, PC2)) +
   geom_point() +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we have observations in two categories, let’s split them into two plots:&lt;/p&gt;
 &lt;p&gt;Since we have observations defined into two categories (survival = Yes, survival = No), let’s lay out the plot into two different:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
@@ -724,7 +891,7 @@ pca_tbl %&amp;gt;%
   geom_point() +
   theme_bw() +
   facet_grid(~ survival)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Furthermore, we are going to highlight those observations that belong to the highest and lowest sd groups:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;pca_tbl %&amp;gt;%
  mutate(tile = case_when(
@@ -737,7 +904,7 @@ pca_tbl %&amp;gt;%
   theme_bw() +
   facet_grid(~ survival) +
   labs(fill = &amp;#39;Category&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-29-uncertainty-bayesian-models_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;On the one hand, “lowest sd” group observations are centrally located in the plot. This reflects a tendency of these samples to have similar features values with observations belonging to their own label. On the other hand, “highest sd” group points tend to be dispersed from the rest, all over the components. It makes sense since the uncertainty to predict these points come from the fact that their own feature values are different from points on the same category.&lt;/p&gt;
 &lt;p&gt;Surprisingly, there is a red point on the left panel whose location is centric respect to the rest of the values. This perhaps arises the disadvantage of reducing a probability distribution to a point-estimate (standard deviation). The dispersion estimation might have not be accurate enough and further ways of measuring might be needed.&lt;/p&gt;
 &lt;/div&gt;
@@ -758,9 +925,9 @@ pca_tbl %&amp;gt;%
     
     <item>
       <title>Poisson distribution applied in genomics</title>
-      <link>/post/poisson-distribution-applied-in-genomics/</link>
+      <link>https://franciscorequena.com/post/poisson-distribution-applied-in-genomics/</link>
       <pubDate>Thu, 14 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/poisson-distribution-applied-in-genomics/</guid>
+      <guid>https://franciscorequena.com/post/poisson-distribution-applied-in-genomics/</guid>
       <description>
 
 
@@ -787,7 +954,7 @@ tibble(x = rpois(n = 100, lambda = 2)) %&amp;gt;%
  geom_histogram(binwidth = 1, fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) + 
  theme_bw() +
  labs(title = &amp;#39;Poisson distribution&amp;#39;, x = &amp;#39;Events&amp;#39;, y = &amp;#39;Count&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;An interesting aspect about the Poisson distribution: the mean and variance of the distribution are equal to the value of lambda. Therefore, the probability of finding an interval with 3 events (for instance) is higher as long as we increase the value of lambda.&lt;/p&gt;
 &lt;p&gt;Confusing? Check out this example:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;poisson_tbl &amp;lt;- tibble(lambda = seq(1.2, 7, 0.2)) %&amp;gt;% 
@@ -807,7 +974,7 @@ poisson_tbl %&amp;gt;%
   x = &amp;#39;Events&amp;#39;,
   y = &amp;#39;Count&amp;#39;) +
  theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-14-poisson-genomics_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;p&gt;In the example above, we are generating 30 times a set of 1000 random values following a Poisson distribution, increasing each time the value of lambda (from 1.2 to 7). The probability of finding an interval with 7 events (red line) is higher as long as we increase lambda.&lt;/p&gt;
 &lt;p&gt;As we said before, we only need lambda to generate a Poisson distribution. Generally, we calculate this value if we know beforehand the number of events and intervals (as we will see in the second example, this is not always the case).&lt;/p&gt;
 &lt;p&gt;Let’s put some examples of what an interval or event can be:&lt;/p&gt;
@@ -856,9 +1023,9 @@ of de novo variants (those present on children but not their parents) on regulat
     
     <item>
       <title>Estimating pi value with Monte Carlo simulation</title>
-      <link>/post/estimating-pi-value-with-monte-carlo-simulation/</link>
+      <link>https://franciscorequena.com/post/estimating-pi-value-with-monte-carlo-simulation/</link>
       <pubDate>Sun, 03 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/estimating-pi-value-with-monte-carlo-simulation/</guid>
+      <guid>https://franciscorequena.com/post/estimating-pi-value-with-monte-carlo-simulation/</guid>
       <description> 
 
 
@@ -905,7 +1072,7 @@ df &amp;lt;- df %&amp;gt;%
   transition_reveal(id)  +
   labs(title = &amp;#39;Nº of observations: {frame_along} of {n_simulations}&amp;#39;,
        subtitle = &amp;#39;Estimated value of pi: {df$pi_value[as.integer(frame_along)]}&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-2-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df, aes(id, pi_value)) +
   geom_line() +
   geom_point(colour = &amp;#39;red&amp;#39;, size = 3) +
@@ -917,15 +1084,15 @@ df &amp;lt;- df %&amp;gt;%
        x = &amp;#39;Sample size&amp;#39;,
        y = &amp;#39;Pi value&amp;#39;) +
     coord_cartesian(ylim=c(0, 4)) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2020-05-03-estimating-pi-value-with-monte-carlo-simulation_files/figure-html/unnamed-chunk-3-1.gif&#34; /&gt;&lt;!-- --&gt;&lt;/p&gt;
 </description>
     </item>
     
     <item>
       <title>Exploring world flights using a network approach</title>
-      <link>/post/exploring-world-airline-network/</link>
+      <link>https://franciscorequena.com/post/exploring-world-airline-network/</link>
       <pubDate>Fri, 01 May 2020 00:00:00 +0000</pubDate>
-      <guid>/post/exploring-world-airline-network/</guid>
+      <guid>https://franciscorequena.com/post/exploring-world-airline-network/</guid>
       <description>
 
 
@@ -970,7 +1137,7 @@ p2 &amp;lt;- ggplot(df, aes(degrees, frequency)) +
   theme_bw()
 
 p1 + p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-1-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Many real networks share this feature. For instance, if we take a look how internet is organized and calculate the number of links that every site has, we find that the most of websites (nodes) have a low number of links (edges) and very few will have a large number of links (e.g. Google, Facebook…). Other examples are social, co-authorship or protein-protein network.&lt;/p&gt;
 &lt;p&gt;We hope to see the same pattern through our airport’s network: &lt;em&gt;very few airports have a large number of routes while the most will have few routes&lt;/em&gt;.&lt;/p&gt;
 &lt;/div&gt;
@@ -1046,7 +1213,7 @@ ggplot(df_nodes, aes(n_degree)) +
   ylab(&amp;#39;Frequency&amp;#39;) +
   xlab(&amp;#39;Number of links&amp;#39;) +
   theme_bw()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we saw at the beginning, both networks follow a power-law distribution.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;where-is-my-airport&#34; class=&#34;section level2&#34;&gt;
@@ -1060,7 +1227,7 @@ ggplot(df_airport, aes(long, lat)) + worldmap +
   theme_void() +
   guides(fill = guide_legend(override.aes = list(size = 7))) +
   ggtitle(&amp;#39; Aiports across the world by region&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We can see the biggest hubs are influenced by the economical situation and the population density of the region.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;what-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
@@ -1096,9 +1263,9 @@ p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, 
         text = element_text(size=20))
 
 p1 + p2  + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;div id=&#34;what-is-the-longest-path-possible&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;What is the longest path possible?&lt;/h2&gt;
 &lt;p&gt;Can you guess how many steps would be required to travel the longest path possible between two airports? This number is called diameter and can be calculated easily:&lt;/p&gt;
@@ -1152,7 +1319,7 @@ ggplot(df_graph_eccen %&amp;gt;% filter(eccentricity &amp;gt; 2), aes(eccentrici
   geom_histogram(fill = &amp;#39;steelblue&amp;#39;, color = &amp;#39;black&amp;#39;) +
   ylab(&amp;#39;Nº of airports&amp;#39;) +
   theme(text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we see above, most of the airports are located between 8 and 9. Those airports with the highest number of routes have a value of 7. But there is an airport whose value is 6.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt; df_graph_eccen %&amp;gt;% filter(eccentricity == 6)&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;## # A tibble: 1 x 11
@@ -1173,7 +1340,7 @@ ggplot(df_graph_eccen %&amp;gt;% filter(eccentricity &amp;gt; 2), aes(eccentrici
   ggtitle(&amp;#39; Aiports across the world by region&amp;#39;) +
   labs(fill=&amp;quot;List of Hubs&amp;quot;) +
   theme_map()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-13-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;We have applied a walktrap community finding algorithm that uses random walks between the nodes and group those airports that are connected by short random walks.&lt;/p&gt;
 &lt;p&gt;If you take a look at the map, these hubs represent not only a group of airports densely connected but also political and economical hubs. For instance, a hub includes Ex-soviets states, another Europe, Canary Islands and some cities from Magreb.&lt;/p&gt;
 &lt;p&gt;In addition, we can classify the airports in 3 categories:&lt;/p&gt;
@@ -1192,7 +1359,7 @@ ggplot(df_nodes, aes(long, lat)) + worldmap +
   theme_map() +
   theme(strip.text = element_text(size=25)) +
   guides(fill = guide_legend(override.aes = list(size = 20)))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-14-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;which-are-the-best-connected-airports&#34; class=&#34;section level1&#34;&gt;
@@ -1227,9 +1394,9 @@ p3 &amp;lt;- ggplot(df_nodes %&amp;gt;% group_by(location) %&amp;gt;% top_n(10, 
         text = element_text(size=20))
 
 p1 + p2 + plot_layout(ncol = 1, heights = c(3, 1))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p3&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-15-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;As we see above, airports with with a high number of routes usually have a high betweenness. But we find an exception: the &lt;strong&gt;Ted Stevens Anchorage International Airport (ANL)&lt;/strong&gt;. Honestly, I did not expect this airport with the highest betweenness but if we take a look at the organization of the Alaska’s airports:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_def &amp;lt;- df_routes %&amp;gt;% 
   left_join(df_airport, by = c(&amp;#39;src&amp;#39; = &amp;#39;code&amp;#39;)) %&amp;gt;%
@@ -1250,7 +1417,7 @@ ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
   scale_fill_viridis_c() +
   theme_map() +
   ggtitle(&amp;#39;Ted Stevens Anchorage International Airport&amp;#39;) &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-16-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;Crossing this airport is required to reach the rest of airports in Alaska. Therefore, this create a bottleneck where most of nodes have to cross this airport before reach the rest.&lt;/p&gt;
 &lt;div id=&#34;routes-by-number-of-airlines&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;7. Routes by number of airlines&lt;/h2&gt;
@@ -1265,7 +1432,7 @@ ggplot(df_routes_anc, aes(long_src, lat_src)) + worldmap +
   guides(fill = FALSE) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1),
         text = element_text(size=20))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-17-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;connections-between-madrid-and-dubai&#34; class=&#34;section level1&#34;&gt;
@@ -1297,9 +1464,9 @@ p2 &amp;lt;- ggplot(df_routes_dubai %&amp;gt;% filter(src == &amp;#39;DXB&amp;#3
 
 p1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 10 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-18-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;…or the routes between Madrid and the rest of the world:&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_routes_madrid &amp;lt;- df_routes_def %&amp;gt;% 
   filter(  src == &amp;#39;MAD&amp;#39; | dest == &amp;#39;MAD&amp;#39;)
@@ -1327,9 +1494,9 @@ p2 &amp;lt;- ggplot(df_routes_madrid %&amp;gt;% filter(src == &amp;#39;MAD&amp;#
 
 p1&lt;/code&gt;&lt;/pre&gt;
 &lt;pre&gt;&lt;code&gt;FALSE Warning: Removed 4 rows containing missing values (geom_segment).&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-1.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;p2&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/exploring-world-airline-network_files/figure-html/unnamed-chunk-19-2.png&#34; width=&#34;1152&#34; /&gt;&lt;/p&gt;
 &lt;div id=&#34;conclusion&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;The &lt;strong&gt;relevance of an airport&lt;/strong&gt; in the network can be assessed through different metrics: nº of routes, nº of triangles, clustering, betweenness, eccentricity or shortest path. At the same time, the &lt;strong&gt;identification of groups of airports&lt;/strong&gt;, we have clustered airports by continent, random walks algorithm, or using a blend of centrality measures filtering the nodes in three groups (core, bridge, peripherial).&lt;/p&gt;
@@ -1348,9 +1515,9 @@ p1&lt;/code&gt;&lt;/pre&gt;
     
     <item>
       <title>Slides</title>
-      <link>/slides/example/</link>
+      <link>https://franciscorequena.com/slides/example/</link>
       <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
-      <guid>/slides/example/</guid>
+      <guid>https://franciscorequena.com/slides/example/</guid>
       <description>&lt;h1 id=&#34;create-slides-in-markdown-with-academic&#34;&gt;Create slides in Markdown with Academic&lt;/h1&gt;
 &lt;p&gt;
 &lt;a href=&#34;https://sourcethemes.com/academic/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Academic&lt;/a&gt; | 
@@ -1481,28 +1648,10 @@ Three
     </item>
     
     <item>
-      <title>Privacy Policy</title>
-      <link>/privacy/</link>
-      <pubDate>Thu, 28 Jun 2018 00:00:00 +0100</pubDate>
-      <guid>/privacy/</guid>
-      <description>&lt;p&gt;&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Terms</title>
-      <link>/terms/</link>
-      <pubDate>Thu, 28 Jun 2018 00:00:00 +0100</pubDate>
-      <guid>/terms/</guid>
-      <description>&lt;p&gt;&amp;hellip;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Can we predict cases of dengue with climate variables?</title>
-      <link>/post/can-we-predict-cases-of-dengue-with-climate-variables/</link>
+      <link>https://franciscorequena.com/post/can-we-predict-cases-of-dengue-with-climate-variables/</link>
       <pubDate>Sat, 09 Dec 2017 00:00:00 +0000</pubDate>
-      <guid>/post/can-we-predict-cases-of-dengue-with-climate-variables/</guid>
+      <guid>https://franciscorequena.com/post/can-we-predict-cases-of-dengue-with-climate-variables/</guid>
       <description>
 
 
@@ -1557,7 +1706,7 @@ ggplot(sj_train_features, aes(x = as.Date(week_start_date), y = ndvi_ne )) +
   xlab(&amp;#39;Title&amp;#39;) +
   geom_line(na.rm = FALSE, color = &amp;#39;blue&amp;#39;) +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Remove &amp;#39;weekofyear&amp;#39; column
 
 sj_train_features &amp;lt;- dplyr::select(sj_train_features, -week_start_date)
@@ -1586,13 +1735,13 @@ ggplot(sj_train_labels, aes(x = total_cases)) +
   ggtitle(&amp;#39;Cases of dengue in San Juan&amp;#39;) +
   geom_histogram() +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(iq_train_labels, aes(x = total_cases)) +
   theme_bw() +
   ggtitle(&amp;#39;Cases of dengue in Iquitos&amp;#39;) +
   geom_histogram() +
   theme(plot.title = element_text(hjust = 0.5))&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Add total_cases column to *_train_features dataframes
 
 
@@ -1613,9 +1762,9 @@ m_iq_train_features &amp;lt;- cor(x = m_iq_train_features[,3:24], use = &amp;#39
 # Correlation Heatmap
 
 corrplot(m_sj_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method=&amp;quot;shade&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-3.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;corrplot(m_iq_train_features, type = &amp;#39;full&amp;#39;, tl.col = &amp;#39;black&amp;#39;, method = &amp;#39;shade&amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-4.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Correlation Bar plot
 
 df_sj_train_features &amp;lt;- data.frame(m_sj_train_features)[2:21,] 
@@ -1631,7 +1780,7 @@ ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -tot
   ylab(&amp;#39;Correlation&amp;#39;) +
   xlab(&amp;#39;Variables&amp;#39;) +
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-5.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ggplot(df_iq_train_features, aes(x= reorder(rownames(df_sj_train_features), -total_cases), y = total_cases)) +
   geom_bar(stat = &amp;#39;identity&amp;#39;) +
   theme_bw() +
@@ -1639,7 +1788,7 @@ ggplot(df_sj_train_features, aes(x= reorder(rownames(df_sj_train_features), -tot
   ylab(&amp;#39;Correlation&amp;#39;) +
   xlab(&amp;#39;Variables&amp;#39;) +
   coord_flip()&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-4-6.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Function data cleaning
 
 data_clean &amp;lt;- function(df_dengue_features, df_dengue_labels = NULL, add_cases = TRUE) {
@@ -1711,14 +1860,14 @@ df_prediction_train_sj &amp;lt;- melt(df_prediction_train_sj, id.vars = &amp;#39
 ggplot(df_prediction_train_sj, aes(x = time, y = value, color = variable)) +
   geom_line() +
   ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-San Juan) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df_prediction_train_iq &amp;lt;- data.frame(&amp;#39;prediction&amp;#39; = prediction_train_iq, &amp;#39;actual&amp;#39; = data_train[[2]]$total_cases,
                                      &amp;#39;time&amp;#39; = as.Date(train_features$week_start_date[937:1456]))
 df_prediction_train_iq &amp;lt;- melt(df_prediction_train_iq, id.vars = &amp;#39;time&amp;#39;)
 ggplot(df_prediction_train_iq, aes(x = time, y = value, color = variable)) +
   geom_line() +
   ggtitle(&amp;#39;Dengue predicted Cases vs. Actual Cases (City-Iquitos) &amp;#39;)&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://franciscorequena.com/post/2017-12-09-can-we-predict-cases-of-dengue-with-climate-variables_files/figure-html/unnamed-chunk-6-2.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Prediction of total_cases in the data set
 
 prediction_sj &amp;lt;-  predict(training_sj, data_test[[1]], type = &amp;#39;response&amp;#39;)
@@ -1748,41 +1897,41 @@ write.csv(submission_format,
     
     <item>
       <title>Drugsplot</title>
-      <link>/project/drugsplot/</link>
+      <link>https://franciscorequena.com/project/drugsplot/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/drugsplot/</guid>
+      <guid>https://franciscorequena.com/project/drugsplot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>HealthPlot</title>
-      <link>/project/healthplot/</link>
+      <link>https://franciscorequena.com/project/healthplot/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/healthplot/</guid>
+      <guid>https://franciscorequena.com/project/healthplot/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Rsciencexplorer</title>
-      <link>/project/rsciencexplorer/</link>
+      <link>https://franciscorequena.com/project/rsciencexplorer/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/rsciencexplorer/</guid>
+      <guid>https://franciscorequena.com/project/rsciencexplorer/</guid>
       <description></description>
     </item>
     
     <item>
       <title>ScienceNet</title>
-      <link>/project/sciencenet/</link>
+      <link>https://franciscorequena.com/project/sciencenet/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
-      <guid>/project/sciencenet/</guid>
+      <guid>https://franciscorequena.com/project/sciencenet/</guid>
       <description></description>
     </item>
     
     <item>
       <title>NOMePlot - analysis of DNA methylation and nucleosome occupancy at the single molecule</title>
-      <link>/publication/journal-article/</link>
+      <link>https://franciscorequena.com/publication/journal-article/</link>
       <pubDate>Tue, 01 Sep 2015 00:00:00 +0000</pubDate>
-      <guid>/publication/journal-article/</guid>
+      <guid>https://franciscorequena.com/publication/journal-article/</guid>
       <description>&lt;!---
 # &lt;div class=&#34;alert alert-note&#34;&gt;
   &lt;div&gt;

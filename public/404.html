@@ -30,7 +30,7 @@
   <meta name="description" content="PhD Student - Bioinformatics">
 
   
-  <link rel="alternate" hreflang="en-us" href="/404.html">
+  <link rel="alternate" hreflang="en-us" href="https://franciscorequena.com/404.html">
 
   
 
@@ -205,6 +205,44 @@
 
 
 
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111824788-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag() {
+      dataLayer.push(arguments);
+  }
+
+  function trackOutboundLink(url, target) {
+    gtag('event', 'click', {
+         'event_category': 'outbound',
+         'event_label': url,
+         'transport_type': 'beacon',
+         'event_callback': function () {
+           if (target !== '_blank') {
+             document.location = url;
+           }
+         }
+    });
+    console.debug("Outbound link clicked: " + url);
+  }
+
+  function onClickCallback(event) {
+    if ((event.target.tagName !== 'A') || (event.target.host === window.location.host)) {
+      return;
+    }
+    trackOutboundLink(event.target, event.target.getAttribute('target'));  
+  }
+
+  gtag('js', new Date());
+  gtag('config', 'UA-111824788-1', {});
+
+  
+  document.addEventListener('click', onClickCallback, false);
+</script>
+
+
   
 
 
@@ -217,7 +255,7 @@
   <link rel="icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_32x32_fill_lanczos_center_2.png">
   <link rel="apple-touch-icon" type="image/png" href="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_192x192_fill_lanczos_center_2.png">
 
-  <link rel="canonical" href="/404.html">
+  <link rel="canonical" href="https://franciscorequena.com/404.html">
 
   
   
@@ -233,10 +271,10 @@
   <meta property="twitter:card" content="summary">
   
   <meta property="og:site_name" content="Francisco Requena">
-  <meta property="og:url" content="/404.html">
+  <meta property="og:url" content="https://franciscorequena.com/404.html">
   <meta property="og:title" content="404 Page not found | Francisco Requena">
-  <meta property="og:description" content="PhD Student - Bioinformatics"><meta property="og:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
-  <meta property="twitter:image" content="/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
+  <meta property="og:description" content="PhD Student - Bioinformatics"><meta property="og:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png">
+  <meta property="twitter:image" content="https://franciscorequena.com/images/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_2.png"><meta property="og:locale" content="en-us">
   
     
   
@@ -418,86 +456,6 @@
         
         
 
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#featured"><span>Publications</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/courses/"><span>Courses</span></a>
-        </li>
-
-        
-        
-
-        
-
-        
-        
-        
-          
-        
-
-        
-        
-        
-        
-        
-        
-          
-          
-          
-            
-          
-          
-        
-
-        <li class="nav-item">
-          <a class="nav-link " href="/#contact"><span>Contact</span></a>
-        </li>
-
-        
-        
-
       
 
         
@@ -563,7 +521,11 @@
     
       <li><a href="/courses/example/example2/">Example Page 2</a></li>
     
-      <li><a href="/talk/example/">Example Talk</a></li>
+      <li><a href="/post/2022-07-11-human-genetics-as-a-tool-for-drug-discovery/">Human genetics as a tool for drug discovery</a></li>
+    
+      <li><a href="/post/genes-associated-cancer_pubmed/">How many genes have been associated with cancer in PubMed?</a></li>
+    
+      <li><a href="/post/2021-03-20-extracting-gene-panels-from-the-genomics-england-panelapp/">Extracting gene panels from the Genomics England Panelapp</a></li>
     
       <li><a href="/post/roc-curves-an-animated-example/">An introduction to ROC curves with animated examples</a></li>
     
@@ -574,10 +536,6 @@
       <li><a href="/post/estimating-pi-value-with-monte-carlo-simulation/">Estimating pi value with Monte Carlo simulation</a></li>
     
       <li><a href="/post/exploring-world-airline-network/">Exploring world flights using a network approach</a></li>
-    
-      <li><a href="/slides/example/">Slides</a></li>
-    
-      <li><a href="/privacy/">Privacy Policy</a></li>
     
   </ul>
   
@@ -699,16 +657,6 @@
   
   <div class="container">
     <footer class="site-footer">
-  
-  <p class="powered-by">
-    
-      <a href="/privacy/">Privacy Policy</a>
-    
-    
-       &middot; 
-      <a href="/terms/">Terms</a>
-    
-  </p>
   
 
   <p class="powered-by">
